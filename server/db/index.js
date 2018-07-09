@@ -6,6 +6,7 @@ import * as Model from './../component/model';
 
 import userWriteSchema from './write/user';
 import tokenWriteSchema from './write/token';
+import taskNameWriteSchema from './write/taskNameList';
 
 mongoose.Promise = global.Promise;
 
@@ -67,6 +68,7 @@ let models = {
   write: {
     user:     createCollection('user','write',userWriteSchema),
     token:     createCollection('token','write',tokenWriteSchema),
+    taskName:  createCollection('taskName','write',taskNameWriteSchema),
   },
   read: {
   },
