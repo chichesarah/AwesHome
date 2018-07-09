@@ -6,24 +6,26 @@ export default new mongoose.Schema(
   _.assignIn(
     _.cloneDeep(standardField),
     {
-      email: { type: String, required: true, trim: true, unique : true },
+      email: { type: String, required: true, trim: true, unique: true },
       household: { type: 'ObjectId', default: null },
       points: { type: Number, default: 0 },
 
       avatar: { type: String },
-      avatarId: { type: String, default : null },
+      avatarId: { type: String, default: null },
       lastName: { type: String, required: true },
       firstName: { type: String, required: true },
+
+      registerAnswers: [{ type: String }],
 
       salt: String,
       password: String,
 
       identities: {
-        facebookId: { type : String, default : null },
+        facebookId: { type: String, default: null },
       },
 
       roles: [{ type: String, enum: ['admin', 'user'], default: ['user'] }],
 
-      birthday:{ type: Date, default: null },
-      phone:{ type: String, default: null },
+      birthday: { type: Date, default: null },
+      phone: { type: String, default: null },
     }));
