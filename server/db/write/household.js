@@ -14,3 +14,7 @@ export default new mongoose.Schema(
     
       fullAddress: { type: String, required: true },
     }));
+
+    fullAddress: { type: String, required: true },
+  }),
+);
