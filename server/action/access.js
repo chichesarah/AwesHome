@@ -20,6 +20,8 @@ const userFreeData = [
   'avatar',
   'firstName',
   'lastName',
+  'isRegisterAnswers',
+  'householdId',
 ];
 
 class AccessAction {
