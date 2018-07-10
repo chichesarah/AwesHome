@@ -8,7 +8,7 @@ export default new mongoose.Schema(
     {
       ownerId: { type: 'ObjectId', required: true },
       householdId: { type: 'ObjectId', default: null },
-    
+
       title: { type: String, required: true },
       member: [{ type: 'ObjectID', required: true }],
       startDate: { type: Date, required: true, defaul: Date.now },
