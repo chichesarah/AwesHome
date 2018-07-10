@@ -1,6 +1,6 @@
 {
   "app" : {
-    "name" : "koa_base"
+    "name" : "AwesomeHome"
   },
   "socketsStorageDb" : 5
 }
