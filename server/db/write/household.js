@@ -11,7 +11,6 @@ export default new mongoose.Schema(
       city: { type: String, required: true },
       zip: { type: String, required: true },
       state: { type: String, required: true },
-      type: { type: String, required: true },
     
       fullAddress: { type: String, required: true },
     }));
