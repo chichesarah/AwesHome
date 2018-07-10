@@ -19,6 +19,7 @@ class TaskNameModel {
     return taskNameWrite.findRow({
       query: {
         name,
+        isDeleted: false,
       },
     });
   }

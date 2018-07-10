@@ -6,7 +6,7 @@ class TaskNameAction {
   }
 
   create(name) {
-    return taskWrite.create(name);
+    return taskWrite.addName(name);
   }
 }
 

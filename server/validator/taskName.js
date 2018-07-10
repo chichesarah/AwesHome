@@ -3,7 +3,7 @@ import taskWrite from '../model/write/taskName';
 import validator from '../component/validator';
 
 class TaskNameValidate {
-  create(body) {
+  async create(body) {
     const validateObj = {
       name: {
         notEmpty: {
@@ -18,12 +18,7 @@ class TaskNameValidate {
       throw errorList;
     }
 
-    const taskNameObj = taskWrite.findByName({
-      query: {
-        name: body.name,
-        isDeleted: false,
-      },
-    });
+    const taskNameObj = await taskWrite.findByName(body.name);
 
     if (taskNameObj) {
       throw [{ param: 'name', message: 'Name is already exists' }];
