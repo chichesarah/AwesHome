@@ -46,12 +46,12 @@ router.all('/*', bearerMiddleware);
    * @apiUse userObject
 
    * @apiErrorExample {json} Error-Response:
-      [{param:"email",message:"Valid email is required"}]
+      [{param: 'email', message: 'Valid email is required'}]
 
-   * @apiError {Object} InvalidEmail {param:"email",message:"Valid email is required"}
-   * @apiError {Object} FirstNameRequired {param: "firstName", message: "First Name is required"}
-   * @apiError {Object} LastNameRequired {param: "lastName", message: "Last Name is required"}
-   * @apiError {Object} GenderRequired {param: "gender", message: "Gender is required"}
+   * @apiError {Object} InvalidEmail {param: 'email', message: 'Valid email is required'}
+   * @apiError {Object} FirstNameRequired {param: 'firstName', message: 'First Name is required'}
+   * @apiError {Object} LastNameRequired {param: 'lastName', message: 'Last Name is required'}
+   * @apiError {Object} GenderRequired {param: 'gender', message: 'Gender is required'}
    * @apiError {Object} AvatarRequired {param : 'avatar', message : 'Upload error'}
    * @apiError {Object} UserNotFound {param : 'email', message : 'User not found'}
    * @apiUse accessTokenError
