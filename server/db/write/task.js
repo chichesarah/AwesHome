@@ -7,6 +7,7 @@ export default new mongoose.Schema(
     _.cloneDeep(standardField),
     {
       ownerId: { type: 'ObjectId', required: true },
+      householdId: { type: 'ObjectId', default: null },
     
       taskNameId: { type: 'ObjectId', required: true },
       taskName: { type: String, required: true },
@@ -18,6 +19,4 @@ export default new mongoose.Schema(
     
       nextDate: { type: Date },
       endDate: { type: Date, defaul: null }, // set: nextDate - repeat, when user delete task
-    
-      // complete ?????????
     }));
