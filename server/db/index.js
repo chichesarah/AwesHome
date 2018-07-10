@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
-import config from './../config';
 import async from 'async';
-import * as _ from 'lodash';
+import _ from 'lodash';
+import config from './../config';
 import * as Model from './../component/model';
 
 import userWriteSchema from './write/user';
 import tokenWriteSchema from './write/token';
+import householdWriteSchema from './write/household';
 import taskNameWriteSchema from './write/taskNameList';
 
 mongoose.Promise = global.Promise;
@@ -66,8 +67,9 @@ let createCollection = (name, dbType, schema) => {
 
 let models = {
   write: {
-    user:     createCollection('user','write',userWriteSchema),
-    token:     createCollection('token','write',tokenWriteSchema),
+    user:     createCollection('user', 'write', userWriteSchema),
+    token:     createCollection('token', 'write', tokenWriteSchema),
+    household: createCollection('household', 'write', householdWriteSchema),
     taskName:  createCollection('taskName','write',taskNameWriteSchema),
   },
   read: {
