@@ -1,6 +1,6 @@
 import keygen from 'keygen';
 import q from 'q';
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 import userWrite from '../model/write/user';
 import config from '../config';
@@ -53,27 +53,8 @@ class AccessAction {
   }
 
   async register(data) {
-    const pass = data.password;
+    const user = await userWrite.newUser(_.assignIn(data, { roles: ['user'] }));
 
-    const user = await userWrite.newUser(data);
-
-    mailer.messages().send({
-      from: config.mailgun.mailFrom,
-      to: user.email,
-      subject: 'Spravno registration',
-      html: `
-          <h4>This letter was sent to your e-mail to verify the identity when register.</h4>
-          <p>if you didn't send it, ignore</p>
-          <p>First name: ${user.firstName}</p>
-          <p>Last name: ${user.lastName}</p>
-          <p>City: ${user.city}</p>
-          <p>Password: ${pass}</p>
-        `,
-    }, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
     return _.pick(user, userFreeData);
   }
 

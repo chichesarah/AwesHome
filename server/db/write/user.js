@@ -3,10 +3,11 @@ import * as _ from 'lodash';
 import standardField from '../../component/db/dbStandardField';
 
 export default new mongoose.Schema(
-  _.assignIn(_.cloneDeep(standardField), {
-    email: { type: String, required: true, trim: true, unique: true },
-    household: { type: 'ObjectId', default: null },
-    points: { type: Number, default: 0 },
+  _.assignIn(
+    _.cloneDeep(standardField),
+    {
+      email: { type: String, required: true, trim: true, unique: true },
+      householdId: { type: 'ObjectId', default: null },
 
     avatar: { type: String },
     avatarId: { type: String, default: null },
