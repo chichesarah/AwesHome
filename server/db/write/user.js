@@ -14,7 +14,8 @@ export default new mongoose.Schema(
       lastName: { type: String, required: true },
       firstName: { type: String, required: true },
 
-      registerAnswers: [{ type: String }],
+      isRegisterAnswers: { type: Boolean, default: false },
+      roommatesCount: { type: Number, default: 0 },
 
       salt: String,
       password: String,

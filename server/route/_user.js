@@ -1,16 +1,87 @@
-import { userAction }  from "../action/user";
-import { userValidate }  from "../validator/user";
-import {bearerMiddleware} from '../component/passport';
-import middlewareWrapper from '../component/middlewareWrapper';
-import config from '../config';
-
 import koaRouter from 'koa-router';
 
-export let router = koaRouter({
-  prefix: '/api/v1/user'
+import { userAction } from '../action/user';
+import { userValidate } from '../validator/user';
+import { bearerMiddleware } from '../component/passport';
+import middlewareWrapper from '../component/middlewareWrapper';
+
+export const router = koaRouter({
+  prefix: '/api/v1/user',
 });
 
 router.all('/*', bearerMiddleware);
+
+
+/**
+
+  * @apiName answerQuestions
+  * @api {PUT} /api/v1/user/answerQuestions Answer to the registration questions
+
+  * @apiVersion 0.0.1
+
+  * @apiGroup user
+
+  * @apiHeader {String} Content-Type=multipart/form-data Content-Type
+  * @apiHeader {String} Authorization User bearer access token
+
+  * @apiParam  {String} roommatesCount Roommates count
+  * @apiParam  {String} placeId Google placeId
+  * @apiParam  {File} [avatar] Avatar image
+
+  * @apiExample {curl} Example usage:
+  * curl -X POST \
+  *    http://localhost:3000/api/v1/user/answerQuestions \
+  *      -H 'authorization: Bearer aQA5Ojd35OgMvIIceRT2gJlGXYDPrq9fTaRv+UMDdMn0L25+IUzy9OW8KMc0011wqBtgxDWWZsMZ6W/tgdvmlOKSDJvmfywgSINJupJ2zLi42koukTtQkYHOsefMtQ==' \
+  *      -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+  *        -F roommatesCount=4 \
+  *        -F placeId=ChIJI5Jp0apU2YARvCRzAnZ8ies \
+  *        -F avatar=@b1f159fea9970ac31637176cd6014810_83937.jpg
+
+  * @apiSuccessExample {json} Success-Response:
+  {
+    "createdAt": "2018-07-09T13:46:57.297Z",
+    "updatedAt": "2018-07-10T10:18:04.135Z",
+    "isDeleted": false,
+    "roles": [
+      "user"
+    ],
+    "_id": "5b436751d2a43e91d96a3dbc",
+    "email": "emaiff@test.com",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "identities": {
+      "facebookId": null
+    },
+    "avatar": "http://res.cloudinary.com/opengeeksvkcloudy/image/upload/v1531217887/dn0ie50rkwvgo9fen163.jpg",
+    "householdId": "5b4487dc2b6816bda946a166",
+    "isRegisterAnswers": true
+  }
+
+  * @apiUse userObject
+
+  * @apiErrorExample {json} Error-Response:
+    [{param: 'placeId', message: 'Valid placeId is required'}]
+
+  * @apiError {Object} PlaceIdRequired {param: 'placeId', message: 'Valid placeId is required'}
+  * @apiError {Object} RoommatesCountRequired {param: 'roommatesCount', message: 'Valid roommatesCount is required'}
+  * @apiError {Object} UploadAvatarError {param: 'avatar', message: 'Upload error'}
+  * @apiError {Object} StreetNumberRequired {param: 'streetNumber', message: 'Valid streetNumber is required'}
+  * @apiError {Object} RouteRequired {param: 'route', message: 'Valid route is required'}
+  * @apiError {Object} CityRequired {param: 'city', message: 'Valid city is required'}
+  * @apiError {Object} ZipRequired {param: 'zip', message: 'Valid zip is required'}
+  * @apiError {Object} StateRequired {param: 'state', message: 'Valid state is required'}
+  * @apiError {Object} FullAddressRequired {param: 'fullAddress', message: 'Valid fullAddress is required'}
+  * @apiError {Object} GooglePlaceIdError {param: 'placeId', message: 'Google place error'}
+  * @apiError {Object} UserNotFound {param : 'email', message : 'User not found'}
+  * @apiUse accessTokenError
+  */
+
+router.post('/answerQuestions', async (req) => {
+  await middlewareWrapper.wrape(req, null, async () => {
+    const regData = await userValidate.registerAnswers(req.request.body, req.request.user);
+    return await userAction.registerAnswers(regData, req.request.user);
+  });
+});
 
   /**
 
@@ -57,9 +128,9 @@ router.all('/*', bearerMiddleware);
    * @apiUse accessTokenError
    */
 
-router.put('/update', async (req,next) => {
+router.put('/update', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    let reqData = await userValidate.update(req.request.body, req.request.user);
+    const reqData = await userValidate.update(req.request.body, req.request.user);
     return userAction.update(reqData);
-  })
+  });
 });
