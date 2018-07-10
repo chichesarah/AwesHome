@@ -6,16 +6,18 @@ import validator  from "../component/validator";
 import q  from 'q';
 import * as _ from 'lodash';
 
-let userFreeData = [
-    "createdAt",
-    "updatedAt",
-    "isDeleted",
-    "roles",
-    "_id",
-    "email",
-    "firstName",
-    "lastName",
-    "identities"
+const userFreeData = [
+  'createdAt',
+  'updatedAt',
+  'isDeleted',
+  'roles',
+  '_id',
+  'email',
+  'firstName',
+  'lastName',
+  'identities',
+  'isRegisterAnswers',
+  'householdId',
 ];
 
 class AccessValidate {
