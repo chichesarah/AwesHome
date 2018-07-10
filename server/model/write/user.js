@@ -1,5 +1,6 @@
 import dbList from './../../db';
 import crypto from 'crypto';
+import mongoose from 'mongoose';
 import * as _ from 'lodash';
 import token from '../../component/token';
 
@@ -51,5 +52,29 @@ userWrite.findByEmail = async email =>
   userWrite.findRow({
     query: {
       email,
+    },
+  });
+
+userWrite.getByHouseholdId = (householdId, userId) =>
+  userWrite.findRows({
+    query: {
+      householdId,
+      isDeleted: false,
+      _id: {
+        $ne: userId,
+      },
+    },
+  });
+
+userWrite.checkMembers = (member, householdId) =>
+  userWrite.findRows({
+    query: {
+      _id: {
+        $in: member.map(item => mongoose.Types.ObjectId(item)),
+      },
+      householdId: {
+        $eq: householdId,
+      },
+      isDeleted: false,
     },
   });

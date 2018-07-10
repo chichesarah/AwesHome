@@ -134,3 +134,7 @@ router.put('/update', async (req, next) => {
     return userAction.update(reqData);
   });
 });
+
+router.get('/members', async (req, next) => {
+  await middlewareWrapper.wrape(req, next, async () => userAction.getMembers(req.request.user._id));
+});
