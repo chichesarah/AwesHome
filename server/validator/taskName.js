@@ -1,5 +1,4 @@
 import taskWrite from '../model/write/taskName';
-
 import validator from '../component/validator';
 
 class TaskNameValidate {

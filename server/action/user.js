@@ -66,6 +66,20 @@ class UserAction {
 
     return _.pick(user, userFreeData);
   }
+
+  async getMembers(userId) {
+    const currentUser = await userWrite.findById({ id: userId });
+
+    if (!currentUser) {
+      throw ([{ param: 'user', message: 'User is not defined' }]);
+    }
+
+    if (!currentUser.householdId) {
+      throw ([{ param: 'user', message: 'You are not household member' }]);
+    }
+
+    return currentUser.getByHouseholdId(currentUser.householdId, currentUser.id);
+  }
 }
 
 

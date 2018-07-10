@@ -57,9 +57,13 @@ router.all('/*', bearerMiddleware);
    * @apiUse accessTokenError
    */
 
-router.put('/update', async (req,next) => {
+router.put('/update', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    let reqData = await userValidate.update(req.request.body, req.request.user);
+    const reqData = await userValidate.update(req.request.body, req.request.user);
     return userAction.update(reqData);
-  })
+  });
+});
+
+router.get('/members', async (req, next) => {
+  await middlewareWrapper.wrape(req, next, async () => userAction.getMembers(req.request.user._id));
 });
