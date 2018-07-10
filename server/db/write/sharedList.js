@@ -14,6 +14,8 @@ export default new mongoose.Schema(
         memberId: { type: 'ObjectId', required: true },
         name: { type: String, required: true },
         status: { type: Boolean, default: false },
-      }],
-      ownerId: { type: 'ObjectId', required: true },
-    }));
+      },
+    ],
+    ownerId: { type: 'ObjectId', required: true },
+  }),
+);
