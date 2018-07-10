@@ -3,9 +3,8 @@ var hostUrl = process.env.KOA_BASE_HOST_URL || 'http://localhost:3000/';
 module.exports  =  {
 	hostUrl: hostUrl,
   mongoConnectionStrings : {
-    write: 'mongodb://localhost:27017/koa-base-write',
-    read: 'mongodb://localhost:27017/koa-base-read',
-    // static: 'mongodb://admin:incode2015@localhost:27017/koa-base-static'
+    write: 'mongodb://localhost:27017/awesomeHome',
+    // read: 'mongodb://localhost:27017/awesomeHome',
   },
   facebook: {
     clientID: '1679771432332193',

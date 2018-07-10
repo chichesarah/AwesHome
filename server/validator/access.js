@@ -47,32 +47,31 @@ class AccessValidate {
     return _.pick(user,userFreeData);
   }
 
-  async register (body) {
-
-    let errorList = validator.check(body, {
+  async register(body) {
+    const errorList = validator.check(body, {
       email: {
-        isEmail:  {
-          message: "Valid email is required"
-        }
+        isEmail: {
+          message: 'Valid email is required',
+        },
       },
-      password : {
+      password: {
         isLength: {
-          options:{
+          options: {
             min: 5,
             max: 20,
           },
-          message: "Password must be between 5-20 characters long"
+          message: 'Password must be between 5-20 characters long',
         },
       },
       firstName: {
         notEmpty: {
-          message: "First Name is required"
-        }
+          message: 'First Name is required',
+        },
       },
       lastName: {
         notEmpty: {
-          message: "Last Name is required"
-        }
+          message: 'Last Name is required',
+        },
       },
     });
 
@@ -81,83 +80,83 @@ class AccessValidate {
       throw (errorList);
     }
 
-    let user = await userWrite.findRow({
+    const user = await userWrite.findRow({
       query: {
-        email : body.email,
-        isDeleted: false
-      }
+        email: body.email,
+        isDeleted: false,
+      },
     });
 
-    if (user && user.email ==  body.email) {
-      throw([{param : 'email', message : 'There is an existing user connected to this email'}]);
+    if (user && user.email === body.email) {
+      throw ([{ param: 'email', message: 'There is an existing user connected to this email' }]);
     }
 
     return _.pick(body, ['email', 'password', 'firstName', 'lastName']);
   }
 
-  async login (body) {
-    let errorList = validator.check(body, {
+  async login(body) {
+    const errorList = validator.check(body, {
       email: {
-        isEmail:  {
-          message: "Valid email is required"
-        }
+        isEmail: {
+          message: 'Valid email is required',
+        },
       },
       password: {
         notEmpty: {
-          message: "Valid password is required"
-        }
-      }
+          message: 'Valid password is required',
+        },
+      },
     });
 
     if (errorList.length) {
       throw (errorList);
     }
 
-    let user = await userWrite.findRow({
+    const user = await userWrite.findRow({
       query: {
-        email : body.email,
-        isDeleted: false
-      }
+        email: body.email,
+        isDeleted: false,
+      },
     });
 
     if (!user) {
-      throw([{param : 'email', message : 'User not found'}]);
+      throw ([{ param: 'email', message: 'User not found' }]);
     }
 
-    if (userWrite.saltPassword(user.salt,body.password) !== user.password) {
-      throw([{param : 'password', message : 'User password is not correct'}]);
+    if (userWrite.saltPassword(user.salt, body.password) !== user.password) {
+      throw ([{ param: 'password', message: 'User password is not correct' }]);
     }
 
-    return _.pick(user,userFreeData);
+    return _.pick(user, userFreeData);
   }
 
-  async refreshToken (body) {
-    let errorList = validator.check(body, {
+  async refreshToken(body) {
+    const errorList = validator.check(body, {
       refreshToken: {
         notEmpty: {
-          message: "Valid refresh token is required"
-        }
-      }
+          message: 'Valid refresh token is required',
+        },
+      },
     });
 
     if (errorList.length) {
       throw (errorList);
     }
 
-    let token = await tokenWrite.findRow({
+    const token = await tokenWrite.findRow({
       query: {
-        token : body.refreshToken,
+        token: body.refreshToken,
         expire: {
-          $gt: new Date()
-        }
-      }
+          $gt: new Date(),
+        },
+      },
     });
 
     if (!token) {
-      throw([{param : 'refreshToken', message : 'User not found'}]);
+      throw ([{ param: 'refreshToken', message: 'User not found' }]);
     }
 
-    return _.pick(token,["_id", "token", "userId", "expire", "updatedAt", "createdAt"]);
+    return _.pick(token, ['_id', 'token', 'userId', 'expire', 'updatedAt', 'createdAt']);
   }
 
   async changePassword (body,user) {

@@ -7,8 +7,7 @@ export default new mongoose.Schema(
     _.cloneDeep(standardField),
     {
       email: { type: String, required: true, trim: true, unique: true },
-      household: { type: 'ObjectId', default: null },
-      points: { type: Number, default: 0 },
+      householdId: { type: 'ObjectId', default: null },
 
       avatar: { type: String },
       avatarId: { type: String, default: null },
