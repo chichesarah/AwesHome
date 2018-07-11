@@ -78,3 +78,16 @@ userWrite.checkMembers = (member, householdId) =>
       isDeleted: false,
     },
   });
+
+userWrite.checkMemberId = (memberId, householdId) =>
+  userWrite.findRow({
+    query: {
+      _id: {
+        $in: memberId,
+      },
+      householdId: {
+        $eq: householdId,
+      },
+      isDeleted: false,
+    },
+  });
