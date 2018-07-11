@@ -153,10 +153,6 @@ class UserValidate {
       },
     });
 
-    if (!userObj) {
-      throw ([{ param: 'email', message: 'User not found' }]);
-    }
-
     if (!_.isUndefined(body.fields.facebookId)) {
       userObj.identities.facebookId = body.fields.facebookId;
     }
@@ -166,6 +162,25 @@ class UserValidate {
     }
 
     return _.pick(userObj, userFreeData);
+  }
+
+  async checkForHousehold(userId) {
+    const userObj = await userWrite.findRow({
+      query: {
+        _id: userId,
+        isDeleted: false,
+      },
+    });
+
+    if (!userObj) {
+      throw ([{ param: 'email', message: 'User not found' }]);
+    }
+
+    if (!userObj.householdId) {
+      throw ([{ param: 'userId', message: 'User do not have household' }]);
+    }
+
+    return userObj;
   }
 }
 
