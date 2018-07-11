@@ -1,7 +1,7 @@
-import dbList from './../../db';
 import crypto from 'crypto';
 import mongoose from 'mongoose';
 import * as _ from 'lodash';
+import dbList from './../../db';
 import token from '../../component/token';
 
 const userWrite = dbList.write('user');

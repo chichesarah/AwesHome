@@ -162,9 +162,9 @@ let webAuthCallback = async (req, next, soc, url) => {
     req.redirect('/#' + soc)
   }
 
-}
+};
 
-  /**
+/**
 
    * @apiName facebookUserWebRegCallback
    * @api {GET} /auth/facebookUserWeb/callback Web registration callback for user
@@ -194,11 +194,11 @@ let webAuthCallback = async (req, next, soc, url) => {
 
    */
 
-routerSoc.get('/facebookUserWeb/callback', async(req, next) => {
-  await webRegCallback(req, next, ['user'],'facebook', config.facebook.callbackUserURL);
+routerSoc.get('/facebookUserWeb/callback', async (req, next) => {
+  await webRegCallback(req, next, ['user'], 'facebook', config.facebook.callbackUserURL);
 });
 
-  /**
+/**
 
    * @apiName facebookWebAuthCallback
    * @api {GET} /auth/facebookWeb/callback Web login callback
@@ -229,7 +229,7 @@ routerSoc.get('/facebookUserWeb/callback', async(req, next) => {
 
    */
 
-routerSoc.get('/facebookWeb/callback', async(req, next) => {
+routerSoc.get('/facebookWeb/callback', async (req, next) => {
   await webAuthCallback(req, next, 'facebook', config.facebook.callbackURL);
 });
 
@@ -294,11 +294,11 @@ export const router = koaRouter({
 router.post('/register', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const regData = await accessValidate.register(req.request.body);
-    return await accessAction.register(regData);
+    return accessAction.register(regData);
   });
 });
 
-  /**
+/**
 
    * @apiName forgotPassword
    * @api {POST} /api/v1/access/forgot Forgot password
@@ -335,12 +335,12 @@ router.post('/register', async (req, next) => {
 router.post('/forgot', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const regData = await accessValidate.forgot(req.request.body);
-    return await accessAction.forgot(regData);
+    return accessAction.forgot(regData);
   });
 });
 
 
-  /**
+/**
 
    * @apiName LoginUser
    * @api {POST} /api/v1/access/login Login
@@ -394,7 +394,7 @@ router.post('/forgot', async (req, next) => {
 router.post('/login', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const regData = await accessValidate.login(req.request.body);
-    return await accessAction.login(regData);
+    return accessAction.login(regData);
   });
 });
 
@@ -450,7 +450,7 @@ router.post('/login', async (req, next) => {
 router.post('/refreshToken', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const regData = await accessValidate.refreshToken(req.request.body);
-    return await accessAction.refreshToken(regData);
+    return accessAction.refreshToken(regData);
   });
 });
 
@@ -460,7 +460,7 @@ export let router2 = koaRouter({
 
 router2.all('/*', bearerMiddleware);
 
-  /**
+/**
 
    * @apiName loginConfirm
    * @api {GET} /api/v1/authAccess/loginConfirm Check access token
@@ -471,8 +471,6 @@ router2.all('/*', bearerMiddleware);
 
    * @apiHeader {String} Content-Type=application/json Content-Type
    * @apiHeader {String} Authorization User bearer access token
-
-
 
    * @apiExample {curl} Example usage:
    *     curl 'http://localhost:3000/api/v1/authAccess/loginConfirm'
@@ -493,12 +491,10 @@ router2.all('/*', bearerMiddleware);
 
 
 router2.get('/loginConfirm', async (req, next) => {
-  await middlewareWrapper.wrape(req, null, async () => {
-    return await accessAction.loginConfirm(req.request.user);
-  })
+  await middlewareWrapper.wrape(req, null, async () => accessAction.loginConfirm(req.request.user));
 });
 
-  /**
+/**
 
    * @apiName changePassword
    * @api {POST} /api/v1/authAccess/changePassword Change user password
@@ -537,9 +533,9 @@ router2.get('/loginConfirm', async (req, next) => {
 
    */
 
-router2.post('/changePassword', async (req,next) => {
+router2.post('/changePassword', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    let password = await accessValidate.changePassword(req.request.body, req.request.user);
-    return await accessAction.changePassword(password, req.request.user);
-  })
+    const password = await accessValidate.changePassword(req.request.body, req.request.user);
+    return accessAction.changePassword(password, req.request.user);
+  });
 });

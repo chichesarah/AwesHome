@@ -46,7 +46,7 @@ class AccessValidate {
       throw([{param : 'email', message : 'User not found'}]);
     }
 
-    return _.pick(user,userFreeData);
+    return _.pick(user, userFreeData);
   }
 
   async register(body) {
