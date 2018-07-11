@@ -21,6 +21,31 @@ class SharedListModel {
       },
     });
   }
+
+  findById(id) {
+    return sharedListWrite.findRow({
+      query: {
+        _id: id,
+      },
+    });
+  }
+
+  async addItem(item) {
+    const sharedList = await sharedListWrite.findRow({
+      query: {
+        _id: item.sharedListId,
+        isDeleted: false,
+      },
+    });
+
+    sharedList.item.push(item);
+    return await sharedListWrite.updateRow({
+      query: {
+        _id: item.sharedListId,
+      },
+      data: sharedList,
+    });
+  }
 }
 
 export default new SharedListModel();

@@ -67,3 +67,11 @@ router.post('/create', async (req, next) => {
     return sharedListAction.create(sharedList.name, req.request.user._id, sharedList.member);
   });
 });
+
+router.put('/addItem', async (req, next) => {
+  await middlewareWrapper.wrape(req, next, async () => {
+    const sharedList = await sharedListValidate.addItem(req.request.body, req.request.user._id);
+
+    return sharedListAction.addItem(sharedList);
+  });
+});
