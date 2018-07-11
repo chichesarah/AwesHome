@@ -1,8 +1,9 @@
 import taskWrite from '../model/write/taskName';
 import validator from '../component/validator';
+import { userValidate } from './user';
 
 class TaskNameValidate {
-  async create(body) {
+  async create(body, userId) {
     const validateObj = {
       name: {
         notEmpty: {
@@ -16,6 +17,8 @@ class TaskNameValidate {
     if (errorList.length) {
       throw errorList;
     }
+
+    await userValidate.checkForHousehold(userId);
 
     const taskNameObj = await taskWrite.findByName(body.name);
 
