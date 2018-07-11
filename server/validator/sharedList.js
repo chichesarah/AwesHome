@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import sharedListWrite from '../model/write/sharedList';
 import userWrite from '../model/write/user';
 import validator from '../component/validator';
@@ -43,6 +44,57 @@ class SharedListValidate {
     }
 
     body.member.push(userId);
+
+    return body;
+  }
+
+  async addItem(body, userId) {
+    const validateObj = {
+      name: {
+        notEmpty: {
+          message: 'Name should not be empty.',
+        },
+      },
+      sharedListId: {
+        isMongoId: {
+          message: 'sharedListId is incorect',
+        },
+      },
+      memberId: {
+        isMongoId: {
+          message: 'memberId is incorect',
+        },
+      },
+    };
+
+    const errorList = validator.check(body, validateObj);
+
+    if (errorList.length) {
+      throw errorList;
+    }
+
+    const shareListObj = await sharedListWrite.findById(body.sharedListId);
+
+    if (!shareListObj) {
+      throw ([{ param: 'sharedList', message: 'Shared list not found' }]);
+    }
+    const itemIndex = _.findIndex(shareListObj.item, i => i.name === body.name);
+
+    if (~itemIndex) {
+      throw ([{ param: 'name', message: 'Name already exists' }]);
+    }
+
+    const userIndex = _.findIndex(shareListObj.member, i => i.toString() === userId);
+
+    if (!~userIndex) {
+      throw ([{ param: 'userId', message: 'User is not a member of shareList' }]);
+    }
+
+    const memberIndex = _.findIndex(shareListObj.member, i => i.toString() === body.memberId);
+
+    if (!~memberIndex) {
+      throw ([{ param: 'memberId', message: 'User is not a member of shareList' }]);
+    }
 
     return body;
   }
