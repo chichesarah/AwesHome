@@ -52,7 +52,7 @@ router.get('/all', async (req, next) => {
    * @apiSuccess  {Number} __v Number
 
    * @apiName CreateNewTaskName
-   * @api {POST} /api/v1/taskName Create a new task name
+   * @api {POST} /api/v1/taskName/create Create a new task name
 
    * @apiVersion 0.0.1
 
@@ -64,7 +64,7 @@ router.get('/all', async (req, next) => {
    * @apiParam  {String} name Name
 
    * @apiExample {curl} Example usage:
-   *     curl 'http://localhost:3000/api/v1/taskName'
+   *     curl 'http://localhost:3000/api/v1/taskName/create'
    *      -H 'Content-Type: application/json'
    *      -H 'Authorization: Bearer Bn8sMqf1we82ZGhADnv/CpMwR+nvuv0Av4FiqefHGbpIWbdWn7sJM8J1HTjV9KXL/A//qWYKq4aCFOuc8DUXna5raYaArruIBeRKFRM+bLQ0IXYbUwMBhw=='
    *      -X POST
@@ -81,9 +81,9 @@ router.get('/all', async (req, next) => {
    * @apiUse accessTokenError
 */
 
-router.post('/', async (req, next) => {
+router.post('/create', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    const name = await taskNameValidate.create(req.request.body);
+    const name = await taskNameValidate.create(req.request.body, req.request.user._id);
 
     return taskNameAction.create(name);
   });

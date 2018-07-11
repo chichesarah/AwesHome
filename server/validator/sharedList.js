@@ -1,6 +1,7 @@
 import sharedListWrite from '../model/write/sharedList';
 import userWrite from '../model/write/user';
 import validator from '../component/validator';
+import { userValidate } from './user';
 
 class SharedListValidate {
   async create(body, userId) {
@@ -23,16 +24,7 @@ class SharedListValidate {
       throw errorList;
     }
 
-    const userObj = await userWrite.findRow({
-      query: {
-        _id: userId,
-        isDeleted: false,
-      },
-    });
-
-    if (!userObj.householdId) {
-      throw ([{ param: 'userId', message: 'User do not have household' }]);
-    }
+    const userObj = await userValidate.checkForHousehold(userId);
 
     const members = await userWrite.checkMembers(body.member, userObj.householdId);
 
