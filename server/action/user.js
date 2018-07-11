@@ -80,7 +80,7 @@ class UserAction {
         city: data.googleAddress.city.short_name,
         zip: data.googleAddress.zip.short_name,
         state: data.googleAddress.state.short_name,
-      
+
         fullAddress: data.googleAddress.fullAddress,
         placeId: data.fields.placeId,
       };
@@ -166,7 +166,7 @@ class UserAction {
       throw ([{ param: 'user', message: 'You are not household member' }]);
     }
 
-    return currentUser.getByHouseholdId(currentUser.householdId, currentUser.id);
+    return userWrite.getByHouseholdId(currentUser.householdId, currentUser._id);
   }
 }
 
