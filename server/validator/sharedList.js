@@ -73,10 +73,6 @@ class SharedListValidate {
       throw errorList;
     }
 
-    if (!body.memberId) {
-      throw ([{ param: 'memberId', message: 'Member not found' }]);
-    }
-
     const shareListObj = await sharedListWrite.findById(body.sharedListId);
 
     if (!shareListObj) {
