@@ -69,10 +69,10 @@ let createCollection = (name, dbType, schema) => {
 let models = {
   write: {
     sharedList: createCollection('sharedList', 'write', sharedListWriteSchema),
-    user:     createCollection('user', 'write', userWriteSchema),
-    token:     createCollection('token', 'write', tokenWriteSchema),
+    user: createCollection('user', 'write', userWriteSchema),
+    token: createCollection('token', 'write', tokenWriteSchema),
     household: createCollection('household', 'write', householdWriteSchema),
-    taskName:  createCollection('taskName','write',taskNameWriteSchema),
+    taskName: createCollection('taskName', 'write', taskNameWriteSchema),
   },
   read: {
   },
