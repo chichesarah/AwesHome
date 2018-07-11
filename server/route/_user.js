@@ -15,7 +15,7 @@ router.all('/*', bearerMiddleware);
 /**
 
   * @apiName answerQuestions
-  * @api {PUT} /api/v1/user/answerQuestions Answer to the registration questions
+  * @api {POST} /api/v1/user/answerQuestions Answer to the registration questions
 
   * @apiVersion 0.0.1
 
@@ -79,7 +79,7 @@ router.all('/*', bearerMiddleware);
 router.post('/answerQuestions', async (req) => {
   await middlewareWrapper.wrape(req, null, async () => {
     const regData = await userValidate.registerAnswers(req.request.body, req.request.user);
-    return await userAction.registerAnswers(regData, req.request.user);
+    return userAction.registerAnswers(regData, req.request.user);
   });
 });
 

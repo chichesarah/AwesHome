@@ -10,6 +10,11 @@ class SharedListValidate {
           message: 'Name should not be empty.',
         },
       },
+      member: {
+        notEmpty: {
+          message: 'Member should not be empty.',
+        },
+      },
     };
 
     const errorList = validator.check(body, validateObj);
@@ -29,6 +34,12 @@ class SharedListValidate {
 
     if (members.length !== body.member.length) {
       throw ([{ param: 'member', message: 'Not all users have been found in your household' }]);
+    }
+
+    const sharedListName = await sharedListWrite.findByName(body.name);
+
+    if (sharedListName) {
+      throw ([{ param: 'name', message: 'This name is already exists' }]);
     }
 
     body.member.push(userId);
