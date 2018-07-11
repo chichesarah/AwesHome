@@ -15,7 +15,7 @@ router.all('/*', bearerMiddleware);
 /**
 
   * @apiName answerQuestions
-  * @api {PUT} /api/v1/user/answerQuestions Answer to the registration questions
+  * @api {POST} /api/v1/user/answerQuestions Answer to the registration questions
 
   * @apiVersion 0.0.1
 
@@ -79,11 +79,11 @@ router.all('/*', bearerMiddleware);
 router.post('/answerQuestions', async (req) => {
   await middlewareWrapper.wrape(req, null, async () => {
     const regData = await userValidate.registerAnswers(req.request.body, req.request.user);
-    return await userAction.registerAnswers(regData, req.request.user);
+    return userAction.registerAnswers(regData, req.request.user);
   });
 });
 
-  /**
+/**
 
    * @apiName UpdateUser
    * @api {PUT} /api/v1/user/update User update
@@ -109,7 +109,7 @@ router.post('/answerQuestions', async (req) => {
    *      -H "Content-Type: application/json"
    *      -X PUT
    *      -d  '{"email":"vasya@ya.com","firstName":"Vasya","lastName":"Pupkin"}'
-          -F 'pictureList=@\"myfile.jpg\"'
+   *      -F 'pictureList=@\"myfile.jpg\"'
 
    * @apiSuccessExample {json} Success-Response:
    {"createdAt":"2017-05-17T08:41:41.510Z","updatedAt":"2017-05-19T11:39:16.970Z","isDeleted":false,"roles":["user"],"_id":"591c0cc5407eba1706aeb43e","email":"test2@mail.com","firstName":"title1","lastName":"testAdmin",identities":{"facebookId":null},"avatar":"http://res.cloudinary.com/diu5kwhe7/image/upload/v1495193958/cgato7gb0athnkai15pb.jpg"}
@@ -134,6 +134,34 @@ router.put('/update', async (req, next) => {
     return userAction.update(reqData);
   });
 });
+
+/**
+
+  * @apiName GetAllMembers
+  * @api {GET} /api/v1/user/members Get All Members
+  * @apiVersion 0.0.1
+
+  * @apiGroup user
+
+  * @apiHeader {String} Content-Type=multipart/form-data Content-Type
+  * @apiHeader {String} Authorization User bearer access token
+
+  * @apiExample {curl} Example usage:
+  *   curl -X GET \
+  *   http://localhost:3000/api/v1/user/members \
+  *   -H 'Authorization: Bearer eBvM9gTFmDh/YtaWxUMrIPzWU+1kxNLXc+ErlQCqF6rzyYJdc/lySe2JCMQQs15E6Eyb6ARKrJeBQHYWI7g6cDO+nkMGPO46RFWmLAZ1pbGLQalOFYqcMKXy2dg03w=='
+
+  * @apiSuccessExample {json} Success-Response:
+    [{"_id": "5b4473ae22bd3b6f0861bc4e","identities": {"facebookId": null},"isDeleted": false,"householdId": "5b44b9626b7f1a82c4ce1473","avatarId": null,"registerAnswers": [],"roles": ["user"],"birthday": null,"phone": null,"email": "qwerty1@gmail.com","password": "rwngu4GpfiO0JmtzRuu7ZHXvrb0gHHTR01jOkDU080Uvkcj7vo+P4MDUNMjGV4cn/LKSvqad41Orb5XWyIh8cA==","firstName": "gg","lastName": "ff","salt": "7jhQiCGwwh8cqMb0wGb7HA==","createdAt": "2018-07-10T08:51:58.164Z","updatedAt": "2018-07-11T05:01:28.510Z","__v": 0,"isRegisterAnswers": true,"roommatesCount": 2}]
+
+  * @apiUse userObject
+
+  * @apiErrorExample {json} Error-Response:
+    [{ param : 'accessToken', message : 'Access token is incorrect'}]
+
+  * @apiError {Object} AccessTokenIncorrect { param : 'accessToken', message : 'Access token is incorrect'}
+  * @apiUse accessTokenError
+*/
 
 router.get('/members', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => userAction.getMembers(req.request.user._id));

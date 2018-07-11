@@ -12,6 +12,15 @@ class SharedListModel {
       },
     });
   }
+
+  findByName(name) {
+    return sharedListWrite.findRow({
+      query: {
+        name,
+        isDeleted: false,
+      },
+    });
+  }
 }
 
 export default new SharedListModel();
