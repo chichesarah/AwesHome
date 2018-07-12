@@ -138,7 +138,7 @@ router.put('/update', async (req, next) => {
 /**
 
   * @apiName GetAllMembers
-  * @api {GET} /api/v1/user/members Get All Members
+  * @api {GET} /api/v1/user/membersInHousehold Get All Members
   * @apiVersion 0.0.1
 
   * @apiGroup user
@@ -148,7 +148,7 @@ router.put('/update', async (req, next) => {
 
   * @apiExample {curl} Example usage:
   *   curl -X GET \
-  *   http://localhost:3000/api/v1/user/members \
+  *   http://localhost:3000/api/v1/user/membersInHousehold \
   *   -H 'Authorization: Bearer eBvM9gTFmDh/YtaWxUMrIPzWU+1kxNLXc+ErlQCqF6rzyYJdc/lySe2JCMQQs15E6Eyb6ARKrJeBQHYWI7g6cDO+nkMGPO46RFWmLAZ1pbGLQalOFYqcMKXy2dg03w=='
 
   * @apiSuccessExample {json} Success-Response:
@@ -163,6 +163,6 @@ router.put('/update', async (req, next) => {
   * @apiUse accessTokenError
 */
 
-router.get('/members', async (req, next) => {
+router.get('/membersInHousehold', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => userAction.getMembers(req.request.user._id));
 });

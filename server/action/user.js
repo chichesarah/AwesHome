@@ -166,7 +166,7 @@ class UserAction {
       throw ([{ param: 'user', message: 'You are not household member' }]);
     }
 
-    return userWrite.getByHouseholdId(currentUser.householdId, currentUser._id);
+    return userWrite.getByHouseholdId(currentUser.householdId);
   }
 }
 
