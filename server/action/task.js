@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import taskWrite from '../model/write/task';
 import userWrite from '../model/write/user';
+import eventBus from '../component/eventBus';
 
 const taskFreeData = [
   'createdAt',
@@ -74,6 +75,8 @@ class TaskAction {
 
     const task = await taskWrite.newTask(taskData);
 
+    eventBus.emit('addTask', task);
+
     return _.pick(task, taskFreeData);
   }
 
@@ -102,6 +105,8 @@ class TaskAction {
 
     const task = await taskWrite.deleteTask(_id, endDate);
 
+    eventBus.emit('deleteTask', task);
+
     return _.pick(task, taskFreeData);
   }
 
@@ -116,6 +121,8 @@ class TaskAction {
     }
 
     const task = await taskWrite.completeTask(_id, taskData);
+
+    eventBus.emit('completeTask', task);
 
     return _.pick(task, taskFreeData);
   }
