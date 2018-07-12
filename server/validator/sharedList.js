@@ -31,6 +31,8 @@ class SharedListValidate {
       throw ([{ param: 'userId', message: 'User do not have household' }]);
     }
 
+    body.householdId = userObj.householdId;
+
     const members = await userWrite.checkMembers(body.member, userObj.householdId);
 
     if (members.length !== body.member.length) {

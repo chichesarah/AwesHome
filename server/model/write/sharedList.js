@@ -4,12 +4,13 @@ import dbList from './../../db';
 const sharedListWrite = dbList.write('sharedList');
 
 class SharedListModel {
-  create(name, ownerId, member) {
+  create(name, ownerId, member, householdId) {
     return sharedListWrite.insertRow({
       data: {
         name,
         ownerId,
         member,
+        householdId,
       },
     });
   }
