@@ -1,40 +1,16 @@
-// import * as _ from 'lodash';
-// import extraTaskInfoWrite  from "./model/write/extraTaskInfo";
+import schedule from 'node-schedule';
+import { taskAction } from './action/task';
 
-// let firstExtraTaskInfo = async () => {
-//   let list = [
-//     'Пунктуальний',
-//     'Свій інстремент',
-//     'Особливі прикмети',
-//     'Досвід роботи',
-//     'Вища освіта'
-//   ];
-//   try {
-//     for (let info of list) {
-//       let res = await extraTaskInfoWrite.findRow({
-//         query:{
-//           title: info
-//         }
-//       });
-//       if (!res) {
-//         await extraTaskInfoWrite.insertRow({
-//           data: {
-//             title: info
-//           }
-//         })
-//       }
-//     }
-//   }
-//   catch (err) {
-//     throw(err);
-//     return;
-//   }
-// }
+const taskSchedule = () => {
+  schedule.scheduleJob('0 0 0 * *', () => taskAction.autocompleteTask());
+  schedule.scheduleJob('0 0 6 * *', () => taskAction.autocompleteTask());
+  schedule.scheduleJob('0 0 12 * *', () => taskAction.autocompleteTask());
+  schedule.scheduleJob('0 0 18 * *', () => taskAction.autocompleteTask());
+};
 
 export default async () => {
   try {
-    // await firstExtraTaskInfo();
-    // await firstTaskCategory();
+    taskSchedule();
   } catch (err) {
     console.log(err);
   }
