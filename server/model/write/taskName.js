@@ -23,6 +23,15 @@ class TaskNameModel {
       },
     });
   }
+
+  findById(_id) {
+    return taskNameWrite.findRow({
+      query: {
+        _id,
+        isDeleted: false,
+      },
+    });
+  }
 }
 
 export default new TaskNameModel();
