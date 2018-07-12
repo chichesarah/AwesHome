@@ -29,4 +29,4 @@ export default new mongoose.Schema(
       birthday: { type: Date, default: null },
       phone: { type: String, default: null },
     }),
-  );
+);

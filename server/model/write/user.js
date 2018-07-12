@@ -55,14 +55,11 @@ userWrite.findByEmail = async email =>
     },
   });
 
-userWrite.getByHouseholdId = (householdId, userId) =>
+userWrite.getByHouseholdId = householdId =>
   userWrite.findRows({
     query: {
       householdId,
       isDeleted: false,
-      _id: {
-        $ne: userId,
-      },
     },
   });
 
