@@ -156,7 +156,7 @@ class UserAction {
   }
 
   async getMembers(userId) {
-    const currentUser = await userWrite.findById({ id: userId });
+    const currentUser = await userWrite.findById({ _id: userId });
 
     if (!currentUser) {
       throw ([{ param: 'user', message: 'User is not defined' }]);
