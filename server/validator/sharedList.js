@@ -78,6 +78,7 @@ class SharedListValidate {
     if (!shareListObj) {
       throw ([{ param: 'sharedList', message: 'Shared list not found' }]);
     }
+
     const itemIndex = _.findIndex(shareListObj.item, i => i.name === body.name);
 
     if (~itemIndex) {
@@ -94,6 +95,49 @@ class SharedListValidate {
 
     if (!~memberIndex) {
       throw ([{ param: 'memberId', message: 'User is not a member of shareList' }]);
+    }
+
+    return body;
+  }
+
+  async checkItem(body, userId) {
+    const validateObj = {
+      sharedListId: {
+        isMongoId: {
+          message: 'sharedListId is incorect',
+        },
+      },
+      itemId: {
+        isMongoId: {
+          message: 'itemId is incorect',
+        },
+      },
+    };
+
+    const errorList = validator.check(body, validateObj);
+
+    if (errorList.length) {
+      throw errorList;
+    }
+
+    const shareListObj = await sharedListWrite.findById(body.sharedListId);
+
+    if (!shareListObj) {
+      throw ([{ param: 'sharedList', message: 'Shared list not found' }]);
+    }
+
+    const itemIndex = _.findIndex(shareListObj.item, i => i._id.toString() === body.itemId);
+
+    if (!~itemIndex) {
+      throw ([{ param: 'itemId', message: 'Item im shared list not found' }]);
+    }
+
+    if (shareListObj.item[itemIndex].memberId.toString() !== userId) {
+      throw ([{ param: 'userId', message: 'User don\'t have permission' }]);
+    }
+
+    if (shareListObj.item[itemIndex].status) {
+      throw ([{ param: 'status', message: 'Item has already checked' }]);
     }
 
     return body;
