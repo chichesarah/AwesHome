@@ -16,6 +16,7 @@ const userFreeData = [
   'firstName',
   'lastName',
   'identities',
+  'avatar',
   'isRegisterAnswers',
   'householdId',
 ];
