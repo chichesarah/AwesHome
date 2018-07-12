@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import dbList from './../../db';
 
 const sharedListWrite = dbList.write('sharedList');
@@ -39,12 +40,36 @@ class SharedListModel {
     });
 
     sharedList.item.push(item);
-    return await sharedListWrite.updateRow({
+
+    const result = await sharedListWrite.updateRow({
       query: {
         _id: item.sharedListId,
       },
       data: sharedList,
     });
+
+    return result;
+  }
+
+  async checkItem(sharedListId, itemId) {
+    const sharedList = await sharedListWrite.findRow({
+      query: {
+        _id: sharedListId,
+        isDeleted: false,
+      },
+    });
+
+    const itemObj = _.find(sharedList.item, i => i._id.toString() === itemId);
+    itemObj.status = true;
+
+    const result = await sharedListWrite.updateRow({
+      query: {
+        _id: sharedListId,
+      },
+      data: sharedList,
+    });
+
+    return result;
   }
 }
 
