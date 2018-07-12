@@ -12,6 +12,14 @@ class SharedListAction {
   checkItem({ sharedListId, itemId }) {
     return sharedListWrite.checkItem(sharedListId, itemId);
   }
+
+  deleteSharedList(sharedListId) {
+    return sharedListWrite.deleteSharedList(sharedListId);
+  }
+
+  getAllSharedList(userId) {
+    return sharedListWrite.findAllSharedList(userId);
+  }
 }
 
 export default new SharedListAction();

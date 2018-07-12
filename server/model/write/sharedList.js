@@ -71,6 +71,24 @@ class SharedListModel {
 
     return result;
   }
+
+  deleteSharedList(_id) {
+    return sharedListWrite.deleteRow({
+      query: {
+        _id,
+      },
+    });
+  }
+
+  findAllSharedList(userId) {
+    return sharedListWrite.findRows({
+      query: {
+        member: {
+          $eq: userId,
+        },
+      },
+    });
+  }
 }
 
 export default new SharedListModel();
