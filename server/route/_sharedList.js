@@ -127,3 +127,51 @@ router.put('/addItem', async (req, next) => {
     return sharedListAction.addItem(sharedList);
   });
 });
+
+/**
+
+
+   * @apiName ChangeItemStatus
+   * @api {PUT} /api/v1/sharedList/checkItem Change Item Status to true
+
+   * @apiVersion 0.0.1
+
+   * @apiGroup SharedList
+
+   * @apiHeader  {String} Content-Type=application/json Content-Type
+   * @apiHeader  {String} Authorization User bearer access token
+
+   * @apiParam  {String} sharedListId Shared list id
+   * @apiParam  {String} itemId Item id
+
+   * @apiExample {curl} Example usage:
+   *  curl -X PUT \
+   *  http://localhost:3000/api/v1/sharedList/checkItem \
+   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q==' \
+   *  -H 'Content-Type: application/json' \
+   *  -d '{
+   *  "sharedListId": "5b45afa621ec57b9f189fd00",
+   *  "itemId": "5b45dc3a32c623d06dc24fb8",
+}'
+
+   * @apiSuccessExample {json} Success-Response:
+    {"isDeleted": false,"householdId": null,"member": ["5b4471521d39a96dd14a53c6",],"_id": "5b45afa621ec57b9f189fd00","name": "first item name 2 2 2","ownerId": "5b4473ae22bd3b6f0861bc4e","createdAt": "2018-07-11T07:20:06.493Z","updatedAt": "2018-07-11T07:20:06.493Z","item": [{"status": true,"_id": "5b45dc3a32c623d06dc24fb8","name": "first item name 2 2 3","memberId": "5b4473ae22bd3b6f0861bc4e"}],"__v": 9}
+
+   * @apiErrorExample {json} Error-Response:
+    [{param:"name",message:"Name is already exists"}]
+
+   * @apiError {Object} SharedListIdRequired { param: 'sharedList', message: 'Shared list not found' }
+   * @apiError {Object} UserId { param: 'userId', message: 'User is not a member of shareList' }
+   * @apiError {Object} MemberId { param: 'memberId', message: 'User is not a member of shareList' }
+   * @apiError {Object} ItemId { param: 'itemId', message: 'Item im shared list not found' }
+   * @apiError {Object} Status { param: 'status', message: 'Item has already checked' }
+   * @apiUse accessTokenError
+*/
+
+router.put('/checkItem', async (req, next) => {
+  await middlewareWrapper.wrape(req, next, async () => {
+    const sharedList = await sharedListValidate.checkItem(req.request.body, req.request.user._id);
+
+    return sharedListAction.checkItem(sharedList);
+  });
+});

@@ -5,8 +5,12 @@ class SharedListAction {
     return sharedListWrite.create(name, ownerId, member);
   }
 
-  addItem(listId, memberId, name) {
-    return sharedListWrite.addItem(listId, memberId, name);
+  addItem(sharedListId, memberId, name) {
+    return sharedListWrite.addItem(sharedListId, memberId, name);
+  }
+
+  checkItem({ sharedListId, itemId }) {
+    return sharedListWrite.checkItem(sharedListId, itemId);
   }
 }
 
