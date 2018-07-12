@@ -10,6 +10,7 @@ import householdWriteSchema from './write/household';
 import taskWriteSchema from './write/task';
 import taskNameWriteSchema from './write/taskNameList';
 import sharedListWriteSchema from './write/sharedList';
+import feedWriteSchema from './write/feed';
 
 mongoose.Promise = global.Promise;
 
@@ -75,6 +76,7 @@ let models = {
     household: createCollection('household', 'write', householdWriteSchema),
     task: createCollection('task', 'write', taskWriteSchema),
     taskName: createCollection('taskName', 'write', taskNameWriteSchema),
+    feed: createCollection('feed', 'write', feedWriteSchema),
   },
   read: {
   },

@@ -64,7 +64,7 @@ router.post('/create', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const sharedList = await sharedListValidate.create(req.request.body, req.request.user._id);
 
-    return sharedListAction.create(sharedList.name, req.request.user._id, sharedList.member);
+    return sharedListAction.create(sharedList.name, req.request.user._id, sharedList.member, sharedList.householdId);
   });
 });
 
@@ -124,7 +124,7 @@ router.put('/addItem', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const sharedList = await sharedListValidate.addItem(req.request.body, req.request.user._id);
 
-    return sharedListAction.addItem(sharedList);
+    return sharedListAction.addItem(sharedList, req.request.user._id);
   });
 });
 
@@ -171,7 +171,7 @@ router.put('/checkItem', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const sharedList = await sharedListValidate.checkItem(req.request.body, req.request.user._id);
 
-    return sharedListAction.checkItem(sharedList);
+    return sharedListAction.checkItem(sharedList, req.request.user._id);
   });
 });
 
@@ -207,7 +207,7 @@ router.delete('/:id', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const sharedList = await sharedListValidate.deleteSharedList(req.params, req.request.user._id);
 
-    return sharedListAction.deleteSharedList(sharedList._id);
+    return sharedListAction.deleteSharedList(sharedList._id, req.request.user._id);
   });
 });
 
