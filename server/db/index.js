@@ -7,8 +7,10 @@ import * as Model from './../component/model';
 import userWriteSchema from './write/user';
 import tokenWriteSchema from './write/token';
 import householdWriteSchema from './write/household';
+import taskWriteSchema from './write/task';
 import taskNameWriteSchema from './write/taskNameList';
 import sharedListWriteSchema from './write/sharedList';
+import feedWriteSchema from './write/feed';
 
 mongoose.Promise = global.Promise;
 
@@ -72,7 +74,9 @@ let models = {
     user: createCollection('user', 'write', userWriteSchema),
     token: createCollection('token', 'write', tokenWriteSchema),
     household: createCollection('household', 'write', householdWriteSchema),
+    task: createCollection('task', 'write', taskWriteSchema),
     taskName: createCollection('taskName', 'write', taskNameWriteSchema),
+    feed: createCollection('feed', 'write', feedWriteSchema),
   },
   read: {
   },

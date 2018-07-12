@@ -48,21 +48,18 @@ userWrite.changePassword = async (id, password) => {
   });
 };
 
-userWrite.findByEmail = async email =>
+userWrite.findByEmail = email =>
   userWrite.findRow({
     query: {
       email,
     },
   });
 
-userWrite.getByHouseholdId = (householdId, userId) =>
+userWrite.getByHouseholdId = householdId =>
   userWrite.findRows({
     query: {
       householdId,
       isDeleted: false,
-      _id: {
-        $ne: userId,
-      },
     },
   });
 
@@ -75,6 +72,14 @@ userWrite.checkMembers = (member, householdId) =>
       householdId: {
         $eq: householdId,
       },
+      isDeleted: false,
+    },
+  });
+
+userWrite.findById = _id =>
+  userWrite.findRow({
+    query: {
+      _id,
       isDeleted: false,
     },
   });

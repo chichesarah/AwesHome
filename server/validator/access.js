@@ -1,10 +1,9 @@
-import userWrite  from "../model/write/user";
-import tokenWrite  from "../model/write/token";
-
-import validator  from "../component/validator";
-
-import q  from 'q';
 import * as _ from 'lodash';
+import q from 'q';
+import userWrite from '../model/write/user';
+import tokenWrite from '../model/write/token';
+
+import validator from '../component/validator';
 
 const userFreeData = [
   'createdAt',
@@ -16,34 +15,35 @@ const userFreeData = [
   'firstName',
   'lastName',
   'identities',
+  'avatar',
   'isRegisterAnswers',
   'householdId',
 ];
 
 class AccessValidate {
 
-  async forgot (body) {
-    let errorList = validator.check(body, {
+  async forgot(body) {
+    const errorList = validator.check(body, {
       email: {
-        isEmail:  {
-          message: "Valid email is required"
-        }
-      }
+        isEmail: {
+          message: 'Valid email is required',
+        },
+      },
     });
 
     if (errorList.length) {
       throw (errorList);
     }
 
-    let user = await userWrite.findRow({
+    const user = await userWrite.findRow({
       query: {
-        email : body.email,
-        isDeleted: false
-      }
+        email: body.email,
+        isDeleted: false,
+      },
     });
 
     if (!user) {
-      throw([{param : 'email', message : 'User not found'}]);
+      throw ([{ param: 'email', message: 'User not found' }]);
     }
 
     return _.pick(user, userFreeData);
@@ -161,28 +161,28 @@ class AccessValidate {
     return _.pick(token, ['_id', 'token', 'userId', 'expire', 'updatedAt', 'createdAt']);
   }
 
-  async changePassword (body,user) {
+  async changePassword(body, user) {
 
-    let errorList = validator.check(body, {
-      password : {
+    const errorList = validator.check(body, {
+      password: {
         isLength: {
-          options:{
+          options: {
             min: 5,
             max: 20,
           },
-          message: "Password must be between 5-20 characters long"
+          message: 'Password must be between 5-20 characters long',
         },
       },
 
-      oldPassword : {
+      oldPassword: {
         isLength: {
-          options:{
+          options: {
             min: 5,
             max: 20,
           },
-          message: "Old password must be between 5-20 characters long"
+          message: 'Old password must be between 5-20 characters long'
         },
-      }
+      },
     });
 
     if (errorList.length) {
@@ -191,17 +191,17 @@ class AccessValidate {
 
     user = await userWrite.findRow({
       query: {
-        _id : user._id,
-        isDeleted: false
-      }
+        _id: user._id,
+        isDeleted: false,
+      },
     });
 
     if (!user) {
-      throw([{ param : 'accessToken', message : 'User not found'}]);
+      throw ([{ param: 'accessToken', message: 'User not found' }]);
     }
 
-    if (!user.salt || !user.password || userWrite.saltPassword(user.salt,body.oldPassword) !== user.password) {
-      throw([{param : 'oldPassword', message : 'User old password is not correct'}]);
+    if (!user.salt || !user.password || userWrite.saltPassword(user.salt, body.oldPassword) !== user.password) {
+      throw ([{ param: 'oldPassword', message: 'User old password is not correct' }]);
     }
     return body.password;
   }

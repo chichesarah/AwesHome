@@ -31,6 +31,8 @@ class SharedListValidate {
       throw ([{ param: 'userId', message: 'User do not have household' }]);
     }
 
+    body.householdId = userObj.householdId;
+
     const members = await userWrite.checkMembers(body.member, userObj.householdId);
 
     if (members.length !== body.member.length) {
@@ -73,25 +75,25 @@ class SharedListValidate {
       throw errorList;
     }
 
-    const shareListObj = await sharedListWrite.findById(body.sharedListId);
+    const sharedListObj = await sharedListWrite.findById(body.sharedListId);
 
-    if (!shareListObj) {
+    if (!sharedListObj) {
       throw ([{ param: 'sharedList', message: 'Shared list not found' }]);
     }
 
-    const itemIndex = _.findIndex(shareListObj.item, i => i.name === body.name);
+    const itemIndex = _.findIndex(sharedListObj.item, i => i.name === body.name);
 
     if (~itemIndex) {
       throw ([{ param: 'name', message: 'Name already exists' }]);
     }
 
-    const userIndex = _.findIndex(shareListObj.member, i => i.toString() === userId);
+    const userIndex = _.findIndex(sharedListObj.member, i => i.toString() === userId);
 
     if (!~userIndex) {
       throw ([{ param: 'userId', message: 'User is not a member of shareList' }]);
     }
 
-    const memberIndex = _.findIndex(shareListObj.member, i => i.toString() === body.memberId);
+    const memberIndex = _.findIndex(sharedListObj.member, i => i.toString() === body.memberId);
 
     if (!~memberIndex) {
       throw ([{ param: 'memberId', message: 'User is not a member of shareList' }]);
@@ -120,27 +122,55 @@ class SharedListValidate {
       throw errorList;
     }
 
-    const shareListObj = await sharedListWrite.findById(body.sharedListId);
+    const sharedListObj = await sharedListWrite.findById(body.sharedListId);
 
-    if (!shareListObj) {
+    if (!sharedListObj) {
       throw ([{ param: 'sharedList', message: 'Shared list not found' }]);
     }
 
-    const itemIndex = _.findIndex(shareListObj.item, i => i._id.toString() === body.itemId);
+    const itemIndex = _.findIndex(sharedListObj.item, i => i._id.toString() === body.itemId);
 
     if (!~itemIndex) {
       throw ([{ param: 'itemId', message: 'Item im shared list not found' }]);
     }
 
-    if (shareListObj.item[itemIndex].memberId.toString() !== userId) {
+    if (sharedListObj.item[itemIndex].memberId.toString() !== userId) {
       throw ([{ param: 'userId', message: 'User don\'t have permission' }]);
     }
 
-    if (shareListObj.item[itemIndex].status) {
+    if (sharedListObj.item[itemIndex].status) {
       throw ([{ param: 'status', message: 'Item has already checked' }]);
     }
 
     return body;
+  }
+
+  async deleteSharedList(param, userId) {
+    const errorList = validator.check(param, {
+      id: {
+        isMongoId: {
+          message: 'sharedListId is incorect',
+        },
+      },
+    });
+
+    if (errorList.length) {
+      throw errorList;
+    }
+
+    const sharedListObj = await sharedListWrite.findById(param.id);
+
+    if (!sharedListObj) {
+      throw ([{ param: 'sharedList', message: 'Shared list not found' }]);
+    }
+
+    const userIndex = _.findIndex(sharedListObj.member, i => i.toString() === userId);
+
+    if (!~userIndex) {
+      throw ([{ param: 'userId', message: 'User is not a member of shareList' }]);
+    }
+
+    return sharedListObj;
   }
 }
 

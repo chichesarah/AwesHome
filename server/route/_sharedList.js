@@ -64,7 +64,7 @@ router.post('/create', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const sharedList = await sharedListValidate.create(req.request.body, req.request.user._id);
 
-    return sharedListAction.create(sharedList.name, req.request.user._id, sharedList.member);
+    return sharedListAction.create(sharedList.name, req.request.user._id, sharedList.member, sharedList.householdId);
   });
 });
 
@@ -124,12 +124,11 @@ router.put('/addItem', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const sharedList = await sharedListValidate.addItem(req.request.body, req.request.user._id);
 
-    return sharedListAction.addItem(sharedList);
+    return sharedListAction.addItem(sharedList, req.request.user._id);
   });
 });
 
 /**
-
 
    * @apiName ChangeItemStatus
    * @api {PUT} /api/v1/sharedList/checkItem Change Item Status to true
@@ -172,6 +171,72 @@ router.put('/checkItem', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const sharedList = await sharedListValidate.checkItem(req.request.body, req.request.user._id);
 
-    return sharedListAction.checkItem(sharedList);
+    return sharedListAction.checkItem(sharedList, req.request.user._id);
   });
+});
+
+/**
+
+   * @apiName DeleteSharedList
+   * @api {DELETE} /api/v1/sharedList/id Delete shared list
+
+   * @apiVersion 0.0.1
+
+   * @apiGroup SharedList
+
+   * @apiHeader  {String} Content-Type=application/json Content-Type
+   * @apiHeader  {String} Authorization User bearer access token
+
+   * @apiExample {curl} Example usage:
+   *  curl -X DELETE \
+   *  http://localhost:3000/api/v1/sharedList/5b45afa621ec57b9f189fd00 \
+   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q==' \
+
+   * @apiSuccessExample {json} Success-Response:
+    {"isDeleted": false,"householdId": null,"member": ["5b4471521d39a96dd14a53c6","5b4473ae22bd3b6f0861bc4e"],"_id": "5b45afa621ec57b9f189fd00","name": "first item name 2 2 2","ownerId": "5b4473ae22bd3b6f0861bc4e","createdAt": "2018-07-11T07:20:06.493Z","updatedAt": "2018-07-11T07:20:06.493Z","item": [],"__v": 14}
+
+   * @apiErrorExample {json} Error-Response:
+    [{param:"name",message:"Name is already exists"}]
+
+   * @apiError {Object} SharedListIdRequired { param: 'sharedList', message: 'Shared list not found' }
+   * @apiError {Object} UserId { param: 'userId', message: 'User is not a member of shareList' }
+   * @apiUse accessTokenError
+*/
+
+router.delete('/:id', async (req, next) => {
+  await middlewareWrapper.wrape(req, next, async () => {
+    const sharedList = await sharedListValidate.deleteSharedList(req.params, req.request.user._id);
+
+    return sharedListAction.deleteSharedList(sharedList._id, req.request.user._id);
+  });
+});
+
+/**
+
+   * @apiName GetAllSharedList
+   * @api {GET} /api/v1/sharedList/all Get all shared list
+
+   * @apiVersion 0.0.1
+
+   * @apiGroup SharedList
+
+   * @apiHeader  {String} Content-Type=application/json Content-Type
+   * @apiHeader  {String} Authorization User bearer access token
+
+   * @apiExample {curl} Example usage:
+   *  curl -X GET \
+   *  http://localhost:3000/api/v1/sharedList/all \
+   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q==' \
+
+   * @apiSuccessExample {json} Success-Response:
+      [{"_id": "5b459a25c422b4a74e72fe8d","isDeleted": false,"householdId": null,"member": ["5b4471521d39a96dd14a53c6","5b4473ae22bd3b6f0861bc4e","5b4471521d39a96dd14a53c6"],"name": "third new name","ownerId": "5b4471521d39a96dd14a53c6","createdAt": "2018-07-11T05:48:21.487Z","updatedAt": "2018-07-11T05:48:21.487Z","item": [],"__v": 0},]
+
+   * @apiErrorExample {json} Error-Response:
+    [{ param : 'accessToken', message : 'Access token is incorrect'}]
+
+   * @apiUse accessTokenError
+*/
+
+router.get('/all', async (req, next) => {
+  await middlewareWrapper.wrape(req, next, async () => sharedListAction.getAllSharedList(req.request.user._id));
 });
