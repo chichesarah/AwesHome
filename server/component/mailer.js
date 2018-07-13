@@ -5,11 +5,11 @@ import config from '../config';
 let mailgun;
 
 class mailgunBung {
-  messages () {
+  messages() {
     return this;
   }
 
-  send (obj, callback) {
+  send(obj, callback) {
     callback && callback(null, obj);
     return this;
   }
@@ -18,11 +18,10 @@ class mailgunBung {
 
 if (config.LAUNCH_TYPE === 'test') {
   mailgun = new mailgunBung();
-}
-else {
-  mailgun= new Mailgun({
+} else {
+  mailgun = new Mailgun({
     apiKey: config.mailgun.api_key,
-    domain: config.mailgun.domain
+    domain: config.mailgun.domain,
   });
 }
 
