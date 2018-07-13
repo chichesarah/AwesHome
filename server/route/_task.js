@@ -82,6 +82,7 @@ router.all('/*', bearerMiddleware);
   * @apiError {Object} TaskNameNotFound {param: 'taskNameId', message: 'Task name not found'}
   * @apiError {Object} InvalidDueDate {param: 'dueDate', message: 'Invalid due date'}
   * @apiError {Object} InvalidAssignee {param: 'assignee', message: 'Not all members from the same household'}
+  * @apiUse accessTokenError
   */
 
 router.post('/create', async (req, next) => {
@@ -147,6 +148,7 @@ router.post('/create', async (req, next) => {
   * @apiError {Object} TaskNotFound {param: 'taskId', message: 'Task not found or user permission denied'}
   * @apiError {Object} InvalidDueDate {param: 'dueDate', message: 'Invalid due date'}
   * @apiError {Object} InvalidAssignee {param: 'assignee', message: 'Not all members from the same household'}
+  * @apiUse accessTokenError
   */
 
 router.put('/update', async (req, next) => {
@@ -200,6 +202,7 @@ router.put('/update', async (req, next) => {
 
   * @apiError {Object} InvalidTaskId {param: 'taskId', message: 'Invalid task id'}
   * @apiError {Object} TaskNotFound {param: 'taskId', message: 'Task not found or user permission denied'}
+  * @apiUse accessTokenError
   */
 
 router.delete('/delete/:_id', async (req, next) => {
@@ -253,6 +256,7 @@ router.delete('/delete/:_id', async (req, next) => {
   * @apiError {Object} InvalidTaskId {param: 'taskId', message: 'Invalid task id'}
   * @apiError {Object} TaskNotFound {param: 'taskId', message: 'Task not found or user permission denied'}
   * @apiError {Object} InvalidTaskDateForComlete {param: 'taskId', message: 'Cant complete task today'}
+  * @apiUse accessTokenError
   */
 
 router.put('/complete/:_id', async (req, next) => {
@@ -262,9 +266,174 @@ router.put('/complete/:_id', async (req, next) => {
   });
 });
 
+/**
+  * @apiName GetAllHouseholdTasks
+  * @api {GET} /api/v1/task/all Get all tasks for the user household
+
+  * @apiVersion 0.0.1
+
+  * @apiGroup Task
+
+  * @apiHeader {String} Authorization User bearer access token
+
+  * @apiExample {curl} Example usage:
+  * curl -X PUT /api/v1/task/all \
+  *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg==' \
+
+  * @apiSuccessExample {json} Success-Response:
+  [
+    {
+        "_id": "5b46e8d1885dd218b239ad8e",
+        "isDeleted": false,
+        "householdId": "5b4483d3fc5523bcbc7999d0",
+        "assignee": [
+            "5b45bad19d5566e98a57b60e"
+        ],
+        "taskNameId": "5b45a2808c6938db26e57eb1",
+        "dueDate": "2018-07-11T06:27:17.279Z",
+        "repeat": "week",
+        "reminder": false,
+        "ownerId": "5b45bad19d5566e98a57b60e",
+        "taskName": "Clean room",
+        "nextDate": "2018-07-19T06:27:17.279Z",
+        "endDate": "2018-10-12T06:27:17.279Z",
+        "createdAt": "2018-07-12T05:36:17.900Z",
+        "updatedAt": "2018-07-12T05:36:17.900Z",
+        "__v": 0
+    },
+    {
+        "_id": "5b4707dc29a9632b307ce1e2",
+        "isDeleted": false,
+        "householdId": "5b4483d3fc5523bcbc7999d0",
+        "assignee": [
+            "5b45bad19d5566e98a57b60e"
+        ],
+        "taskNameId": "5b45a2808c6938db26e57eb1",
+        "dueDate": "2018-07-11T06:27:17.279Z",
+        "repeat": "week",
+        "reminder": false,
+        "ownerId": "5b45bad19d5566e98a57b60e",
+        "taskName": "Clean room",
+        "nextDate": "2018-07-18T06:27:17.279Z",
+        "createdAt": "2018-07-12T07:48:44.239Z",
+        "updatedAt": "2018-07-12T07:48:44.239Z",
+        "__v": 0
+    },
+    {
+        "_id": "5b4731227a3e5d3873af82ca",
+        "isDeleted": false,
+        "householdId": "5b4483d3fc5523bcbc7999d0",
+        "assignee": [
+            "5b45bad19d5566e98a57b60e",
+            "5b436751d2a43e91d96a3dbc"
+        ],
+        "taskNameId": "5b45a2808c6938db26e57eb1",
+        "dueDate": "2018-07-12T06:27:17.279Z",
+        "repeat": "2 weeks",
+        "reminder": false,
+        "ownerId": "5b45bad19d5566e98a57b60e",
+        "taskName": "Clean room",
+        "nextDate": "2018-07-26T06:27:17.279Z",
+        "createdAt": "2018-07-12T10:44:50.418Z",
+        "updatedAt": "2018-07-12T10:44:50.418Z",
+        "__v": 0
+    }
+  ]
+
+  * @apiUse taskObject
+
+  * @apiErrorExample {json} Error-Response:
+    [{param: 'taskId', message: 'Invalid task id'}]
+
+  * @apiUse accessTokenError
+  */
+
 router.get('/all', async (req, next) => {
   await middlewareWrapper.wrape(req, next, () => taskAction.getByHousehold(req.request.user));
 });
+
+
+/**
+  * @apiName GetAllTasksAssignedToUser
+  * @api {GET} /api/v1/task/my Get all tasks assigned to the user
+
+  * @apiVersion 0.0.1
+
+  * @apiGroup Task
+
+  * @apiHeader {String} Authorization User bearer access token
+
+  * @apiExample {curl} Example usage:
+  * curl -X PUT /api/v1/task/all \
+  *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg==' \
+
+  * @apiSuccessExample {json} Success-Response:
+  [
+    {
+        "_id": "5b46e8d1885dd218b239ad8e",
+        "isDeleted": false,
+        "householdId": "5b4483d3fc5523bcbc7999d0",
+        "assignee": [
+            "5b45bad19d5566e98a57b60e"
+        ],
+        "taskNameId": "5b45a2808c6938db26e57eb1",
+        "dueDate": "2018-07-11T06:27:17.279Z",
+        "repeat": "week",
+        "reminder": false,
+        "ownerId": "5b45bad19d5566e98a57b60e",
+        "taskName": "Clean room",
+        "nextDate": "2018-07-19T06:27:17.279Z",
+        "endDate": "2018-10-12T06:27:17.279Z",
+        "createdAt": "2018-07-12T05:36:17.900Z",
+        "updatedAt": "2018-07-12T05:36:17.900Z",
+        "__v": 0
+    },
+    {
+        "_id": "5b4707dc29a9632b307ce1e2",
+        "isDeleted": false,
+        "householdId": "5b4483d3fc5523bcbc7999d0",
+        "assignee": [
+            "5b45bad19d5566e98a57b60e"
+        ],
+        "taskNameId": "5b45a2808c6938db26e57eb1",
+        "dueDate": "2018-07-11T06:27:17.279Z",
+        "repeat": "week",
+        "reminder": false,
+        "ownerId": "5b45bad19d5566e98a57b60e",
+        "taskName": "Clean room",
+        "nextDate": "2018-07-18T06:27:17.279Z",
+        "createdAt": "2018-07-12T07:48:44.239Z",
+        "updatedAt": "2018-07-12T07:48:44.239Z",
+        "__v": 0
+    },
+    {
+        "_id": "5b4731227a3e5d3873af82ca",
+        "isDeleted": false,
+        "householdId": "5b4483d3fc5523bcbc7999d0",
+        "assignee": [
+            "5b45bad19d5566e98a57b60e",
+            "5b436751d2a43e91d96a3dbc"
+        ],
+        "taskNameId": "5b45a2808c6938db26e57eb1",
+        "dueDate": "2018-07-12T06:27:17.279Z",
+        "repeat": "2 weeks",
+        "reminder": false,
+        "ownerId": "5b45bad19d5566e98a57b60e",
+        "taskName": "Clean room",
+        "nextDate": "2018-07-26T06:27:17.279Z",
+        "createdAt": "2018-07-12T10:44:50.418Z",
+        "updatedAt": "2018-07-12T10:44:50.418Z",
+        "__v": 0
+    }
+  ]
+
+  * @apiUse taskObject
+
+  * @apiErrorExample {json} Error-Response:
+    [{param: 'taskId', message: 'Invalid task id'}]
+
+  * @apiUse accessTokenError
+  */
 
 router.get('/my', async (req, next) => {
   await middlewareWrapper.wrape(req, next, () => taskAction.getByAssignedUser(req.request.user));
