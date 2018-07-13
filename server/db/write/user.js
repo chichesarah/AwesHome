@@ -17,6 +17,8 @@ export default new mongoose.Schema(
       isRegisterAnswers: { type: Boolean, default: false },
       roommatesCount: { type: Number, default: 0 },
 
+      notification: { type: Boolean, default: true },
+
       salt: String,
       password: String,
 

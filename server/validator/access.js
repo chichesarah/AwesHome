@@ -18,6 +18,8 @@ const userFreeData = [
   'avatar',
   'isRegisterAnswers',
   'householdId',
+  'notification',
+  'birthday',
 ];
 
 class AccessValidate {
