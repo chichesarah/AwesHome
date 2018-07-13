@@ -1,20 +1,19 @@
+import _ from 'lodash';
 import config from '../config';
-
+import udidWrite from '../model/write/udid';
 const FCM = require('fcm-node');
 
 const fcm = new FCM(config.notification.serverKey);
 
 class notificationAction {
-  addPushTaskEvent(data) {
+  async addPushTaskEvent(data) {
+    const udid = (await udidWrite.findTokenById(data.assignee)).map(item => item.token);
 
-    // const udid = udidWrite.findTokenById()
-
-    console.log('data', data)
-    const message = { // this may vary according to the message type (single recipient, multicast, topic, et cetera)
-      to: '/topics/highScores',
+    const message = {
+      registration_ids: udid,
       collapse_key: 'your_collapse_key',
       notification: {
-        title: `Create a task ${data.taskNaem}`,
+        title: `Create a task ${data.taskName}`,
         body: 'Do this',
       },
     };
@@ -28,7 +27,7 @@ class notificationAction {
 
   createListEvent(data) {
     console.log('data', data)
-    const message = { // thiszmay vary according to the message type (single recipient, multicast, topic, et cetera)
+    const message = {
       to: '/topics/highScores',
       collapse_key: 'your_collapse_key',
       notification: {
