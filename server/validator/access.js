@@ -134,6 +134,22 @@ class AccessValidate {
     return _.pick(user, userFreeData);
   }
 
+  async facebook(body) {
+    const errorList = validator.check(body, {
+      token: {
+        notEmpty: {
+          message: 'Token is required',
+        },
+      },
+    });
+
+    if (errorList.length) {
+      throw (errorList);
+    }
+
+    return body;
+  }
+
   async refreshToken(body) {
     const errorList = validator.check(body, {
       refreshToken: {
