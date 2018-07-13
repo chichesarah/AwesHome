@@ -88,7 +88,7 @@ router.all('/*', bearerMiddleware);
 router.post('/create', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const reqData = await taskValidate.create(req.request.body, req.request.user);
-    return await taskAction.create(reqData);
+    return taskAction.create(reqData);
   });
 });
 
@@ -262,7 +262,7 @@ router.delete('/delete/:_id', async (req, next) => {
 router.put('/complete/:_id', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const reqData = await taskValidate.complete(req.params, req.request.user);
-    return await taskAction.complete(reqData);
+    return taskAction.complete(reqData);
   });
 });
 

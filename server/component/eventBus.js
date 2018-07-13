@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
-import util  from 'util';
-import {EventEmitter}  from 'events';
+import util from 'util';
+import { EventEmitter } from 'events';
 
 class EventBusObj extends EventEmitter {
 
-  constructor () {
+  constructor() {
     super();
     this.queue = [];
     this.useQueue = [];
@@ -12,12 +12,12 @@ class EventBusObj extends EventEmitter {
   }
 
 
-  use (eventName, listener) {
+  use(eventName, listener) {
     this.useQueue.push(eventName);
     this.onSeries(eventName, listener);
   }
 
-  onSeries (eventName, listener) {
+  onSeries(eventName, listener) {
     var self = this;
 
     EventEmitter.prototype.on.call(this, eventName, async function(data) {

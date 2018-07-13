@@ -72,7 +72,7 @@ class TaskValidate {
     const ownerObj = await userValidate.checkForHousehold(user._id);
 
     const checkHousehold = await userWrite.checkMembers(body.assignee, ownerObj.householdId);
-    
+
     if (checkHousehold.length !== body.assignee.length) {
       throw ([{ param: 'assignee', message: 'Not all members from the same household' }]);
     }
