@@ -570,7 +570,6 @@ router2.get('/loginConfirm', async (req, next) => {
    * @apiParam  {String} password Password
    * @apiParam  {String} oldPassword Old password
 
-
    * @apiExample {curl} Example usage:
    *     curl 'http://localhost:3000/api/v1/authAccess/changePassword'
    *      -H "Content-Type: application/json"
@@ -584,12 +583,12 @@ router2.get('/loginConfirm', async (req, next) => {
    * @apiSuccess  {String='success'} result Result type
 
    * @apiErrorExample {json} Error-Response:
-      [{param : 'accessToken', message : 'User not found'}]
+      [{param: 'accessToken', message: 'User not found'}]
 
-   * @apiError {Object} PasswordSize {param:"password",message:"Password must be between 5-20 characters long"}
-   * @apiError {Object} OldPasswordSize {param:"password",message:"Old password must be between 5-20 characters long"}
-   * @apiError {Object} UserNotFound {param : 'accessToken', message : 'User not found'}
-   * @apiError {Object} OldPasswordIsNotCorrect {param : 'oldPassword', message : 'User old password is not correct'}
+   * @apiError {Object} PasswordSize {param: 'password', message: 'Password must be between 5-20 characters long'}
+   * @apiError {Object} OldPasswordSize {param: 'password', message: 'Old password must be between 5-20 characters long'}
+   * @apiError {Object} UserNotFound {param: 'accessToken', message: 'User not found'}
+   * @apiError {Object} OldPasswordIsNotCorrect {param: 'oldPassword', message: 'User old password is not correct'}
    * @apiUse accessTokenError
 
    */
