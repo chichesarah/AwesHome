@@ -77,8 +77,53 @@ class FeedAction {
     });
   }
 
+  addTaskEvent(data) {
+    return feedWrite.create({
+      userId: data.ownerId,
+      householdId: data.householdId,
+      type: 'add task',
+      operation: [
+        {
+          id: data._id,
+          name: data.taskName,
+          type: 'task',
+        },
+      ],
+    });
+  }
+
+  completeTaskEvent(data) {
+    return feedWrite.create({
+      userId: data.ownerId,
+      householdId: data.householdId,
+      type: 'complete task',
+      operation: [
+        {
+          id: data._id,
+          name: data.taskName,
+          type: 'task',
+        },
+      ],
+    });
+  }
+
+  deleteTaskEvent(data) {
+    return feedWrite.create({
+      userId: data.ownerId,
+      householdId: data.householdId,
+      type: 'delete task',
+      operation: [
+        {
+          id: data._id,
+          name: data.taskName,
+          type: 'task',
+        },
+      ],
+    });
+  }
+
   async getAllFeed(userId) {
-    const user = await userWrite.findById({ id: userId });
+    const user = await userWrite.findById({ _id: userId });
 
     return feedWrite.getAllFeed(user.householdId);
   }

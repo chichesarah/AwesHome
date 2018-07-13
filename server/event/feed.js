@@ -20,3 +20,18 @@ eventBus.onSeries('deleteList', async (data, next) => {
   await feedAction.deleteListEvent(data);
   await next();
 });
+
+eventBus.onSeries('addTask', async (data, next) => {
+  await feedAction.addTaskEvent(data);
+  await next();
+});
+
+eventBus.onSeries('completeTask', async (data, next) => {
+  await feedAction.completeTaskEvent(data);
+  await next();
+});
+
+eventBus.onSeries('deleteTask', async (data, next) => {
+  await feedAction.deleteTaskEvent(data);
+  await next();
+});

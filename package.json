@@ -20,6 +20,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.2.0",
+    "fcm-node": "^1.2.1",
     "keygen": "^0.3.1",
     "koa": "^2.3.0",
     "koa-body": "^2.3.0",
@@ -46,7 +47,7 @@
     "stylelint-processor-styled-components": "^0.2.2",
     "utf8": "^2.1.2",
     "util": "^0.10.3",
-    "validator": "^8.0.0"
+    "validator": "^10.4.0"
   },
   "devDependencies": {},
   "scripts": {

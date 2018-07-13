@@ -1,6 +1,7 @@
 import keygen from 'keygen';
 import q from 'q';
 import _ from 'lodash';
+import request from 'request';
 
 import userWrite from '../model/write/user';
 import config from '../config';
@@ -22,6 +23,8 @@ const userFreeData = [
   'lastName',
   'isRegisterAnswers',
   'householdId',
+  'notification',
+  'birthday',
 ];
 
 class AccessAction {
@@ -120,6 +123,42 @@ class AccessAction {
     return {
       result: 'success',
     };
+  }
+
+  async facebook(data) {
+    const deferred = q.defer();
+
+    request(`${config.links.facebook}${data.token}`, (error, response, body) => {
+      if (error) {
+        deferred.reject([{ param: 'token', message: 'Invalid token' }]);
+      }
+
+      deferred.resolve(JSON.parse(body));
+    });
+
+    const userFacebookData = await deferred.promise;
+
+    let facebookUser = await userWrite.findByFacebookId(userFacebookData.id);
+
+    if (!facebookUser) {
+      const userData = {
+        firstName: userFacebookData.first_name || null,
+        lastName: userFacebookData.last_name || null,
+        identities: {
+          facebookId: userFacebookData.id,
+        },
+        email: userFacebookData.email || null,
+        birthday: userFacebookData.birthday || null,
+      };
+  
+      if (userFacebookData.picture && userFacebookData.picture.data) {
+        userData.avatar = userFacebookData.picture.data.url || null;
+      }
+
+      facebookUser = await userWrite.newFacebookUser(_.assignIn(userData, { roles: ['user'] }));
+    }
+
+    return _.pick(_.assignIn(facebookUser, await token.genRefresh(facebookUser)), userFreeData);
   }
 }
 
