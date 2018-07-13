@@ -9,8 +9,8 @@ module.exports = {
   facebook: {
     clientID: '1679771432332193',
     clientSecret: 'ac577f059f1569bd436fa3de00a52404',
-    callbackURL: hostUrl + 'auth/facebookWeb/callback',
-    callbackUserURL: hostUrl + 'auth/facebookUserWeb/callback',
+    callbackURL: `${hostUrl}auth/facebookWeb/callback`,
+    callbackUserURL: `${hostUrl}auth/facebookUserWeb/callback`,
   },
   mailgun: {
     api_key: 'key-9815e55d5cc3e713ec6bf8777601cb0c',
@@ -28,6 +28,8 @@ module.exports = {
   google: {
     api_key: 'AIzaSyClRiWMywb9BoMq5bujYVMsceRs5EIqF4c',
   },
+  notification: {
+    serverKey: 'AAAA81gJKgA:APA91bGEvRXL28V9ClnPW3lbRtHUcKVWjumNT6YgUQfaOvVM8F1_h5bTDtxhlHhvYVBEItbCrm5e3UpRE19ARTw3tdw_BUHyr6AWFSj0DDHqNk6ffwCYXdSYwYMfn7HQpDNtC6mdpPLwiKEVm1X893iLkKFcY2kbOg',
   links: {
     facebook: 'https://graph.facebook.com/v3.0/me?fields=email,birthday,name,first_name,last_name,id,picture&access_token=',
   },
