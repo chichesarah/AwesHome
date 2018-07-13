@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import taskWrite from '../model/write/task';
 import userWrite from '../model/write/user';
+import udidWrite from '../model/write/udid';
 import eventBus from '../component/eventBus';
 
 const taskFreeData = [
@@ -75,8 +76,11 @@ class TaskAction {
 
     const task = await taskWrite.newTask(taskData);
 
+    console.log('task', task);
+
+    // const udid = udidWrite.findTokenById();
+
     eventBus.emit('addTask', task);
-    eventBus.emit('pushCreateTask', task);
 
     return _.pick(task, taskFreeData);
   }
