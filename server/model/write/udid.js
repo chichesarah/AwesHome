@@ -13,14 +13,36 @@ class UdidModel {
     });
   }
 
-  findTokenById(userIdList) {
-    return udidWrite.findRows({
+  async findTokenById(userIdList) {
+    const result = await udidWrite.findRows({
       query: {
         userId: {
           $in: userIdList,
         },
       },
     });
+
+    return result;
+  }
+
+  async deleteOldToken(token) {
+    const udidToken = await udidWrite.findRow({
+      query: {
+        token,
+      },
+    });
+
+    if (udidToken) {
+      await udidWrite.deleteRow({
+        query: {
+          token,
+        },
+      });
+
+      return udidToken.token;
+    }
+
+    return token;
   }
 }
 
