@@ -1,8 +1,10 @@
 import eventBus from '../component/eventBus';
 import feedAction from '../action/feed';
+import notificationAction from '../action/notification';
 
 eventBus.onSeries('listCreate', async (data, next) => {
   await feedAction.createListEvent(data);
+  await notificationAction.createPushListEvent(data);
   await next();
 });
 
@@ -23,6 +25,7 @@ eventBus.onSeries('deleteList', async (data, next) => {
 
 eventBus.onSeries('addTask', async (data, next) => {
   await feedAction.addTaskEvent(data);
+  await notificationAction.addPushTaskEvent(data);
   await next();
 });
 
