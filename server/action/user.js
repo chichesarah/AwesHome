@@ -26,6 +26,8 @@ const userFreeData = [
   'avatar',
   'householdId',
   'isRegisterAnswers',
+  'notification',
+  'birthday',
 ];
 
 class UserAction {
@@ -113,25 +115,37 @@ class UserAction {
     return _.pick(userUpdate, userFreeData);
   }
 
-  async update(data) {
-    data.updatedAt = new Date();
+  async update(data, user) {
+    const userObj = await userWrite.findById(user._id);
+    const userData = _.cloneDeep(data.fields);
+    userData.updatedAt = new Date();
 
-    if (data.avatarId && (data.newAvatar || data.removeAvatar)) {
+    const newAvatar = data.files.avatar ? data.files.avatar.path : null;
+
+    if (userData.removeAvatar) {
+      userData.removeAvatar = userData.removeAvatar === 'true';
+    }
+
+    if (userData.notification) {
+      userData.notification = userData.notification === 'true';
+    }
+
+    if (userObj.avatarId && (newAvatar || userData.removeAvatar)) {
       const deferred = q.defer();
       cloudinary.uploader.destroy(data.avatarId, (result) => {
         deferred.resolve(result);
       });
       await deferred.promise;
-      data.avatarId = null;
+      userData.avatarId = null;
     }
 
-    if (data.removeAvatar) {
-      data.avatar = null;
+    if (userData.removeAvatar) {
+      userData.avatar = null;
     }
 
-    if (data.newAvatar) {
+    if (newAvatar) {
       const deferred = q.defer();
-      cloudinary.uploader.upload(data.newAvatar, (result) => {
+      cloudinary.uploader.upload(newAvatar, (result) => {
         if (result.error) {
           deferred.reject([{ param: 'avatar', message: 'Upload error' }]);
           return;
@@ -139,20 +153,17 @@ class UserAction {
         deferred.resolve(result);
       });
       const uploaderResult = await deferred.promise;
-      data.avatarId = uploaderResult.public_id;
-      data.avatar = uploaderResult.url;
+      userData.avatarId = uploaderResult.public_id;
+      userData.avatar = uploaderResult.url;
     }
 
-    if (data.birthday) {
-      data.birthday = new Date(data.birthday);
+    if (userData.birthday) {
+      userData.birthday = new Date(userData.birthday);
     }
 
-    const user = await userWrite.updateRow({
-      query: { _id: data._id },
-      data,
-    });
+    const newUser = await userWrite.updateProfile(user._id, userData);
 
-    return _.pick(user, userFreeData);
+    return _.pick(newUser, userFreeData);
   }
 
   async getMembers(userId) {

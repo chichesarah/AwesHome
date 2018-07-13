@@ -6,7 +6,7 @@ export default new mongoose.Schema(
   _.assignIn(
     _.cloneDeep(standardField),
     {
-      email: { type: String, required: true, trim: true, unique: true },
+      email: { type: String, trim: true, default: null },
       householdId: { type: 'ObjectId', default: null },
 
       avatar: { type: String },
@@ -16,6 +16,8 @@ export default new mongoose.Schema(
 
       isRegisterAnswers: { type: Boolean, default: false },
       roommatesCount: { type: Number, default: 0 },
+
+      notification: { type: Boolean, default: true },
 
       salt: String,
       password: String,

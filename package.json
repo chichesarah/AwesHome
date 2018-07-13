@@ -47,7 +47,7 @@
     "stylelint-processor-styled-components": "^0.2.2",
     "utf8": "^2.1.2",
     "util": "^0.10.3",
-    "validator": "^8.0.0"
+    "validator": "^10.4.0"
   },
   "devDependencies": {},
   "scripts": {
