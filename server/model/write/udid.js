@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import dbList from './../../db';
 
 const udidWrite = dbList.write('udid');
@@ -23,6 +22,22 @@ class UdidModel {
     });
 
     return result;
+  }
+
+  findUdidById(_id) {
+    return udidWrite.findRow({
+      query: {
+        _id,
+      },
+    });
+  }
+
+  delete(_id) {
+    return udidWrite.deleteRow({
+      query: {
+        _id,
+      },
+    });
   }
 
   async deleteOldToken(token) {

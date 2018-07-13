@@ -16,6 +16,9 @@ class notificationAction {
         title: `Create a task ${data.taskName}`,
         body: 'Do this',
       },
+      data: {
+        id: data._id,
+      },
     };
 
     fcm.send(message, (err) => {
@@ -25,14 +28,18 @@ class notificationAction {
     });
   }
 
-  createListEvent(data) {
-    console.log('data', data)
+  async createPushListEvent(data) {
+    const udid = (await udidWrite.findTokenById(data.member)).map(item => item.token);
+
     const message = {
-      to: '/topics/highScores',
+      registration_ids: udid,
       collapse_key: 'your_collapse_key',
       notification: {
-        title: 'Create a list',
+        title: `Create a list ${data.name}`,
         body: 'You create a new list',
+      },
+      data: {
+        id: data._id,
       },
     };
 

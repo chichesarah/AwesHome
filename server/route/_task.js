@@ -154,7 +154,7 @@ router.post('/create', async (req, next) => {
 router.put('/update', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const reqData = await taskValidate.update(req.request.body, req.request.user);
-    return await taskAction.update(reqData);
+    return taskAction.update(reqData);
   });
 });
 
@@ -208,7 +208,7 @@ router.put('/update', async (req, next) => {
 router.delete('/delete/:_id', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const reqData = await taskValidate.delete(req.params, req.request.user);
-    return await taskAction.delete(reqData);
+    return taskAction.delete(reqData);
   });
 });
 
