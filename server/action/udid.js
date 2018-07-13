@@ -6,6 +6,10 @@ class UdidAction {
 
     return udidWrite.create(udidToken, userId);
   }
+
+  delete(_id) {
+    return udidWrite.delete(_id);
+  }
 }
 
 export default new UdidAction();
