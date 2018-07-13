@@ -34,7 +34,4 @@ module.exports = {
   links: {
     facebook: 'https://graph.facebook.com/v3.0/me?fields=email,birthday,name,first_name,last_name,id,picture&access_token=',
   },
-  links: {
-    facebook: 'https://graph.facebook.com/v3.0/me?fields=email,birthday,name,first_name,last_name,id,picture&access_token=',
-  },
 };
