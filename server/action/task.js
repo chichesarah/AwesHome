@@ -3,7 +3,6 @@ import moment from 'moment';
 
 import taskWrite from '../model/write/task';
 import userWrite from '../model/write/user';
-import udidWrite from '../model/write/udid';
 import eventBus from '../component/eventBus';
 
 const taskFreeData = [
@@ -75,10 +74,6 @@ class TaskAction {
     taskData.nextDate = this._countNextDate(taskData.dueDate, data.body.repeat);
 
     const task = await taskWrite.newTask(taskData);
-
-    console.log('task', task);
-
-    // const udid = udidWrite.findTokenById();
 
     eventBus.emit('addTask', task);
 

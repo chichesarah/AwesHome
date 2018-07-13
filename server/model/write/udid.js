@@ -13,10 +13,12 @@ class UdidModel {
     });
   }
 
-  findTokenById(_id) {
+  findTokenById(userIdList) {
     return udidWrite.findRows({
       query: {
-        _id,
+        userId: {
+          $in: userIdList,
+        },
       },
     });
   }
