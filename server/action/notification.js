@@ -6,6 +6,9 @@ const fcm = new FCM(config.notification.serverKey);
 
 class notificationAction {
   addPushTaskEvent(data) {
+
+    // const udid = udidWrite.findTokenById()
+
     console.log('data', data)
     const message = { // this may vary according to the message type (single recipient, multicast, topic, et cetera)
       to: '/topics/highScores',
