@@ -2,7 +2,7 @@ import keygen from 'keygen';
 import dbList from './../../db';
 import config from '../../config';
 
-let tokenWrite = dbList.write('token');
+const tokenWrite = dbList.write('token');
 
 export default tokenWrite;
 
