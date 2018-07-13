@@ -180,7 +180,6 @@ class AccessValidate {
   }
 
   async changePassword(body, user) {
-
     const errorList = validator.check(body, {
       password: {
         isLength: {
@@ -191,14 +190,13 @@ class AccessValidate {
           message: 'Password must be between 5-20 characters long',
         },
       },
-
       oldPassword: {
         isLength: {
           options: {
             min: 5,
             max: 20,
           },
-          message: 'Old password must be between 5-20 characters long'
+          message: 'Old password must be between 5-20 characters long',
         },
       },
     });
@@ -207,18 +205,13 @@ class AccessValidate {
       throw (errorList);
     }
 
-    user = await userWrite.findRow({
-      query: {
-        _id: user._id,
-        isDeleted: false,
-      },
-    });
-
-    if (!user) {
+    const userData = await userWrite.findById(user._id);
+    
+    if (!userData) {
       throw ([{ param: 'accessToken', message: 'User not found' }]);
     }
 
-    if (!user.salt || !user.password || userWrite.saltPassword(user.salt, body.oldPassword) !== user.password) {
+    if (!userData.salt || !userData.password || userWrite.saltPassword(userData.salt, body.oldPassword) !== userData.password) {
       throw ([{ param: 'oldPassword', message: 'User old password is not correct' }]);
     }
     return body.password;
