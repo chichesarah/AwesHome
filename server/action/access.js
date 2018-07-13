@@ -22,6 +22,8 @@ const userFreeData = [
   'lastName',
   'isRegisterAnswers',
   'householdId',
+  'notification',
+  'birthday',
 ];
 
 class AccessAction {

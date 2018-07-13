@@ -96,3 +96,9 @@ userWrite.checkMemberId = (memberId, householdId) =>
       isDeleted: false,
     },
   });
+
+userWrite.updateProfile = (_id, data) =>
+  userWrite.updateRow({
+    query: { _id },
+    data,
+  });
