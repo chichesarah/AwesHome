@@ -109,7 +109,7 @@ class AccessAction {
   }
 
   async loginConfirm(user) {
-    const userData = await userWrite.findById({ id: user._id });
+    const userData = await userWrite.findById({ _id: user._id });
     return _.pick(userData, userFreeData);
   }
 
