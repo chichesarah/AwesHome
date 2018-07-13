@@ -95,24 +95,49 @@ router.post('/answerQuestions', async (req) => {
    * @apiHeader {String} Content-Type=multipart/form-data Content-Type
    * @apiHeader {String} Authorization User bearer access token
 
-   * @apiParam  {String} [email] Email
-   * @apiParam  {String} [firstName] First name
-   * @apiParam  {String} [lastName] Last name
-   * @apiParam  {String} [facebookId] User facebook id
-   * @apiParam  {String} [birthday] Birthday
-   * @apiParam  {String} [phone] Phone number
-   * @apiParam  {File} [avatar] Avatar image
-   * @apiParam  {Boolean} [removeAvatar] Remove avatar
+   * @apiParam  {String}  [firstName]     First name
+   * @apiParam  {String}  [lastName]      Last name
+   * @apiParam  {String}  [email]         Email
+   * @apiParam  {String}  [phone]         Phone number. Format: +129371927301
+   * @apiParam  {Boolean} [notification]  Enable/disable notification
+   * @apiParam  {String}  [birthday]      Birthday
+   * @apiParam  {File}    [avatar]        Avatar image
+   * @apiParam  {Boolean} [removeAvatar]  Remove avatar
 
    * @apiExample {curl} Example usage:
-   *     curl 'http://localhost:3000/api/v1/user/update'
-   *      -H "Content-Type: application/json"
-   *      -X PUT
-   *      -d  '{"email":"vasya@ya.com","firstName":"Vasya","lastName":"Pupkin"}'
-   *      -F 'pictureList=@\"myfile.jpg\"'
+   * curl -X PUT /api/v1/user/update \
+   *  -H 'authorization: Bearer fXrXj7i6jgW2bdFbbkhfpN4Voqstxihx4HxKOS3NCtGwwLrS6V5jvp7tA3Clyqh7ADgGS7fW9TRnx0Q2Svi9rrtqD5g+J+SAAY0q46ZajMN9fK5XwiAiavzDv+uX4g==' \
+   *  -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+   *    -F firstName=Maya \
+   *    -F lastName=Toms \
+   *    -F email=opengeeklabvk@gmail.com \
+   *    -F 'phone=+18583332100' \
+   *    -F notification=true \
+   *    -F avatar=@36354404_505171843230312_6905794150491226112_o.jpg \
+   *    -F removeAvatar=true \
+   *    -F birthday=1999-07-12T06:27:17.279Z
 
    * @apiSuccessExample {json} Success-Response:
-   {"createdAt":"2017-05-17T08:41:41.510Z","updatedAt":"2017-05-19T11:39:16.970Z","isDeleted":false,"roles":["user"],"_id":"591c0cc5407eba1706aeb43e","email":"test2@mail.com","firstName":"title1","lastName":"testAdmin",identities":{"facebookId":null},"avatar":"http://res.cloudinary.com/diu5kwhe7/image/upload/v1495193958/cgato7gb0athnkai15pb.jpg"}
+   {
+    "createdAt": "2018-07-13T07:58:01.907Z",
+    "updatedAt": "2018-07-13T08:23:28.874Z",
+    "isDeleted": false,
+    "roles": [
+      "user"
+    ],
+    "_id": "5b485b8944f5e564b00571ad",
+    "email": "opengeeklabvk@gmail.com",
+    "firstName": "Maya",
+    "lastName": "Toms",
+    "identities": {
+      "facebookId": null
+    },
+    "avatar": "http://res.cloudinary.com/opengeeksvkcloudy/image/upload/v1531470214/mewhbawdpeffiyzswuvy.jpg",
+    "householdId": null,
+    "isRegisterAnswers": false,
+    "notification": true,
+    "birthday": "1999-07-12T06:27:17.279Z"
+   }
 
    * @apiUse userObject
 
@@ -122,16 +147,18 @@ router.post('/answerQuestions', async (req) => {
    * @apiError {Object} InvalidEmail {param: 'email', message: 'Valid email is required'}
    * @apiError {Object} FirstNameRequired {param: 'firstName', message: 'First Name is required'}
    * @apiError {Object} LastNameRequired {param: 'lastName', message: 'Last Name is required'}
-   * @apiError {Object} GenderRequired {param: 'gender', message: 'Gender is required'}
+   * @apiError {Object} BirthdayRequired {param: 'birthday', message: 'Valid birthday is required'}
+   * @apiError {Object} RemoveAvatarRequired {param: 'removeAvatar', message: 'Valid removeAvatar is required'}
+   * @apiError {Object} NotificationRequired {param: 'notification', message: 'Valid notification is required'}
+   * @apiError {Object} PhoneRequired {param: 'phone', message: 'Valid phone is required'}
    * @apiError {Object} AvatarRequired {param : 'avatar', message : 'Upload error'}
-   * @apiError {Object} UserNotFound {param : 'email', message : 'User not found'}
    * @apiUse accessTokenError
    */
 
 router.put('/update', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    const reqData = await userValidate.update(req.request.body, req.request.user);
-    return userAction.update(reqData);
+    const reqData = await userValidate.update(req.request.body);
+    return userAction.update(reqData, req.request.user);
   });
 });
 

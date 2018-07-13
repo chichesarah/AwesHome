@@ -19,6 +19,7 @@ const userFreeData = [
   'removeAvatar',
   'isRegisterAnswers',
   'householdId',
+  'notification',
 ];
 
 class UserValidate {
@@ -104,9 +105,8 @@ class UserValidate {
     };
   }
 
-  async update(body, user) {
-
-    const validateObj = {
+  async update(body) {
+    const fullValidateObj = {
       email: {
         isEmail: {
           message: 'Valid email is required',
@@ -132,10 +132,28 @@ class UserValidate {
           message: 'Valid removeAvatar is required',
         },
       },
+      notification: {
+        isBoolean: {
+          message: 'Valid notification is required',
+        },
+      },
+      phone: {
+        isMobilePhone: {
+          locale: 'any',
+          message: 'Valid phone is required',
+        },
+      },
     };
 
-    const errorList = validator.check(body.fields, validateObj);
+    const validateObj = {};
 
+    for (let field in fullValidateObj) {
+      if (!_.isUndefined(body.fields[field]) && fullValidateObj[field]) {
+        validateObj[field] = fullValidateObj[field];
+      }
+    }
+
+    const errorList = validator.check(body.fields, validateObj);
     if (errorList.length) {
       throw (errorList);
     }
@@ -146,22 +164,10 @@ class UserValidate {
       }
     }
 
-    const userObj = await userWrite.findRow({
-      query: {
-        _id: user._id,
-        isDeleted: false,
-      },
-    });
-
-    if (!_.isUndefined(body.fields.facebookId)) {
-      userObj.identities.facebookId = body.fields.facebookId;
-    }
-
-    if (body.files && body.files.avatar) {
-      userObj.newAvatar = body.files.avatar.path;
-    }
-
-    return _.pick(userObj, userFreeData);
+    return {
+      fields: _.pick(body.fields, userFreeData),
+      files: _.pick(body.files, userFreeData),
+    };
   }
 
   async checkForHousehold(userId) {

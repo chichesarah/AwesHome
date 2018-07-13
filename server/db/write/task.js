@@ -22,9 +22,9 @@ export default new mongoose.Schema(
       taskName: { type: String, required: true },
       dueDate: { type: Date, required: true, default: Date.now },
       repeat: { type: String, enum: repeatValues, required: true },
-      reminder: { type: Boolean, defaul: false },
+      reminder: { type: Boolean, default: false },
       assignee: [{ type: 'ObjectId', required: true }],
 
-      nextDate: { type: Date, required: true, defaul: null },
-      endDate: { type: Date, defaul: null }, // set endDate = (nextDate - repeat), when user delete task
+      nextDate: { type: Date, required: true, default: null },
+      endDate: { type: Date, default: null }, // set endDate = (nextDate - repeat), when user delete task
     }));
