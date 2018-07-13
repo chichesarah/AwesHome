@@ -36,6 +36,8 @@ userWrite.newUser = async (data) => {
   return _.assignIn(user, await token.genRefresh(user));
 };
 
+userWrite.newFacebookUser = data => userWrite.insertRow({ data });
+
 userWrite.changePassword = async (id, password) => {
   const data = userWrite.hashPassword(password);
   data.updatedAt = new Date();
@@ -101,4 +103,11 @@ userWrite.updateProfile = (_id, data) =>
   userWrite.updateRow({
     query: { _id },
     data,
+  });
+
+userWrite.findByFacebookId = facebookId =>
+  userWrite.findRow({
+    query: {
+      'identities.facebookId': facebookId,
+    },
   });

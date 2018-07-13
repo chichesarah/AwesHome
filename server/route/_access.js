@@ -402,6 +402,65 @@ router.post('/login', async (req, next) => {
 
 /**
 
+   * @apiName Facebook
+   * @api {POST} /api/v1/access/facebook Facebook Login/SignUp
+
+   * @apiVersion 0.0.1
+
+   * @apiGroup Access
+
+   * @apiHeader {String} Content-Type=application/json Content-Type
+
+   * @apiParam  {String} token Facebook user token
+
+   * @apiExample {curl} Example usage:
+   * curl -X POST /api/v1/access/facebook \
+   *  -H 'content-type: application/json' \
+   *    -d '{"token": "EAAC6ZAnan09YBADMZA502Xhpu0abBD76iwwU4hU8DSZANuqJxIClel1YAfohTEbm898MVmJg0xzl6kr6jonJClcdBllUpLtejXXDodSGysUWfDCSkiPS3aIiC6nSMOGkvJIMtbxsyJ5ZCMMkloNlpFctW86qCuB3ajArRdA6RQNMp6LORK2kOPlh6Ck6YfRExVbZCHSeqlAkQsRDFnzu9LySPBZAqknD5WdlZBVUJfFuwZDZD"}'
+
+   * @apiSuccessExample {json} Success-Response:
+   {
+    "accessToken": "9mggZDLBCXgcbLhpTtJSYxeJEqTtw7Bx+lLZOPVwrbZnJLb1VcH5KF1tlFvz8D5ptkPI7PTkgjTpbzns6AU8FqyuymqAad72qLkdsOnNN3CwXIU0bav8VkQ1/8limg==",
+    "refreshToken": "VJU2TWJ9XufTdCkX5k48db2Wa2jhfQ9tWactPztXYWfdBCdL5EDPBVm4MtQxJQgGXSsJpqeN7uPY9uiVs2E7FR6USSdRA8qtvqAs23rNY2YcPf2ixS2PFYn8MwdpfsBQypLnWSwPUdnZChhzaNMappBcFz3mtzcCysuS5qjuunfXcXnDHQTfoLaPYeXZTC9hz2Q5DNzxTpeWrWWRnjsu53UDoKgtct5FARHoMacq46zThcMd6HwjmCWtP3XSwmMS",
+    "createdAt": "2018-07-13T10:21:45.215Z",
+    "updatedAt": "2018-07-13T10:21:45.215Z",
+    "isDeleted": false,
+    "roles": [
+        "user"
+    ],
+    "_id": "5b487d3927fff57c4f37b55e",
+    "email": null,
+    "identities": {
+        "facebookId": "1034409490059581"
+    },
+    "avatar": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=1034409490059581&height=50&width=50&ext=1531736505&hash=AeS_j8Xp9mx24f9h",
+    "firstName": "Yanislav",
+    "lastName": "Konaschuk",
+    "isRegisterAnswers": false,
+    "householdId": null,
+    "notification": true,
+    "birthday": null
+   }
+
+   * @apiUse userObject
+
+   * @apiErrorExample {json} Error-Response:
+      [{param: 'token', message: 'Token is required'}]
+
+   * @apiError {Object} TokenRequired {param: 'token', message: 'Token is required'}
+   * @apiError {Object} InvalidToken {param: 'token', message: 'Invalid token'}
+   */
+
+
+router.post('/facebook', async (req, next) => {
+  await middlewareWrapper.wrape(req, next, async () => {
+    const regData = await accessValidate.facebook(req.request.body);
+    return accessAction.facebook(regData);
+  });
+});
+
+/**
+
    * @apiName refreshToken
    * @api {POST} /api/v1/access/refreshToken Refresh access token
 
