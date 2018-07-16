@@ -54,6 +54,7 @@ userWrite.findByEmail = email =>
   userWrite.findRow({
     query: {
       email,
+      isDeleted: false,
     },
   });
 
