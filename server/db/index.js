@@ -11,6 +11,7 @@ import taskWriteSchema from './write/task';
 import taskNameWriteSchema from './write/taskNameList';
 import sharedListWriteSchema from './write/sharedList';
 import feedWriteSchema from './write/feed';
+import udidWriteSchema from './write/udid';
 
 mongoose.Promise = global.Promise;
 
@@ -77,6 +78,7 @@ let models = {
     task: createCollection('task', 'write', taskWriteSchema),
     taskName: createCollection('taskName', 'write', taskNameWriteSchema),
     feed: createCollection('feed', 'write', feedWriteSchema),
+    udid: createCollection('udid', 'write', udidWriteSchema),
   },
   read: {
   },
