@@ -76,7 +76,6 @@ class TaskAction {
     const task = await taskWrite.newTask(taskData);
 
     eventBus.emit('addTask', task);
-    eventBus.emit('pushCreateTask', task);
 
     return _.pick(task, taskFreeData);
   }
