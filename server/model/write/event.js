@@ -26,10 +26,20 @@ class EventModel {
     });
 
     const oldMember = event.member.map(i => i.toString());
-
-    const newMember = _.difference(member, oldMember);
+    const newMember = _.difference(oldMember, member);
 
     return newMember;
+  }
+
+  async addGuest(data) {
+    const event = await eventWrite.updateRow({
+      query: {
+        _id: data.eventId,
+      },
+      data,
+    });
+
+    return event;
   }
 
   delete(data) {

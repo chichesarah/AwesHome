@@ -29,6 +29,11 @@ class EventAction {
     const event = await eventWrite.update(data);
     return event;
   }
+
+  async addGuest(data) {
+    const event = await eventWrite.addGuest(data);
+    return event;
+  }
 }
 
 export default new EventAction();
