@@ -23,7 +23,6 @@ const userFreeData = [
 ];
 
 class AccessValidate {
-
   async forgot(body) {
     const errorList = validator.check(body, {
       email: {
@@ -37,12 +36,7 @@ class AccessValidate {
       throw (errorList);
     }
 
-    const user = await userWrite.findRow({
-      query: {
-        email: body.email,
-        isDeleted: false,
-      },
-    });
+    const user = await userWrite.findByEmail(body.email);
 
     if (!user) {
       throw ([{ param: 'email', message: 'User not found' }]);

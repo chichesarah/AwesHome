@@ -13,9 +13,9 @@ module.exports = {
     callbackUserURL: `${hostUrl}auth/facebookUserWeb/callback`,
   },
   mailgun: {
-    api_key: 'key-9815e55d5cc3e713ec6bf8777601cb0c',
-    domain: 'sandboxf78e170a7ea143d387548f435166a7d3.mailgun.org',
-    mailFrom: 'shcbrdaiz@gmail.com',
+    api_key: '6dc05648a3a9593f6e2b773ea4489ad7-8889127d-4b714983',
+    domain: 'sandbox8214f17b1502422e9937ff0dabd9bad6.mailgun.org',
+    mailFrom: 'opengeeklabvk@gmail.com',
   },
   cloudinary: {
     cloud_name: 'opengeeksvkcloudy',
