@@ -38,3 +38,14 @@ eventBus.onSeries('deleteTask', async (data, next) => {
   await feedAction.deleteTaskEvent(data);
   await next();
 });
+
+eventBus.onSeries('createEventObj', async (data, next) => {
+  await feedAction.createEventObj(data);
+  await notificationAction.createPushEventObj(data);
+  await next();
+});
+
+eventBus.onSeries('deleteEventObj', async (data, next) => {
+  await feedAction.deleteEventObj(data);
+  await next();
+});

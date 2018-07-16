@@ -6,7 +6,9 @@ import { userValidate } from './user';
 
 class SharedListValidate {
   async create(body, userId) {
-    body.member = body.member.filter(i => i.trim());
+    if (body.member) {
+      body.member = body.member.filter(i => i.trim());
+    }
 
     const validateObj = {
       name: {
