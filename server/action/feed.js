@@ -122,6 +122,36 @@ class FeedAction {
     });
   }
 
+  createEventObj(data) {
+    return feedWrite.create({
+      userId: data.ownerId,
+      householdId: data.householdId,
+      type: 'add event',
+      operation: [
+        {
+          id: data._id,
+          name: data.title,
+          type: 'event',
+        },
+      ],
+    });
+  }
+
+  deleteEventObj(data) {
+    return feedWrite.create({
+      userId: data.ownerId,
+      householdId: data.householdId,
+      type: 'delete event',
+      operation: [
+        {
+          id: data._id,
+          name: data.title,
+          type: 'event',
+        },
+      ],
+    });
+  }
+
   async getAllFeed(userId) {
     const user = await userWrite.findById({ _id: userId });
 

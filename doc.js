@@ -20,5 +20,5 @@ app
 app.use(staticFile(path.join(__dirname, '/apidoc')));
 
 app.listen(port, () => {
-  console.log([new Date(), 'Server started on', port].join(' '));
+  global.console.log([new Date(), 'Server started on', port].join(' '));
 });
