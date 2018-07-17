@@ -21,7 +21,7 @@ const taskFreeData = [
   'endDate',
 ];
 
-export const convertDataUtc = data => moment(moment(data).format('YYYY-MM-DD') + ' utc');
+export const convertDataUtc = data => moment(`${moment(data).format('YYYY-MM-DD')} utc`, 'YYYY-MM-DD Z');
 
 export const countNextDate = (dueDate, repeat) => {
   switch (repeat) {
