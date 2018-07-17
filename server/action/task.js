@@ -134,7 +134,7 @@ class TaskAction {
   }
 
   async getByHousehold(user) {
-    const userData = await userWrite.findById(user._id);
+    const userData = await userWrite.findById({ id: user._id });
 
     const tasks = await taskWrite.getTasksByHousehold(userData.householdId);
 
@@ -142,7 +142,7 @@ class TaskAction {
   }
 
   async getByAssignedUser(user) {
-    const userData = await userWrite.findById(user._id);
+    const userData = await userWrite.findById({ id: user._id });
 
     const tasks = await taskWrite.getByAssignedUser(user._id, userData.householdId);
 

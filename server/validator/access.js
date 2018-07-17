@@ -199,8 +199,8 @@ class AccessValidate {
       throw (errorList);
     }
 
-    const userData = await userWrite.findById(user._id);
-    
+    const userData = await userWrite.findById({ id: user._id });
+
     if (!userData) {
       throw ([{ param: 'accessToken', message: 'User not found' }]);
     }
