@@ -59,6 +59,16 @@ class EventModel {
       data,
     });
   }
+
+  getEventByDuration({ householdId, startDate, endDate }) {
+    return eventWrite.findRows({
+      query: {
+        householdId,
+        startDate: { $lte: endDate },
+        endDate: { $gte: startDate },
+      },
+    });
+  }
 }
 
 export default new EventModel();
