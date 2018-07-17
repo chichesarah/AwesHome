@@ -16,6 +16,28 @@ const eventFreeData = [
 ];
 
 class EventValidate {
+  async getOne(param) {
+    const errorList = validator.check(param, {
+      id: {
+        isMongoId: {
+          message: 'Id is incorrect.',
+        },
+      },
+    });
+
+    if (errorList.length) {
+      throw errorList;
+    }
+
+    const event = await eventWrite.findEventById(param.id);
+
+    if (!event) {
+      throw ([{ param: 'id', message: 'Event not found' }]);
+    }
+
+    return event;
+  }
+
   async create(body, userId) {
     if (body.member) {
       body.member = body.member.filter(i => i.trim());
@@ -156,12 +178,10 @@ class EventValidate {
       throw ([{ param: 'userId', message: 'User can not delete this event, don\'t have permission' }]);
     }
 
-    body.ownerId = userId;
-
     return _.pick(body, eventFreeData);
   }
 
-  async addGuest(body, userId) {
+  async addGuest(body) {
     if (body.member) {
       body.member = body.member.filter(i => i.trim());
     }
@@ -182,10 +202,6 @@ class EventValidate {
     if (errorList.length) {
       throw errorList;
     }
-
-    const newMember = await eventWrite.getMemberByEventId(body.member, body.eventId);
-
-    body.member = newMember;
 
     return body;
   }

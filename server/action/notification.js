@@ -73,6 +73,30 @@ class notificationAction {
       });
     }
   }
+
+  async addNewGuestPushEventObj(data) {
+    const udid = (await udidWrite.findTokenById(data.newMember)).map(item => item.token);
+
+    const message = {
+      registration_ids: udid,
+      collapse_key: 'your_collapse_key',
+      notification: {
+        title: `Create a event ${data.event.title}`,
+        body: 'You create a new event',
+      },
+      data: {
+        id: data.event._id,
+      },
+    };
+
+    if (data.event.notify) {
+      fcm.send(message, (err) => {
+        if (err) {
+          console.log('Something has gone wrong!', err);
+        }
+      });
+    }
+  }
 }
 
 export default new notificationAction();

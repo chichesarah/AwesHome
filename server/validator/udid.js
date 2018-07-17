@@ -2,7 +2,7 @@ import udidWrite from '../model/write/udid';
 import validator from '../component/validator';
 
 class UdidValidate {
-  async create(body, userId) {
+  async create(body) {
     const errorList = validator.check(body, {
       token: {
         notEmpty: {
@@ -14,14 +14,6 @@ class UdidValidate {
     if (errorList.length) {
       throw errorList;
     }
-
-    // await userValidate.checkForHousehold(userId);
-
-    // const taskNameObj = await taskWrite.findByName(body.name);
-
-    // if (taskNameObj) {
-    //   throw [{ param: 'name', message: 'Name is already exists' }];
-    // }
 
     return body.token;
   }
