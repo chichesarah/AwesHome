@@ -179,7 +179,7 @@ class UserValidate {
     });
 
     if (!userObj) {
-      throw ([{ param: 'email', message: 'User not found' }]);
+      throw ([{ param: 'userId', message: 'User not found' }]);
     }
 
     if (!userObj.householdId) {

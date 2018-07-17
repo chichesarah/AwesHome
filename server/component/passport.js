@@ -72,8 +72,6 @@ passport.use(new BearerStrategy(
   }
 ));
 
-
-
 function tryToFind(query, done, callback, updateCallback) {
   userWrite.findRow({
     query: query,

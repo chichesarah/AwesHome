@@ -79,14 +79,6 @@ userWrite.checkMembers = (member, householdId) =>
     },
   });
 
-userWrite.findById = _id =>
-  userWrite.findRow({
-    query: {
-      _id,
-      isDeleted: false,
-    },
-  });
-
 userWrite.checkMemberId = (memberId, householdId) =>
   userWrite.findRow({
     query: {

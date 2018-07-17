@@ -120,7 +120,7 @@ router.get('/:id', async (req, next) => {
 
 router.post('/create', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    const event = await eventValidate.create(req.request.body);
+    const event = await eventValidate.create(req.request.body, req.request.user._id);
 
     return eventAction.create(event);
   });

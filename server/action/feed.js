@@ -153,7 +153,7 @@ class FeedAction {
   }
 
   async getAllFeed(userId) {
-    const user = await userWrite.findById({ _id: userId });
+    const user = await userWrite.findById({ id: userId });
 
     return feedWrite.getAllFeed(user.householdId);
   }
