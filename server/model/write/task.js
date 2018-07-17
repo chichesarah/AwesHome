@@ -86,3 +86,16 @@ taskWrite.getOverdueTasks = today =>
       $or: notEndedTasks(),
     },
   });
+
+taskWrite.getTasksByDuration = ({ householdId, startDate, endDate }) =>
+  taskWrite.findRows({
+    query: {
+      householdId,
+      dueDate: { $lte: endDate },
+      $or: [
+        { endDate: { $exists: false } },
+        { endDate: { $eq: null } },
+        { endDate: { $gte: startDate } },
+      ],
+    },
+  });
