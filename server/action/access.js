@@ -114,7 +114,7 @@ class AccessAction {
   }
 
   async refreshToken(userToken) {
-    const user = await userWrite.findById({ id: userToken.userId });
+    const user = await userWrite.findById({ _id: userToken.userId });
     return _.pick(_.assignIn(user, await token.genNewAccess(user)), userFreeData);
   }
 
@@ -150,7 +150,7 @@ class AccessAction {
         email: userFacebookData.email || null,
         birthday: userFacebookData.birthday || null,
       };
-  
+
       if (userFacebookData.picture && userFacebookData.picture.data) {
         userData.avatar = userFacebookData.picture.data.url || null;
       }
