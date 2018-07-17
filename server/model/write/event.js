@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import dbList from './../../db';
 
 const eventWrite = dbList.write('event');
@@ -18,24 +17,34 @@ class EventModel {
     });
   }
 
-  async getMemberByEventId(member, _id) {
+  async getMemberByEventId(_id) {
     const event = await eventWrite.findRow({
       query: {
         _id,
       },
     });
 
-    const oldMember = event.member.map(i => i.toString());
-
-    const newMember = _.difference(member, oldMember);
-
-    return newMember;
+    return event.member;
   }
 
-  delete(data) {
-    return eventWrite.deleteRow({
+  async addGuest(data) {
+    const event = await eventWrite.updateRow({
       query: {
-        _id: data._id,
+        _id: data.eventId,
+      },
+      data,
+    });
+
+    return event;
+  }
+
+  delete(_id) {
+    return eventWrite.updateRow({
+      query: {
+        _id,
+      },
+      data: {
+        isDeleted: true,
       },
     });
   }
