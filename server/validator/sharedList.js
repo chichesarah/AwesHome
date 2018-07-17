@@ -6,6 +6,10 @@ import { userValidate } from './user';
 
 class SharedListValidate {
   async create(body, userId) {
+    if (body.member) {
+      body.member = body.member.filter(i => i.trim());
+    }
+
     const validateObj = {
       name: {
         notEmpty: {

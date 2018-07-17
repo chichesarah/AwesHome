@@ -8,9 +8,11 @@ import userWriteSchema from './write/user';
 import tokenWriteSchema from './write/token';
 import householdWriteSchema from './write/household';
 import taskWriteSchema from './write/task';
+import eventWriteSchema from './write/event';
 import taskNameWriteSchema from './write/taskNameList';
 import sharedListWriteSchema from './write/sharedList';
 import feedWriteSchema from './write/feed';
+import udidWriteSchema from './write/udid';
 
 mongoose.Promise = global.Promise;
 
@@ -75,8 +77,10 @@ let models = {
     token: createCollection('token', 'write', tokenWriteSchema),
     household: createCollection('household', 'write', householdWriteSchema),
     task: createCollection('task', 'write', taskWriteSchema),
+    event: createCollection('event', 'write', eventWriteSchema),
     taskName: createCollection('taskName', 'write', taskNameWriteSchema),
     feed: createCollection('feed', 'write', feedWriteSchema),
+    udid: createCollection('udid', 'write', udidWriteSchema),
   },
   read: {
   },

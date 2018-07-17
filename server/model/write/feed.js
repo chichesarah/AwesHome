@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import dbList from './../../db';
 
 const feedWrite = dbList.write('feed');

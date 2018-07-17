@@ -39,7 +39,13 @@ class UserAction {
         deferred.reject([{ param: 'placeId', message: 'Google place error' }]);
       }
 
-      deferred.resolve(JSON.parse(body));
+      const bodyParse = JSON.parse(body);
+
+      if (!bodyParse || !bodyParse.result) {
+        deferred.reject([{ param: 'placeId', message: 'Google place error' }]);
+      }
+
+      deferred.resolve(bodyParse);
     });
 
     const googleAddress = await deferred.promise;
