@@ -48,5 +48,5 @@ bootstrap.events();
 
 
 app.listen(config.http.port, () => {
-  console.log([new Date(), 'Server started on', config.http.port].join(' '));
+  global.console.log([new Date(), 'Server started on', config.http.port].join(' '));
 });
