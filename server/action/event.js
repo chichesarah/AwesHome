@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import eventWrite from '../model/write/event';
 import { userAction } from './user';
 import eventBus from '../component/eventBus';
@@ -16,7 +18,7 @@ class EventAction {
   async delete(data) {
     eventBus.emit('deleteEventObj', data);
 
-    const event = await eventWrite.delete(data);
+    const event = await eventWrite.delete(data._id);
     return event;
   }
 
@@ -27,6 +29,18 @@ class EventAction {
     }
 
     const event = await eventWrite.update(data);
+    return event;
+  }
+
+  async addGuest(data) {
+    const current = await eventWrite.getMemberByEventId(data.eventId);
+
+    const oldMember = current.map(i => i.toString());
+    const newMember = _.difference(data.member, oldMember);
+
+    const event = await eventWrite.addGuest(data);
+
+    eventBus.emit('addGuestPushEventObj', { event, newMember });
     return event;
   }
 }
