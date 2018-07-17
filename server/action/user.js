@@ -122,7 +122,7 @@ class UserAction {
   }
 
   async update(data, user) {
-    const userObj = await userWrite.findById(user._id);
+    const userObj = await userWrite.findById({ id: user._id });
     const userData = _.cloneDeep(data.fields);
     userData.updatedAt = new Date();
 
@@ -173,7 +173,7 @@ class UserAction {
   }
 
   async getMembers(userId) {
-    const currentUser = await userWrite.findById({ _id: userId });
+    const currentUser = await userWrite.findById({ id: userId });
 
     if (!currentUser) {
       throw ([{ param: 'user', message: 'User is not defined' }]);
