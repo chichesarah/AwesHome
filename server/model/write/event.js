@@ -13,6 +13,7 @@ class EventModel {
     return eventWrite.findRow({
       query: {
         _id,
+        isDeleted: false,
       },
     });
   }
@@ -21,6 +22,7 @@ class EventModel {
     const event = await eventWrite.findRow({
       query: {
         _id,
+        isDeleted: false,
       },
     });
 
