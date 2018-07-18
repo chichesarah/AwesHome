@@ -277,7 +277,7 @@ router.put('/complete/:_id', async (req, next) => {
   * @apiHeader {String} Authorization User bearer access token
 
   * @apiExample {curl} Example usage:
-  * curl -X PUT /api/v1/task/all \
+  * curl -X GET /api/v1/task/all \
   *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg==' \
 
   * @apiSuccessExample {json} Success-Response:
@@ -364,7 +364,7 @@ router.get('/all', async (req, next) => {
   * @apiHeader {String} Authorization User bearer access token
 
   * @apiExample {curl} Example usage:
-  * curl -X PUT /api/v1/task/all \
+  * curl -X GET /api/v1/task/all \
   *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg==' \
 
   * @apiSuccessExample {json} Success-Response:

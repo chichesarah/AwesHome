@@ -1,5 +1,6 @@
 import schedule from 'node-schedule';
 import { taskAction } from './action/task';
+import { neighbourhoodAction } from './action/neighbourhood';
 
 const taskSchedule = () => {
   schedule.scheduleJob('0 0 0 * *', () => taskAction.autocompleteTask());
@@ -10,6 +11,7 @@ const taskSchedule = () => {
 
 export default async () => {
   try {
+    neighbourhoodAction.setInDB();
     taskSchedule();
   } catch (err) {
     console.log(err);
