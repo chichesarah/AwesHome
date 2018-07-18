@@ -1,6 +1,7 @@
 import keygen from 'keygen';
 import q from 'q';
-import * as _ from 'lodash';
+import _ from 'lodash';
+import request from 'request';
 
 import userWrite from '../model/write/user';
 import config from '../config';
@@ -20,6 +21,11 @@ const userFreeData = [
   'avatar',
   'firstName',
   'lastName',
+  'isRegisterAnswers',
+  'householdId',
+  'notification',
+  'birthday',
+  'neighbourhood',
 ];
 
 class AccessAction {
@@ -53,27 +59,8 @@ class AccessAction {
   }
 
   async register(data) {
-    const pass = data.password;
+    const user = await userWrite.newUser(_.assignIn(data, { roles: ['user'] }));
 
-    const user = await userWrite.newUser(data);
-
-    mailer.messages().send({
-      from: config.mailgun.mailFrom,
-      to: user.email,
-      subject: 'Spravno registration',
-      html: `
-          <h4>This letter was sent to your e-mail to verify the identity when register.</h4>
-          <p>if you didn't send it, ignore</p>
-          <p>First name: ${user.firstName}</p>
-          <p>Last name: ${user.lastName}</p>
-          <p>City: ${user.city}</p>
-          <p>Password: ${pass}</p>
-        `,
-    }, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
     return _.pick(user, userFreeData);
   }
 
@@ -137,6 +124,42 @@ class AccessAction {
     return {
       result: 'success',
     };
+  }
+
+  async facebook(data) {
+    const deferred = q.defer();
+
+    request(`${config.links.facebook}${data.token}`, (error, response, body) => {
+      if (error) {
+        deferred.reject([{ param: 'token', message: 'Invalid token' }]);
+      }
+
+      deferred.resolve(JSON.parse(body));
+    });
+
+    const userFacebookData = await deferred.promise;
+
+    let facebookUser = await userWrite.findByFacebookId(userFacebookData.id);
+
+    if (!facebookUser) {
+      const userData = {
+        firstName: userFacebookData.first_name || null,
+        lastName: userFacebookData.last_name || null,
+        identities: {
+          facebookId: userFacebookData.id,
+        },
+        email: userFacebookData.email || null,
+        birthday: userFacebookData.birthday || null,
+      };
+
+      if (userFacebookData.picture && userFacebookData.picture.data) {
+        userData.avatar = userFacebookData.picture.data.url || null;
+      }
+
+      facebookUser = await userWrite.newFacebookUser(_.assignIn(userData, { roles: ['user'] }));
+    }
+
+    return _.pick(_.assignIn(facebookUser, await token.genRefresh(facebookUser)), userFreeData);
   }
 }
 

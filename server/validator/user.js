@@ -1,9 +1,9 @@
-import userWrite from '../model/write/user';
-
-import validator from '../component/validator';
-
-import * as _ from 'lodash';
+import _ from 'lodash';
 import fs from 'fs';
+
+import userWrite from '../model/write/user';
+import validator from '../component/validator';
+import neighbourhoodWrite from '../model/write/neighbourhood';
 
 const userFreeData = [
   '_id',
@@ -17,12 +17,59 @@ const userFreeData = [
   'birthday',
   'phone',
   'removeAvatar',
+  'isRegisterAnswers',
+  'householdId',
+  'notification',
+  'neighbourhood',
 ];
 
 class UserValidate {
-  async update(body, user) {
+  async registerAnswers(body, user) {
+    const errorList = validator.check(body.fields, {
+      roommatesCount: {
+        isInt: {
+          message: 'Valid roommatesCount is required',
+        },
+      },
+      neighbourhoodId: {
+        isMongoId: {
+          message: 'Invalid neighbourhood id',
+        },
+      },
+    });
 
-    const validateObj = {
+    if (errorList.length) {
+      throw (errorList);
+    }
+
+    if (body.files && body.files.avatar) {
+      if (!fs.existsSync(body.files.avatar.path)) {
+        throw ([{ param: 'avatar', message: 'Upload error' }]);
+      }
+    }
+
+    const userObj = await userWrite.findById({ id: user._id });
+
+    if (!userObj) {
+      throw ([{ param: 'email', message: 'User not found' }]);
+    }
+
+    const neighbourhoodObj = await neighbourhoodWrite.findById(body.fields.neighbourhoodId);
+
+    if (!neighbourhoodObj) {
+      throw ([{ param: 'neighbourhoodId', message: 'Neighbourhood not found' }]);
+    }
+
+    return {
+      userObj,
+      neighbourhoodObj,
+      fields: _.pick(body.fields, ['roommatesCount', 'neighbourhoodId']),
+      files: _.pick(body.files, ['avatar']),
+    };
+  }
+
+  async update(body) {
+    const fullValidateObj = {
       email: {
         isEmail: {
           message: 'Valid email is required',
@@ -48,10 +95,28 @@ class UserValidate {
           message: 'Valid removeAvatar is required',
         },
       },
+      notification: {
+        isBoolean: {
+          message: 'Valid notification is required',
+        },
+      },
+      phone: {
+        isMobilePhone: {
+          locale: 'any',
+          message: 'Valid phone is required',
+        },
+      },
     };
 
-    let errorList = validator.check(body.fields, validateObj);
+    const validateObj = {};
 
+    for (let field in fullValidateObj) {
+      if (!_.isUndefined(body.fields[field]) && fullValidateObj[field]) {
+        validateObj[field] = fullValidateObj[field];
+      }
+    }
+
+    const errorList = validator.check(body.fields, validateObj);
     if (errorList.length) {
       throw (errorList);
     }
@@ -62,23 +127,40 @@ class UserValidate {
       }
     }
 
+    return {
+      fields: _.pick(body.fields, userFreeData),
+      files: _.pick(body.files, userFreeData),
+    };
+  }
+
+  async checkForHousehold(userId) {
     const userObj = await userWrite.findRow({
       query: {
-        _id: user._id,
+        _id: userId,
         isDeleted: false,
       },
     });
 
     if (!userObj) {
-      throw ([{ param: 'email', message: 'User not found' }]);
+      throw ([{ param: 'userId', message: 'User not found' }]);
     }
 
-    if (!_.isUndefined(body.fields.facebookId)) {
-        userObj.identities.facebookId = body.fields.facebookId;
+    if (!userObj.householdId) {
+      throw ([{ param: 'userId', message: 'User do not have household' }]);
     }
 
-    if (body.files && body.files.avatar) {
-      userObj.newAvatar = body.files.avatar.path;
+    return userObj;
+  }
+
+  async checkUser(userId) {
+    const userObj = await userWrite.findById({ id: userId });
+
+    if (!userObj) {
+      throw ([{ param: 'userId', message: 'User not found' }]);
+    }
+
+    if (userObj.householdId) {
+      throw ([{ param: 'userId', message: 'User already in the household' }]);
     }
 
     return _.pick(userObj, userFreeData);

@@ -19,7 +19,12 @@ export let routerSoc = koaRouter({
    * @apiSuccess  {String} lastName Last name
    * @apiSuccess  {String} firstName First name
    * @apiSuccess  {String[]} roles User access roles
+   * @apiSuccess  {String} householdId Household id
+   * @apiSuccess  {String} neighbourhood Neighbourhood name
+   * @apiSuccess  {Boolean} isRegisterAnswers Is user answer to the registration questions
    * @apiSuccess  {Boolean} isDeleted Is user deleted
+   * @apiSuccess  {Boolean} notification Enable/disable notification
+   * @apiSuccess  {String} birthday Birthday
    * @apiSuccess  {String} createdAt User create date
    * @apiSuccess  {String} updatedAt User update date
    * @apiSuccess  {Object} [identities] Social networks of the user
@@ -160,9 +165,9 @@ let webAuthCallback = async (req, next, soc, url) => {
     req.redirect('/#' + soc)
   }
 
-}
+};
 
-  /**
+/**
 
    * @apiName facebookUserWebRegCallback
    * @api {GET} /auth/facebookUserWeb/callback Web registration callback for user
@@ -192,11 +197,11 @@ let webAuthCallback = async (req, next, soc, url) => {
 
    */
 
-routerSoc.get('/facebookUserWeb/callback', async(req, next) => {
-  await webRegCallback(req, next, ['user'],'facebook', config.facebook.callbackUserURL);
+routerSoc.get('/facebookUserWeb/callback', async (req, next) => {
+  await webRegCallback(req, next, ['user'], 'facebook', config.facebook.callbackUserURL);
 });
 
-  /**
+/**
 
    * @apiName facebookWebAuthCallback
    * @api {GET} /auth/facebookWeb/callback Web login callback
@@ -227,12 +232,12 @@ routerSoc.get('/facebookUserWeb/callback', async(req, next) => {
 
    */
 
-routerSoc.get('/facebookWeb/callback', async(req, next) => {
+routerSoc.get('/facebookWeb/callback', async (req, next) => {
   await webAuthCallback(req, next, 'facebook', config.facebook.callbackURL);
 });
 
-export let router = koaRouter({
-  prefix: '/api/v1/access'
+export const router = koaRouter({
+  prefix: '/api/v1/access',
 });
 
   /**
@@ -256,31 +261,47 @@ export let router = koaRouter({
    *     curl 'http://localhost:3000/api/v1/access/register'
    *      -H "Content-Type: application/json"
    *      -X POST
-   *      -d  '{"email":"vasya@ya.com","password":"123456","firstName":"Vasya","lastName":"Pupkin"}'
+   *      -d  '{"email": "emaiff@test.com","password": "egtrtsdfjmch4cjyx","firstName": "First name","lastName": "Last name"}'
 
    * @apiSuccessExample {json} Success-Response:
-   {"accessToken":"fLqwmMXlJU0KwzOgEoZedfEVg5cAJz4YBhvJCJ3ptizU7B37BoIqahhYf8+4e1e5riEa2qKqaBoi0JtKPuOl7XqY11lulkTx8ZhhUHFI3HeCJhuL+rtJLj7eqASSVQ==","refreshToken":"efXJikML3M4q3gn2PJ3KYozmraFSwq8obbxynrfLYab3Agwe2UMdyskagMMKqjx7g447qK932xAvEDJscaRc8rHwTogBGpZJKgFKGr3jinutcreoUu8S3KQ9guhojZG9bMkzJUjKF5NAMUfwUEoF9oHqEdfL9cWrnmzLb5ieXF765Vmz2GCqVUdtGfXawkcLteSXJPHbc9j3dxhRdb7RpHzbQMSPhsehGbQkQ88GY3ryrcXR3NYwUNVPv9ojXmC2","createdAt":"2017-05-17T08:41:41.510Z","updatedAt":"2017-05-17T08:41:41.510Z","isDeleted":false,"roles":["user"],"_id":"591c0cc5407eba1706aeb43e","email":"test2@mail.com","firstName":"testAdmin","lastName":"testAdmin","identities":{"facebookId":null}}
+   {
+    "accessToken": "Exiv8Z8QYTdocoq52Lzso+osnFNcVw9+BESdb3gzJcsFhYn9orgP0420hnZOpFhVPPJOFAPLGnpWkN//mGgM2jN5Cww8nZA2tHpY8RrMdEGjopmOeHaQpI7AK1U/fA==",
+    "refreshToken": "HF2kSueVdb4hN9tMUz7RfGPX3BmLdbcZMCR8yb9TjJ4WRs2SwNcSHyLnS6FjeT3zHDutCnw5CiXWg4ppdjQ9Z7gAyrrVAreUxkUFVD8VjsAmRWMD7NXoRCExHr6pXBM54z4WaZqfLhmLemvPZbBQcG74kL3WvKNnKT7cRAnxMmGj8qsSMEBWx77hCLng7WxTeMZXa8ZkRtmRcGvj5vwihHttGkFnHkPNZbzFJbhum42WgMFWwbvrYBjrbosEojV4",
+    "createdAt": "2018-07-09T13:46:57.297Z",
+    "updatedAt": "2018-07-09T13:46:57.297Z",
+    "isDeleted": false,
+    "roles": [
+        "user"
+    ],
+    "_id": "5b436751d2a43e91d96a3dbc",
+    "email": "emaiff@test.com",
+    "identities": {
+        "facebookId": null
+    },
+    "firstName": "First name",
+    "lastName": "Last name"
+   }
 
    * @apiUse userObject
 
    * @apiErrorExample {json} Error-Response:
-      [{param:"email",message:"Valid email is required"}]
+      [{param: 'email', message: 'Valid email is required'}]
 
-   * @apiError {Object} InvalidEmail {param:"email",message:"Valid email is required"}
-   * @apiError {Object} EmailExist {param:"email",message:"There is an existing user connected to this email"}
-   * @apiError {Object} PasswordSize {param:"password",message:"Password must be between 5-20 characters long"}
-   * @apiError {Object} FirstNameRequired {param: "firstName", message: "First Name is required"}
-   * @apiError {Object} LastNameRequired {param: "lastName", message: "Last Name is required"}
+   * @apiError {Object} InvalidEmail {param: 'email', message: 'Valid email is required'}
+   * @apiError {Object} EmailExist {param: 'email', message: 'There is an existing user connected to this email'}
+   * @apiError {Object} PasswordSize {param: 'password', message: 'Password must be between 5-20 characters long'}
+   * @apiError {Object} FirstNameRequired {param: 'firstName', message: 'First Name is required'}
+   * @apiError {Object} LastNameRequired {param: 'lastName', message: 'Last Name is required'}
    */
 
-router.post('/register', async (req,next) => {
+router.post('/register', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    let regData = await accessValidate.register(req.request.body);
-    return await accessAction.register(regData);
-  })
+    const regData = await accessValidate.register(req.request.body);
+    return accessAction.register(regData);
+  });
 });
 
-  /**
+/**
 
    * @apiName forgotPassword
    * @api {POST} /api/v1/access/forgot Forgot password
@@ -306,23 +327,23 @@ router.post('/register', async (req,next) => {
    * @apiSuccess  {String='success'} result Result type
 
    * @apiErrorExample {json} Error-Response:
-      [{param:"email",message:"Valid email is required"}]
+      [{param: 'email', message: 'Valid email is required'}]
 
-   * @apiError {Object} InvalidEmail {param:"email",message:"Valid email is required"}
-   * @apiError {Object} UserNotFound {param : 'email', message : 'User not found'}
+   * @apiError {Object} InvalidEmail {param: 'email', message: 'Valid email is required'}
+   * @apiError {Object} UserNotFound {param: 'email', message: 'User not found'}
 
    */
 
 
-router.post('/forgot', async (req,next) => {
+router.post('/forgot', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    let regData = await accessValidate.forgot(req.request.body);
-    return await accessAction.forgot(regData);
-  })
+    const regData = await accessValidate.forgot(req.request.body);
+    return accessAction.forgot(regData);
+  });
 });
 
 
-  /**
+/**
 
    * @apiName LoginUser
    * @api {POST} /api/v1/access/login Login
@@ -341,30 +362,105 @@ router.post('/forgot', async (req,next) => {
    *     curl 'http://localhost:3000/api/v1/access/login'
    *      -H "Content-Type: application/json"
    *      -X POST
-   *      -d  '{"email":"vasya@ya.com","password":"123456"}'
+   *      -d  '{"email": "emaiff@test.com","password": "egtrtsdfjmch4cjyx"}'
 
    * @apiSuccessExample {json} Success-Response:
-   {"accessToken":"+fUPIAwNdRK2d5g8mv3FOyYFW14FiKlsZRXSLCl2oUZZ3zM3I1wDTdUoI0S7Yl/ECkDO7/2bRa9kStJR9rQkler/G8BruDgUvHHqsspyUoxSS885jS10VykrSuCzCQ==","refreshToken":"wLpCvQxtuqoYEYPBxtp6GWZzac8ZPJ4XRKABhHFnsJ7CD4Ws4va5dQdrC2aRT5TW4Nvc6bHqfpkBY5qnsFu5NGtrGoHQjs84Z6AwRefqdaNU6McnkaFWkCdQpkTzwUtxqNRodFLyhWyDYXssSMApciakPT2GJfD88H3zhwHMzBsNgcj4nuJeUyjbE8PvhuMK3ZV8rWhXc3Pe3HTfgeMJHCF3rne2kssFHVCcw3BhS29Nf9oUHFftadpFtKEW4j7m","createdAt":"2017-05-17T08:41:41.510Z","updatedAt":"2017-05-17T08:41:41.510Z","isDeleted":false,"roles":["user"],"_id":"591c0cc5407eba1706aeb43e","email":"test2@mail.com","firstName":"testAdmin","lastName":"testAdmin","identities":{"facebookId":null}}
+   {
+    "accessToken": "tEdZaoNn0665l+J3ImuslMRy7bcxoAUgJSXGbO63c2YACflnKN8AGTSy2Cls09GNkFrPOgbtPpVb0PIBaKC822TV44FUfRwF5iuvqsm+hXnaFCyvJOdSwjs43sbtSg==",
+    "refreshToken": "yCcvENJYAtvaAMTbyXSdmLLCYhyah4mrEqwtLWnqCMT7bacjxUGgrycusx3p35ar4RwajfT77F39wpwNUUJbxUxctfUCeuBGae73XPgdtpdD4eaeBTFUKKbaPvjs6hqxdyUAgVFzK2Moum36gRYmZDk2zsJNH6FctCbbVZudBHN2TcHsQi96bnGhaxEm4pPpPNqPpyQSu72NffFvNbaGsMzaj7p7kNekc7PTpZoPuaqUUZKTdbuQ52D7fsrQAb35",
+    "createdAt": "2018-07-09T13:46:57.297Z",
+    "updatedAt": "2018-07-09T13:46:57.297Z",
+    "isDeleted": false,
+    "roles": [
+        "user"
+    ],
+    "_id": "5b436751d2a43e91d96a3dbc",
+    "email": "emaiff@test.com",
+    "identities": {
+        "facebookId": null
+    },
+    "firstName": "First name",
+    "lastName": "Last name"
+   }
 
    * @apiUse userObject
 
    * @apiErrorExample {json} Error-Response:
-      [{param:"email",message:"Valid email is required"}]
+      [{param: 'email', message: 'Valid email is required'}]
 
-   * @apiError {Object} InvalidEmail {param:"email",message:"Valid email is required"}
-   * @apiError {Object} InvalidPassword {param:"password",message:"Valid password is required"}
-   * @apiError {Object} UserNotFound {param:"email",message:"User not found"}
-   * @apiError {Object} PasswordIsNotCorrect {param:"password",message:"User password is not correct"}
+   * @apiError {Object} InvalidEmail {param: 'email', message: 'Valid email is required'}
+   * @apiError {Object} InvalidPassword {param: 'password', message: 'Valid password is required'}
+   * @apiError {Object} UserNotFound {param: 'email', message: 'User not found'}
+   * @apiError {Object} PasswordIsNotCorrect {param: 'password', message: 'User password is not correct'}
    */
 
-router.post('/login', async (req,next) => {
+router.post('/login', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    let regData = await accessValidate.login(req.request.body);
-    return await accessAction.login(regData);
-  })
+    const regData = await accessValidate.login(req.request.body);
+    return accessAction.login(regData);
+  });
 });
 
-  /**
+/**
+
+   * @apiName Facebook
+   * @api {POST} /api/v1/access/facebook Facebook Login/SignUp
+
+   * @apiVersion 0.0.1
+
+   * @apiGroup Access
+
+   * @apiHeader {String} Content-Type=application/json Content-Type
+
+   * @apiParam  {String} token Facebook user token
+
+   * @apiExample {curl} Example usage:
+   * curl -X POST /api/v1/access/facebook \
+   *  -H 'content-type: application/json' \
+   *    -d '{"token": "EAAC6ZAnan09YBADMZA502Xhpu0abBD76iwwU4hU8DSZANuqJxIClel1YAfohTEbm898MVmJg0xzl6kr6jonJClcdBllUpLtejXXDodSGysUWfDCSkiPS3aIiC6nSMOGkvJIMtbxsyJ5ZCMMkloNlpFctW86qCuB3ajArRdA6RQNMp6LORK2kOPlh6Ck6YfRExVbZCHSeqlAkQsRDFnzu9LySPBZAqknD5WdlZBVUJfFuwZDZD"}'
+
+   * @apiSuccessExample {json} Success-Response:
+   {
+    "accessToken": "9mggZDLBCXgcbLhpTtJSYxeJEqTtw7Bx+lLZOPVwrbZnJLb1VcH5KF1tlFvz8D5ptkPI7PTkgjTpbzns6AU8FqyuymqAad72qLkdsOnNN3CwXIU0bav8VkQ1/8limg==",
+    "refreshToken": "VJU2TWJ9XufTdCkX5k48db2Wa2jhfQ9tWactPztXYWfdBCdL5EDPBVm4MtQxJQgGXSsJpqeN7uPY9uiVs2E7FR6USSdRA8qtvqAs23rNY2YcPf2ixS2PFYn8MwdpfsBQypLnWSwPUdnZChhzaNMappBcFz3mtzcCysuS5qjuunfXcXnDHQTfoLaPYeXZTC9hz2Q5DNzxTpeWrWWRnjsu53UDoKgtct5FARHoMacq46zThcMd6HwjmCWtP3XSwmMS",
+    "createdAt": "2018-07-13T10:21:45.215Z",
+    "updatedAt": "2018-07-13T10:21:45.215Z",
+    "isDeleted": false,
+    "roles": [
+        "user"
+    ],
+    "_id": "5b487d3927fff57c4f37b55e",
+    "email": null,
+    "identities": {
+        "facebookId": "1034409490059581"
+    },
+    "avatar": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=1034409490059581&height=50&width=50&ext=1531736505&hash=AeS_j8Xp9mx24f9h",
+    "firstName": "Yanislav",
+    "lastName": "Konaschuk",
+    "isRegisterAnswers": false,
+    "householdId": null,
+    "notification": true,
+    "birthday": null
+   }
+
+   * @apiUse userObject
+
+   * @apiErrorExample {json} Error-Response:
+      [{param: 'token', message: 'Token is required'}]
+
+   * @apiError {Object} TokenRequired {param: 'token', message: 'Token is required'}
+   * @apiError {Object} InvalidToken {param: 'token', message: 'Invalid token'}
+   */
+
+
+router.post('/facebook', async (req, next) => {
+  await middlewareWrapper.wrape(req, next, async () => {
+    const regData = await accessValidate.facebook(req.request.body);
+    return accessAction.facebook(regData);
+  });
+});
+
+/**
 
    * @apiName refreshToken
    * @api {POST} /api/v1/access/refreshToken Refresh access token
@@ -379,29 +475,44 @@ router.post('/login', async (req,next) => {
 
 
    * @apiExample {curl} Example usage:
-   *     curl 'http://localhost:3000/api/v1/access/login'
+   *     curl 'http://localhost:3000/api/v1/access/refreshToken'
    *      -H "Content-Type: application/json"
    *      -X POST
-   *      -d  '{"refreshToken":"6dcpum9bWgVGx5VSTtgiwc2x8nFs6muxpk82FVcKDChqhgiKKM4L8nEKHgpZXjUqjdGUWWnrzBmjciAK5vG2zcyMjxku3r3sxjWAGVuWdvBN3fJory3G5fjPedQAJYFFryckhqpomQ4gMX7AXjubxdv9MEsVuuiagYEqyZvVi3mJeoUyuVv5SnxoTMafbedKJ2bMqh2Cm5hnisxYoTnNU6CaCgMwBB25NxaMnfpfZVy5tcz95vRqfTBumV9r8pe2"}'
+   *      -d  '{"refreshToken": "hy9Y7MC3qq8uUqFKpbaLvRiiyiV945eAg7gs6JpnixfeyTqg92UZjKUDum9ebFcVhq2L6rfsgzjvYtTjcyo8aKgqzPpe8Maei42zBE7ggB24H8LGXa6U83kj3gaGc8jup5qFMMwfrCE58YVVLxWWrDftHefhJgigEiDYLrLS5zqFknk9ogmFcRBGN5kkoxCBKrEzJ7kcg8LhrrRaun6MjycDBM4tQ6zKeUL4TAj6GsVgtoCBUHTZfrMbJsi6jYkE"}'
 
    * @apiSuccessExample {json} Success-Response:
-   {"accessToken":"ljxlZhWUjO7hVwP+r8rYjOCCvhvtrIQbcDPrXZQFmjkrcpYPriHRl2jc/8YEIL0ThjXcAdYtstlVuojR1eT/xhBoayc42NeFIL6uTAF36MkomIeInyPuJDfXmxXTLw==","createdAt":"2017-05-17T08:41:41.510Z","updatedAt":"2017-05-17T08:41:41.510Z","isDeleted":false,"roles":["user"],"_id":"591c0cc5407eba1706aeb43e","email":"test2@mail.com","firstName":"testAdmin","lastName":"testAdmin","identities":{"facebookId":null}}
+   {
+    "accessToken": "yRpz4PJjt2WNsJc4tMwNvwRPPpkguGn3SHXwmyc4zhXc3zKpKq+oNuoHgz+6WMIDsQouemAHaUDMLpGd/XLbZw8dQmpwbzpe7JjkP3pIbkxN3Fo9LEZ0710xT+oJUQ==",
+    "createdAt": "2018-07-09T13:46:57.297Z",
+    "updatedAt": "2018-07-09T13:46:57.297Z",
+    "isDeleted": false,
+    "roles": [
+        "user"
+    ],
+    "_id": "5b436751d2a43e91d96a3dbc",
+    "email": "emaiff@test.com",
+    "identities": {
+        "facebookId": null
+    },
+    "firstName": "First name",
+    "lastName": "Last name"
+   }
 
    * @apiUse userObject
 
    * @apiErrorExample {json} Error-Response:
-      [{param:"refreshToken",message:"Valid refresh token is required"}]
+      [{param: 'refreshToken', message: 'Valid refresh token is required'}]
 
-   * @apiError {Object} InvalidRefreshToken {param:"refreshToken",message:"Valid refresh token is required"}
-   * @apiError {Object} UserNotFound {param:"refreshToken",message:"User not found"}
+   * @apiError {Object} InvalidRefreshToken {param: 'refreshToken', message: 'Valid refresh token is required'}
+   * @apiError {Object} UserNotFound {param: 'refreshToken', message: 'User not found'}
 
    */
 
 
-router.post('/refreshToken', async (req,next) => {
+router.post('/refreshToken', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    let regData = await accessValidate.refreshToken(req.request.body);
-    return await accessAction.refreshToken(regData);
+    const regData = await accessValidate.refreshToken(req.request.body);
+    return accessAction.refreshToken(regData);
   });
 });
 
@@ -411,7 +522,7 @@ export let router2 = koaRouter({
 
 router2.all('/*', bearerMiddleware);
 
-  /**
+/**
 
    * @apiName loginConfirm
    * @api {GET} /api/v1/authAccess/loginConfirm Check access token
@@ -422,8 +533,6 @@ router2.all('/*', bearerMiddleware);
 
    * @apiHeader {String} Content-Type=application/json Content-Type
    * @apiHeader {String} Authorization User bearer access token
-
-
 
    * @apiExample {curl} Example usage:
    *     curl 'http://localhost:3000/api/v1/authAccess/loginConfirm'
@@ -443,13 +552,11 @@ router2.all('/*', bearerMiddleware);
    */
 
 
-router2.get('/loginConfirm', async (req,next) => {
-  await middlewareWrapper.wrape(req, null, async () => {
-    return await accessAction.loginConfirm(req.request.user);
-  })
+router2.get('/loginConfirm', async (req, next) => {
+  await middlewareWrapper.wrape(req, null, async () => accessAction.loginConfirm(req.request.user));
 });
 
-  /**
+/**
 
    * @apiName changePassword
    * @api {POST} /api/v1/authAccess/changePassword Change user password
@@ -464,7 +571,6 @@ router2.get('/loginConfirm', async (req,next) => {
    * @apiParam  {String} password Password
    * @apiParam  {String} oldPassword Old password
 
-
    * @apiExample {curl} Example usage:
    *     curl 'http://localhost:3000/api/v1/authAccess/changePassword'
    *      -H "Content-Type: application/json"
@@ -478,19 +584,19 @@ router2.get('/loginConfirm', async (req,next) => {
    * @apiSuccess  {String='success'} result Result type
 
    * @apiErrorExample {json} Error-Response:
-      [{param : 'accessToken', message : 'User not found'}]
+      [{param: 'accessToken', message: 'User not found'}]
 
-   * @apiError {Object} PasswordSize {param:"password",message:"Password must be between 5-20 characters long"}
-   * @apiError {Object} OldPasswordSize {param:"password",message:"Old password must be between 5-20 characters long"}
-   * @apiError {Object} UserNotFound {param : 'accessToken', message : 'User not found'}
-   * @apiError {Object} OldPasswordIsNotCorrect {param : 'oldPassword', message : 'User old password is not correct'}
+   * @apiError {Object} PasswordSize {param: 'password', message: 'Password must be between 5-20 characters long'}
+   * @apiError {Object} OldPasswordSize {param: 'password', message: 'Old password must be between 5-20 characters long'}
+   * @apiError {Object} UserNotFound {param: 'accessToken', message: 'User not found'}
+   * @apiError {Object} OldPasswordIsNotCorrect {param: 'oldPassword', message: 'User old password is not correct'}
    * @apiUse accessTokenError
 
    */
 
-router2.post('/changePassword', async (req,next) => {
+router2.post('/changePassword', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    let password = await accessValidate.changePassword(req.request.body, req.request.user);
-    return await accessAction.changePassword(password, req.request.user);
-  })
+    const password = await accessValidate.changePassword(req.request.body, req.request.user);
+    return accessAction.changePassword(password, req.request.user);
+  });
 });

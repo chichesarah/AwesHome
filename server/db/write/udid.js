@@ -8,5 +8,4 @@ export default new mongoose.Schema(
     {
       userId: { type: 'ObjectId', required: true },
       token: { type: String, required: true },
-      expire: { type: Date, default: Date.now, required: true },
     }));
