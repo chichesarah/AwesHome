@@ -12,6 +12,24 @@ export const router = koaRouter({
 router.all('/*', bearerMiddleware);
 
 /**
+  * @apiDefine eventObject
+  * @apiSuccess  {Object}    event                Event object
+  * @apiSuccess  {String}    event._id            EVent id
+  * @apiSuccess  {String}    event.type           Type can be 'task' or 'event'
+  * @apiSuccess  {String}    event.ownerId        Owner id
+  * @apiSuccess  {String}    event.householdId    Household id
+  * @apiSuccess  {String}    event.title          Event title id
+  * @apiSuccess  {String[]}  event.array.member   Array of members users id
+  * @apiSuccess  {Boolean}   event.notify         Notify true or false
+  * @apiSuccess  {String}    event.fullAddress    Address where will event
+  * @apiSuccess  {Date}      event.startDate      StartDate event date
+  * @apiSuccess  {Date}      event.endDate        EndDate event date
+  * @apiSuccess  {Boolean}   event.isDeleted      Is event deleted
+  * @apiSuccess  {String}    event.createdAt      Event create date
+  * @apiSuccess  {String}    event.updatedAt      Event update date
+ */
+
+/**
   * @apiName GetOneEvent
   * @api {GET} /api/v1/event/id Get one event
 
@@ -46,6 +64,8 @@ router.all('/*', bearerMiddleware);
         "updatedAt": "2018-07-17T04:29:00.205Z",
         "__v": 0
       }
+
+  * @apiUse eventObject
 
   * @apiErrorExample {json} Error-Response:
     [{ param: 'id', message: 'Event not found' }]
@@ -108,6 +128,8 @@ router.get('/:id', async (req, next) => {
       "updatedAt": "2018-07-16T11:02:35.365Z",
         "__v": 0
     }
+
+  * @apiUse eventObject
 
   * @apiErrorExample {json} Error-Response:
     [{ param: 'member', message: 'Not all members from the same household' }]
@@ -178,6 +200,8 @@ router.post('/create', async (req, next) => {
         "__v": 0
     }
 
+  * @apiUse eventObject
+
   * @apiErrorExample {json} Error-Response:
     [{ param: 'id', message: 'Event not found' }]
 
@@ -232,6 +256,8 @@ router.put('/update/:id', async (req, next) => {
         "updatedAt": "2018-07-16T10:59:25.210Z",
         "__v": 0
     }
+
+  * @apiUse eventObject
 
   * @apiErrorExample {json} Error-Response:
     [{ param: 'id', message: 'Event not found' }]
@@ -293,6 +319,8 @@ router.delete('/delete/:id', async (req, next) => {
         "updatedAt": "2018-07-17T05:59:10.767Z",
         "__v": 1
       }
+
+  * @apiUse eventObject
 
   * @apiErrorExample {json} Error-Response:
     [{ param: 'eventId', message: 'Event not found' }]
