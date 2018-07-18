@@ -26,7 +26,7 @@ class CalendarAction {
       const taskEndDate = task.endDate ? convertDataUtc(task.endDate) : endDate;
       endDate = taskEndDate < endDate ? taskEndDate : endDate;
 
-      while (nextDate < startDate) {
+      while (nextDate < startDate && task.repeat !== 'not repeat') {
         nextDate = countNextDate(nextDate, task.repeat);
       }
 

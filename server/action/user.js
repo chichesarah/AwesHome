@@ -4,7 +4,6 @@ import _ from 'lodash';
 import request from 'request';
 
 import userWrite from '../model/write/user';
-import householdWrite from '../model/write/household';
 import config from '../config';
 
 cloudinary.config({
@@ -28,6 +27,7 @@ const userFreeData = [
   'isRegisterAnswers',
   'notification',
   'birthday',
+  'neighbourhood',
 ];
 
 class UserAction {
@@ -75,29 +75,8 @@ class UserAction {
     userData.isRegisterAnswers = true;
     userData.roommatesCount = data.fields.roommatesCount;
 
-    const householdObj = await householdWrite.findRow({
-      query: {
-        placeId: data.fields.placeId,
-        isDeleted: false,
-      },
-    });
-
-    if (!householdObj) {
-      const householdAddress = {
-        addressLine: `${data.googleAddress.streetNumber.short_name || ''} ${data.googleAddress.route.short_name || ''}`,
-        city: data.googleAddress.city.short_name,
-        zip: data.googleAddress.zip.short_name,
-        state: data.googleAddress.state.short_name,
-
-        fullAddress: data.googleAddress.fullAddress,
-        placeId: data.fields.placeId,
-      };
-
-      const household = await householdWrite.insertRow({ data: householdAddress });
-      userData.householdId = household._id;
-    } else {
-      userData.householdId = householdObj._id;
-    }
+    userData.neighbourhoodId = data.neighbourhoodObj._id;
+    userData.neighbourhood = data.neighbourhoodObj.name;
 
     if (data.files.avatar) {
       const deferred = q.defer();

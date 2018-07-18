@@ -20,6 +20,7 @@ const userFreeData = [
   'householdId',
   'notification',
   'birthday',
+  'neighbourhood',
 ];
 
 class AccessValidate {
