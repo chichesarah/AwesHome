@@ -31,6 +31,12 @@ router.all('/*', bearerMiddleware);
    * @apiSuccessExample {json} Success-Response:
     [{"_id": "5b44464ea85ca854ed3bb85f", "isDeleted": false, "name": "new name", "createdAt": "2018-07-10T05:38:22.225Z", "updatedAt": "2018-07-10T05:38:22.225Z", "__v": 0}]
 
+   * @apiSuccess  {Boolean} isDeleted false
+   * @apiSuccess  {String} _id Users id
+   * @apiSuccess  {String} name Name
+   * @apiSuccess  {String} createdAt Date
+   * @apiSuccess  {String} updatedAt Date
+
    * @apiErrorExample {json} Error-Response:
     [{ param : 'accessToken', message : 'Access token is incorrect'}]
 
@@ -44,12 +50,7 @@ router.get('/all', async (req, next) => {
 
 /**
 
-   * @apiSuccess  {Boolean} isDeleted false
-   * @apiSuccess  {String} _id Users id
-   * @apiSuccess  {String} name Name
-   * @apiSuccess  {String} createdAt Date
-   * @apiSuccess  {String} updatedAt Date
-   * @apiSuccess  {Number} __v Number
+
 
    * @apiName CreateNewTaskName
    * @api {POST} /api/v1/taskName/create Create a new task name
@@ -72,6 +73,12 @@ router.get('/all', async (req, next) => {
 
    * @apiSuccessExample {json} Success-Response:
     {"isDeleted": false, "_id": "5b44464ea85ca854ed3bb85f", "name": "new name", "createdAt": "2018-07-10T05:38:22.225Z", "updatedAt": "2018-07-10T05:38:22.225Z", "__v": 0}
+
+   * @apiSuccess  {Boolean} isDeleted false
+   * @apiSuccess  {String} _id Users id
+   * @apiSuccess  {String} name Name
+   * @apiSuccess  {String} createdAt Date
+   * @apiSuccess  {String} updatedAt Date
 
    * @apiErrorExample {json} Error-Response:
     [{param:"name",message:"Name is already exists"}]
