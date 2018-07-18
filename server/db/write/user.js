@@ -16,8 +16,8 @@ export default new mongoose.Schema(
 
       isRegisterAnswers: { type: Boolean, default: false },
       roommatesCount: { type: Number, default: 0 },
-      neighbourhoodId: { type: 'ObjectId', required: true },
-      neighbourhood: { type: String, required: true },
+      neighbourhoodId: { type: 'ObjectId', default: null },
+      neighbourhood: { type: String, default: null },
 
       notification: { type: Boolean, default: true },
 

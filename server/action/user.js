@@ -12,7 +12,7 @@ cloudinary.config({
   api_secret: config.cloudinary.api_secret,
 });
 
-const userFreeData = [
+export const userFreeData = [
   'createdAt',
   'updatedAt',
   'isDeleted',
