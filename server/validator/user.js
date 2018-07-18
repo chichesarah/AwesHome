@@ -63,7 +63,7 @@ class UserValidate {
     return {
       userObj,
       neighbourhoodObj,
-      fields: _.pick(body.fields, ['roommatesCount', 'placeId']),
+      fields: _.pick(body.fields, ['roommatesCount', 'neighbourhoodId']),
       files: _.pick(body.files, ['avatar']),
     };
   }
@@ -150,6 +150,20 @@ class UserValidate {
     }
 
     return userObj;
+  }
+
+  async checkUser(userId) {
+    const userObj = await userWrite.findById({ id: userId });
+
+    if (!userObj) {
+      throw ([{ param: 'userId', message: 'User not found' }]);
+    }
+
+    if (userObj.householdId) {
+      throw ([{ param: 'userId', message: 'User already in the household' }]);
+    }
+
+    return _.pick(userObj, userFreeData);
   }
 }
 
