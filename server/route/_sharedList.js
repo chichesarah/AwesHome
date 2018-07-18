@@ -12,7 +12,7 @@ export const router = koaRouter({
 router.all('/*', bearerMiddleware);
 
 /**
-
+   * @apiDefine listObject
    * @apiSuccess  {Boolean} isDeleted false
    * @apiSuccess  {String} householdId household id
    * @apiSuccess  {Array} member member
@@ -22,7 +22,9 @@ router.all('/*', bearerMiddleware);
    * @apiSuccess  {String} createdAt Date
    * @apiSuccess  {String} updatedAt Date
    * @apiSuccess  {Array} item item
-   * @apiSuccess  {Number} __v Number
+ */
+
+/**
 
    * @apiName CreateNewSharedList
    * @api {POST} /api/v1/sharedList/create Create a new shared list
@@ -49,6 +51,8 @@ router.all('/*', bearerMiddleware);
    * @apiSuccessExample {json} Success-Response:
     {"isDeleted": false, "householdId": null,"member": ["5b4471521d39a96dd14a53c6","5b4473ae22bd3b6f0861bc4e","5b4471521d39a96dd14a53c6"],"_id": "5b459a25c422b4a74e72fe8d","name": "third new name","ownerId": "5b4471521d39a96dd14a53c6","createdAt": "2018-07-11T05:48:21.487Z","updatedAt": "2018-07-11T05:48:21.487Z","item": [],"__v": 0}
 
+   * @apiUse listObject
+
    * @apiErrorExample {json} Error-Response:
     [{param:"name",message:"Name is already exists"}]
 
@@ -69,17 +73,6 @@ router.post('/create', async (req, next) => {
 });
 
 /**
-
-   * @apiSuccess  {Boolean} isDeleted false
-   * @apiSuccess  {String} householdId household id
-   * @apiSuccess  {Array} member member
-   * @apiSuccess  {String} _id Users id
-   * @apiSuccess  {String} name Name
-   * @apiSuccess  {String} ownerId owner id
-   * @apiSuccess  {String} createdAt Date
-   * @apiSuccess  {String} updatedAt Date
-   * @apiSuccess  {Array} item item
-   * @apiSuccess  {Number} __v Number
 
    * @apiName AddItemToSharedList
    * @api {PUT} /api/v1/sharedList/addItem Add item to shared list
@@ -107,6 +100,8 @@ router.post('/create', async (req, next) => {
 
    * @apiSuccessExample {json} Success-Response:
       {"isDeleted": false,"householdId": null, "member": ["5b4471521d39a96dd14a53c6","5b4473ae22bd3b6f0861bc4e"],"_id": "5b45afa621ec57b9f189fd00","name": "first item name 2 2 2","ownerId": "5b4473ae22bd3b6f0861bc4e","createdAt": "2018-07-11T07:20:06.493Z","updatedAt": "2018-07-11T07:20:06.493Z","item": [{"status": false,"_id": "5b45ba8218ff8bc0c8ee1e41","memberId": "5b4473ae22bd3b6f0861bc4e","name": "first item name"}],"__v": 4}
+
+   * @apiUse listObject
 
    * @apiErrorExample {json} Error-Response:
     [{param:"name",message:"Name is already exists"}]
@@ -156,6 +151,8 @@ router.put('/addItem', async (req, next) => {
    * @apiSuccessExample {json} Success-Response:
     {"isDeleted": false,"householdId": null,"member": ["5b4471521d39a96dd14a53c6",],"_id": "5b45afa621ec57b9f189fd00","name": "first item name 2 2 2","ownerId": "5b4473ae22bd3b6f0861bc4e","createdAt": "2018-07-11T07:20:06.493Z","updatedAt": "2018-07-11T07:20:06.493Z","item": [{"status": true,"_id": "5b45dc3a32c623d06dc24fb8","name": "first item name 2 2 3","memberId": "5b4473ae22bd3b6f0861bc4e"}],"__v": 9}
 
+   * @apiUse listObject
+
    * @apiErrorExample {json} Error-Response:
     [{param:"name",message:"Name is already exists"}]
 
@@ -195,6 +192,8 @@ router.put('/checkItem', async (req, next) => {
    * @apiSuccessExample {json} Success-Response:
     {"isDeleted": false,"householdId": null,"member": ["5b4471521d39a96dd14a53c6","5b4473ae22bd3b6f0861bc4e"],"_id": "5b45afa621ec57b9f189fd00","name": "first item name 2 2 2","ownerId": "5b4473ae22bd3b6f0861bc4e","createdAt": "2018-07-11T07:20:06.493Z","updatedAt": "2018-07-11T07:20:06.493Z","item": [],"__v": 14}
 
+   * @apiUse listObject
+
    * @apiErrorExample {json} Error-Response:
     [{param:"name",message:"Name is already exists"}]
 
@@ -230,6 +229,8 @@ router.delete('/:id', async (req, next) => {
 
    * @apiSuccessExample {json} Success-Response:
       [{"_id": "5b459a25c422b4a74e72fe8d","isDeleted": false,"householdId": null,"member": ["5b4471521d39a96dd14a53c6","5b4473ae22bd3b6f0861bc4e","5b4471521d39a96dd14a53c6"],"name": "third new name","ownerId": "5b4471521d39a96dd14a53c6","createdAt": "2018-07-11T05:48:21.487Z","updatedAt": "2018-07-11T05:48:21.487Z","item": [],"__v": 0},]
+
+   * @apiUse listObject
 
    * @apiErrorExample {json} Error-Response:
     [{ param : 'accessToken', message : 'Access token is incorrect'}]
