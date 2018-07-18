@@ -3,7 +3,7 @@ import fs from 'fs';
 
 import userWrite from '../model/write/user';
 import validator from '../component/validator';
-import { userAction } from '../action/user';
+import neighbourhoodWrite from '../model/write/neighbourhood';
 
 const userFreeData = [
   '_id',
@@ -20,6 +20,7 @@ const userFreeData = [
   'isRegisterAnswers',
   'householdId',
   'notification',
+  'neighbourhood',
 ];
 
 class UserValidate {
@@ -30,9 +31,9 @@ class UserValidate {
           message: 'Valid roommatesCount is required',
         },
       },
-      placeId: {
-        notEmpty: {
-          message: 'Valid placeId is required',
+      neighbourhoodId: {
+        isMongoId: {
+          message: 'Invalid neighbourhood id',
         },
       },
     });
@@ -47,60 +48,22 @@ class UserValidate {
       }
     }
 
-    const userObj = await userWrite.findRow({
-      query: {
-        _id: user._id,
-        isDeleted: false,
-      },
-    });
+    const userObj = await userWrite.findById({ id: user._id });
 
     if (!userObj) {
       throw ([{ param: 'email', message: 'User not found' }]);
     }
 
-    const googleAddress = await userAction.getGoogleAddress(body.fields.placeId);
+    const neighbourhoodObj = await neighbourhoodWrite.findById(body.fields.neighbourhoodId);
 
-    const errorAddressList = validator.check(googleAddress, {
-      streetNumber: {
-        notEmpty: {
-          message: 'Valid streetNumber is required',
-        },
-      },
-      route: {
-        notEmpty: {
-          message: 'Valid route is required',
-        },
-      },
-      city: {
-        notEmpty: {
-          message: 'Valid city is required',
-        },
-      },
-      zip: {
-        notEmpty: {
-          message: 'Valid zip code is required',
-        },
-      },
-      state: {
-        notEmpty: {
-          message: 'Valid state is required',
-        },
-      },
-      fullAddress: {
-        notEmpty: {
-          message: 'Valid state is required',
-        },
-      },
-    });
-
-    if (errorAddressList.length) {
-      throw (errorAddressList);
+    if (!neighbourhoodObj) {
+      throw ([{ param: 'neighbourhoodId', message: 'Neighbourhood not found' }]);
     }
 
     return {
       userObj,
-      googleAddress,
-      fields: _.pick(body.fields, ['roommatesCount', 'placeId']),
+      neighbourhoodObj,
+      fields: _.pick(body.fields, ['roommatesCount', 'neighbourhoodId']),
       files: _.pick(body.files, ['avatar']),
     };
   }
@@ -187,6 +150,20 @@ class UserValidate {
     }
 
     return userObj;
+  }
+
+  async checkUser(userId) {
+    const userObj = await userWrite.findById({ id: userId });
+
+    if (!userObj) {
+      throw ([{ param: 'userId', message: 'User not found' }]);
+    }
+
+    if (userObj.householdId) {
+      throw ([{ param: 'userId', message: 'User already in the household' }]);
+    }
+
+    return _.pick(userObj, userFreeData);
   }
 }
 

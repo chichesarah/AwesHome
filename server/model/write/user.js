@@ -58,6 +58,16 @@ userWrite.findByEmail = email =>
     },
   });
 
+userWrite.setHouseholdId = (_id, householdId) =>
+  userWrite.updateRow({
+    query: {
+      _id,
+    },
+    data: {
+      householdId,
+    },
+  });
+
 userWrite.getByHouseholdId = householdId =>
   userWrite.findRows({
     query: {

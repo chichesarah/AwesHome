@@ -407,10 +407,10 @@ router.get('/event', async (req, next) => {
   * @apiSuccess  {String}    event.object.ownerId        Owner id
   * @apiSuccess  {String}    event.object.householdId    Household id
   * @apiSuccess  {String}    event.object.title          Event title id
-  * @apiSuccess  {Date}    event.object.startDate      StartDate date
-  * @apiSuccess  {Date}    event.object.endDate        EndDate date
-  * @apiSuccess  {String[]}  event.object.member       Array of members users id
-  * @apiSuccess  {Boolean}    event.object.notify         Notify true or false
+  * @apiSuccess  {Date}      event.object.startDate      StartDate date
+  * @apiSuccess  {Date}      event.object.endDate        EndDate date
+  * @apiSuccess  {String[]}  event.object.member         Array of members users id
+  * @apiSuccess  {Boolean}   event.object.notify         Notify true or false
   * @apiSuccess  {Boolean}   event.object.isDeleted      Is event deleted
   * @apiSuccess  {String}    event.object.createdAt      Event create date
   * @apiSuccess  {String}    event.object.updatedAt      Event update date

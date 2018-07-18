@@ -20,6 +20,7 @@ export let routerSoc = koaRouter({
    * @apiSuccess  {String} firstName First name
    * @apiSuccess  {String[]} roles User access roles
    * @apiSuccess  {String} householdId Household id
+   * @apiSuccess  {String} neighbourhood Neighbourhood name
    * @apiSuccess  {Boolean} isRegisterAnswers Is user answer to the registration questions
    * @apiSuccess  {Boolean} isDeleted Is user deleted
    * @apiSuccess  {Boolean} notification Enable/disable notification

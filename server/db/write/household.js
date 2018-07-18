@@ -6,11 +6,11 @@ export default new mongoose.Schema(
   _.assignIn(
     _.cloneDeep(standardField),
     {
-      addressLine: { type: String, required: true },
-      city: { type: String, required: true },
-      zip: { type: String, required: true },
-      state: { type: String, required: true },
+      addressLine: { type: String, default: '' },
+      city: { type: String, default: '' },
+      zip: { type: String, default: '' },
+      state: { type: String, default: '' },
 
-      fullAddress: { type: String, required: true },
-      placeId: { type: String, default: null, required: true },
+      fullAddress: { type: String, default: '' },
+      placeId: { type: String, default: null },
     }));
