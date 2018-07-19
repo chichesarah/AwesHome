@@ -84,7 +84,7 @@ router.post('/create', async (req, next) => {
 
 /**
   * @apiName ConnectToHousehold
-  * @api {PUT} /api/v1/connect/{_id} Connect to household
+  * @api {PUT} /api/v1/household/connect/{_id} Connect to household
 
   * @apiVersion 0.0.1
 

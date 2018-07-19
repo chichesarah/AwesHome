@@ -12,6 +12,9 @@ module.exports = {
     callbackUserURL: `${hostUrl}auth/facebookUserWeb/callback`,
   },
   mailgun: {
+    api_key: '6dc05648a3a9593f6e2b773ea4489ad7-8889127d-4b714983',
+    domain: 'sandbox8214f17b1502422e9937ff0dabd9bad6.mailgun.org',
+    mailFrom: 'opengeeklabvk@gmail.com',
   },
   cloudinary: {
     cloud_name: 'opengeeksvkcloudy',
@@ -23,6 +26,9 @@ module.exports = {
   staticMaxAge: 0,
   google: {
     api_key: 'AIzaSyClRiWMywb9BoMq5bujYVMsceRs5EIqF4c',
+  },
+  notification: {
+    serverKey: 'AAAA81gJKgA:APA91bGEvRXL28V9ClnPW3lbRtHUcKVWjumNT6YgUQfaOvVM8F1_h5bTDtxhlHhvYVBEItbCrm5e3UpRE19ARTw3tdw_BUHyr6AWFSj0DDHqNk6ffwCYXdSYwYMfn7HQpDNtC6mdpPLwiKEVm1X893iLkKFcY2kbOg',
   },
   links: {
     facebook: 'https://graph.facebook.com/v3.0/me?fields=email,birthday,name,first_name,last_name,id,picture&access_token=',

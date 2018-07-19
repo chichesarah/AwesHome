@@ -51,7 +51,7 @@ class HouseholdValidate {
   }
 
   async leave(user) {
-    const userObj = await userValidate.checkUser(user._id);
+    const userObj = await userValidate.checkForHousehold(user._id);
 
     if (!userObj.householdId) {
       throw ([{ param: 'accessToken', message: 'User is not connected to the household' }]);
