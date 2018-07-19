@@ -36,6 +36,9 @@ app.use(
     },
   }));
 
+  app.use(staticFile(path.join(__dirname, '/../apidoc'), {
+    maxAge: config.staticMaxAge,
+  }));
 
 app.use(async (ctr, next) => {
   const temp = ctr;

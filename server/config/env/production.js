@@ -3,7 +3,7 @@ const hostUrl = process.env.KOA_BASE_HOST_URL || 'https://spravno.herokuapp.com/
 module.exports = {
   hostUrl,
   mongoConnectionStrings: {
-    // write: '',
+    write: 'mongodb://heroku_b7dbwjw7:b100nln16srjnc59kqolt80jq@ds259410.mlab.com:59410/heroku_b7dbwjw7',
     // read: '',
     // static: ''
   },
@@ -27,6 +27,12 @@ module.exports = {
   clientMainFile: '/apidoc/index.html',
   serverMainFile: '/dist/Tasks.jsx',
   staticMaxAge: 31104000000, // 1000*60*60*24*30*12,
+  google: {
+    api_key: 'AIzaSyClRiWMywb9BoMq5bujYVMsceRs5EIqF4c',
+  },
+  links: {
+    facebook: 'https://graph.facebook.com/v3.0/me?fields=email,birthday,name,first_name,last_name,id,picture&access_token=',
+  },
   notification: {
     serverKey: 'AAAA81gJKgA:APA91bGEvRXL28V9ClnPW3lbRtHUcKVWjumNT6YgUQfaOvVM8F1_h5bTDtxhlHhvYVBEItbCrm5e3UpRE19ARTw3tdw_BUHyr6AWFSj0DDHqNk6ffwCYXdSYwYMfn7HQpDNtC6mdpPLwiKEVm1X893iLkKFcY2kbOg',
   },
