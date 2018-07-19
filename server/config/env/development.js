@@ -4,7 +4,6 @@ module.exports = {
   hostUrl,
   mongoConnectionStrings: {
     write: 'mongodb://localhost:27017/awesomeHome',
-    // read: 'mongodb://localhost:27017/awesomeHome',
   },
   facebook: {
     clientID: '1679771432332193',
