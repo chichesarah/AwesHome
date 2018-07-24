@@ -305,3 +305,9 @@ router.put('/update', async (req, next) => {
     return householdAction.update(reqData);
   });
 });
+
+export const routerDeep = koaRouter({
+  prefix: '/api/v1/deeplink',
+});
+
+routerDeep.get('/:householdId', async (req, next) => req.render('index', req.params));

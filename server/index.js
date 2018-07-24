@@ -4,7 +4,7 @@ import path from 'path';
 import body from 'koa-body';
 import passport from 'koa-passport';
 import os from 'os';
-
+import render from 'koa-ejs';
 
 import { boot as bootstrap } from './component/bootstrap';
 import config from './config';
@@ -36,14 +36,22 @@ app.use(
     },
   }));
 
-  app.use(staticFile(path.join(__dirname, '/../apidoc'), {
-    maxAge: config.staticMaxAge,
-  }));
+app.use(staticFile(path.join(__dirname, '/../apidoc'), {
+  maxAge: config.staticMaxAge,
+}));
 
 app.use(async (ctr, next) => {
   const temp = ctr;
   temp.req.query = ctr.query;
   await next();
+});
+
+render(app, {
+  root: path.join(__dirname, 'view'),
+  layout: 'index',
+  viewExt: 'html',
+  cache: false,
+  debug: false,
 });
 
 bootstrap.routes(app);
