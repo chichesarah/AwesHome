@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+  <script type='text/javascript'>
+    <%- include script.js %>
+
+    const options = {
+      url: 'aweshome/household/<%= householdId.toString() %>',
+      android_package_name: 'com.aweshome',
+    }
+
+    deepLink(options)
+  </script>
+</body>
+
+</html>

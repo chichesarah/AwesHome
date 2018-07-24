@@ -47,7 +47,7 @@ app.use(async (ctr, next) => {
 });
 
 render(app, {
-  root: path.join(__dirname, 'view'),
+  root: path.join(__dirname, 'deeplink/template'),
   layout: 'index',
   viewExt: 'html',
   cache: false,
