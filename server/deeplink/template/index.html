@@ -9,9 +9,9 @@
     <%- include script.js %>
 
     const options = {
-      url: 'aweshome://household/<%= id.toString() %>',
+      url: '',
       android_package_name: 'com.aweshome',
-      ios_store_link: '<%= ios_store_link %>',
+      ios_store_link: 'aweshome://household/<%= householdId.toString() %>',
       fallback: '',
     }
 

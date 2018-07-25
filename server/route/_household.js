@@ -328,11 +328,4 @@ export const routerDeep = koaRouter({
   * @apiSuccessExample {json} Success-Response:
     Deep link needed for redirect to application
   */
-routerDeep.get('/:householdId', async (req, next) => {
-  const data = {
-    id: req.params.householdId,
-    ios_store_link: req.query.ios_store_link,
-  };
-
-  return req.render('index', data);
-});
+routerDeep.get('/:householdId', async (req, next) => req.render('index', req.params));
