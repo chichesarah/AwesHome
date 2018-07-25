@@ -152,6 +152,36 @@ class FeedAction {
     });
   }
 
+  joinHousehold(data) {
+    return feedWrite.create({
+      userId: data._id,
+      householdId: data.householdId,
+      type: 'join household',
+      operation: [
+        {
+          id: data._id,
+          name: data.neighbourhood,
+          type: 'household',
+        },
+      ],
+    });
+  }
+
+  leaveHousehold(data) {
+    return feedWrite.create({
+      userId: data._id,
+      householdId: null,
+      type: 'remove household',
+      operation: [
+        {
+          id: data._id,
+          name: data.neighbourhood,
+          type: 'household',
+        },
+      ],
+    });
+  }
+
   async getAllFeed(userId) {
     const user = await userWrite.findById({ id: userId });
 
