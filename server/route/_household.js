@@ -311,4 +311,21 @@ export const routerDeep = koaRouter({
   prefix: '/api/v1/deeplink',
 });
 
+/**
+  * @apiName DeepLink
+  * @api {GET} /api/v1/deeplink/:householdId
+
+  * @apiVersion 0.0.1
+
+  * @apiGroup Household
+
+  * @apiHeader {String} Content-Type=application/json Content-Type
+
+  * @apiExample {curl} Example usage:
+  * curl -X GET \
+    http://localhost:3000/api/v1/deeplink/5b44b9626b7f1a82c4ce1473 \
+
+  * @apiSuccessExample {json} Success-Response:
+    Deep link needed for redirect to application
+  */
 routerDeep.get('/:householdId', async (req, next) => req.render('index', req.params));
