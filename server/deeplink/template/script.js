@@ -20,6 +20,8 @@ function deepLink(options) {
     fallback,
   };
 
+  console.log(urls.iosStoreLink)
+
   const isMobile = {
     android: () => /Android/i.test(ua),
     ios: () => /iPhone|iPad|iPod/i.test(ua),
