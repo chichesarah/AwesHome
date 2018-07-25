@@ -34,10 +34,10 @@ router.all('/*', bearerMiddleware);
    * @apiParam  {String} token udid/token
 
    * @apiExample {curl} Example usage:
-   *  curl -X POST \
-   *  http://localhost:3000/api/v1/udid/create \
-   *  -H 'Authorization: Bearer VvMjAY0EHT+v+a8WcnTESayg8PugwwEOEjo1T4p4WHocGJBgwIfze6hv2LKQJK582XByD3iCjoorAe9HpTmJy/T9c6YYuCDPvD0E6Zu+fAtJwa/tR33S8pq9FJpboQ==' \
-   *  -H 'Content-Type: application/json' \
+   *  curl -X POST
+   *  http://localhost:3000/api/v1/udid/create
+   *  -H 'Authorization: Bearer VvMjAY0EHT+v+a8WcnTESayg8PugwwEOEjo1T4p4WHocGJBgwIfze6hv2LKQJK582XByD3iCjoorAe9HpTmJy/T9c6YYuCDPvD0E6Zu+fAtJwa/tR33S8pq9FJpboQ=='
+   *  -H 'Content-Type: application/json'
    *  -d '{
    *  "token": "EOEjo1T4p4WHocGJBgwIfze6hv2LKQJK582XByD3iCjoorAe9HpTmJy/T"
    * }'
@@ -88,10 +88,10 @@ router.post('/create', async (req, next) => {
    * @apiHeader {String} Authorization User bearer access token
 
    * @apiExample {curl} Example usage:
-   *  curl -X DELETE \
-   *  http://localhost:3000/api/v1/udid/delete/5b48da7f40ac0627cc84304a \
-   *  -H 'Authorization: Bearer VvMjAY0EHT+v+a8WcnTESayg8PugwwEOEjo1T4p4WHocGJBgwIfze6hv2LKQJK582XByD3iCjoorAe9HpTmJy/T9c6YYuCDPvD0E6Zu+fAtJwa/tR33S8pq9FJpboQ==' \
-   *  -H 'Content-Type: application/json' \
+   *  curl -X DELETE
+   *  http://localhost:3000/api/v1/udid/delete/5b48da7f40ac0627cc84304a
+   *  -H 'Authorization: Bearer VvMjAY0EHT+v+a8WcnTESayg8PugwwEOEjo1T4p4WHocGJBgwIfze6hv2LKQJK582XByD3iCjoorAe9HpTmJy/T9c6YYuCDPvD0E6Zu+fAtJwa/tR33S8pq9FJpboQ=='
+   *  -H 'Content-Type: application/json'
 
    * @apiSuccessExample {json} Success-Response:
       {

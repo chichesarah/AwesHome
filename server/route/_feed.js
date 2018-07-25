@@ -36,9 +36,9 @@ router.all('/*', bearerMiddleware);
    * @apiHeader  {String} Authorization User bearer access token
 
    * @apiExample {curl} Example usage:
-   *  curl -X GET \
-   *  http://localhost:3000/api/v1/feed/all \
-   *  -H 'Authorization: Bearer f2d2aztgKDYsvk74Rkv+fl7LXpvU8Q8PEXkjI2zZAX1oYIvSii/fXVXysE828uuXZ1bIuQ8+V94aWbIAiB0NO2axbZSB6t+GqtXMb1g9j2m1ACRHxEdf6G39nozwBA==' \
+   *  curl -X GET
+   *  http://localhost:3000/api/v1/feed/all
+   *  -H 'Authorization: Bearer f2d2aztgKDYsvk74Rkv+fl7LXpvU8Q8PEXkjI2zZAX1oYIvSii/fXVXysE828uuXZ1bIuQ8+V94aWbIAiB0NO2axbZSB6t+GqtXMb1g9j2m1ACRHxEdf6G39nozwBA=='
 
    * @apiSuccessExample {json} Success-Response:
       [

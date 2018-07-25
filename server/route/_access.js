@@ -415,8 +415,8 @@ router.post('/login', async (req, next) => {
    * @apiParam  {String} token Facebook user token
 
    * @apiExample {curl} Example usage:
-   * curl -X POST /api/v1/access/facebook \
-   *  -H 'content-type: application/json' \
+   * curl -X POST /api/v1/access/facebook
+   *  -H 'content-type: application/json'
    *    -d '{"token": "EAAC6ZAnan09YBADMZA502Xhpu0abBD76iwwU4hU8DSZANuqJxIClel1YAfohTEbm898MVmJg0xzl6kr6jonJClcdBllUpLtejXXDodSGysUWfDCSkiPS3aIiC6nSMOGkvJIMtbxsyJ5ZCMMkloNlpFctW86qCuB3ajArRdA6RQNMp6LORK2kOPlh6Ck6YfRExVbZCHSeqlAkQsRDFnzu9LySPBZAqknD5WdlZBVUJfFuwZDZD"}'
 
    * @apiSuccessExample {json} Success-Response:
