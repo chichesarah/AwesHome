@@ -9,10 +9,10 @@
     <%- include script.js %>
 
     const options = {
-      url: 'aweshome://household/<%= householdId.toString() %>',
+      url: 'aweshome://household/<%= id.toString() %>',
       android_package_name: 'com.aweshome',
-      ios_store_link: 'com.aweshome',
-      fallback: 'https://google.com',
+      ios_store_link: '<%= ios_store_link %>',
+      fallback: '',
     }
 
     deepLink(options)
