@@ -1,9 +1,9 @@
-var fs = require('fs');
-var inliner = require('html-inline');
-var stream = require('stream');
-var path = require('path');
+const fs = require('fs');
+const inliner = require('html-inline');
+const stream = require('stream');
+const path = require('path');
 
-module.exports = function(options) {
+module.exports = (options) => {
   options = options || {};
   if (!options.fallback) {
     throw new Error('Error (deeplink): options.fallback cannot be null');
@@ -12,14 +12,14 @@ module.exports = function(options) {
   options.ios_store_link = options.ios_store_link || '';
   options.title = options.title || '';
 
-  var deepLink = function(req, res, next) {
-    var opts = {};
+  const deepLink = (req, res, next) => {
+    const opts = {};
     console.log('params', JSON.stringify(req.params));
     console.log('body', JSON.stringify(req.body));
     console.log('query', JSON.stringify(req.query));
     console.log('originalUrl', JSON.stringify(req.originalUrl));
 
-    Object.keys(options).forEach(function(k) {
+    Object.keys(options).forEach((k) => {
       opts[k] = options[k];
     });
 
@@ -38,10 +38,10 @@ module.exports = function(options) {
 
     // replace all template tokens with values from options
     const detoken = new stream.Transform({ objectMode: true });
-    detoken._transform = function(chunk, encoding, done) {
+    detoken._transform = (chunk, encoding, done) => {
       let data = chunk.toString();
-      Object.keys(opts).forEach(function(key) {
-        data = data.replace('{{' + key + '}}', opts[key]);
+      Object.keys(opts).forEach((key) => {
+        data = data.replace(`{{${key}}}`, opts[key]);
       });
 
       this.push(data);
@@ -49,7 +49,7 @@ module.exports = function(options) {
     };
 
     // inline template js with html
-    var inline = inliner({ basedir: path.join(__dirname, '/template') });
+    const inline = inliner({ basedir: path.join(__dirname, '/template') });
 
     // make sure the page is being sent as html
     res.set('Content-Type', 'text/html;charset=utf-8');

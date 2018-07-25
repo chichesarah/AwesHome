@@ -3,7 +3,7 @@ function deepLink(options) {
   const url = options.url || '';
   const iosStoreLink = options.ios_store_link;
   const androidPackageName = options.android_package_name;
-  const playStoreLink = 'https://market.android.com/details?id=' + androidPackageName;
+  const playStoreLink = `https://market.android.com/details?id=${androidPackageName}`;
   const ua = window.navigator.userAgent;
 
   // split the first :// from the url string
@@ -15,32 +15,19 @@ function deepLink(options) {
     deepLink: url,
     iosStoreLink,
     android_intent:
-      'intent://' + path + '#Intent;scheme=' + scheme + ';package=' + androidPackageName + ';end;',
+      `intent://${path}#Intent;scheme=${scheme};package=${androidPackageName};end;`,
     playStoreLink,
     fallback,
   };
 
-  let isMobile = {
-    android: function() {
-      return /Android/i.test(ua);
-    },
-    ios: function() {
-      return /iPhone|iPad|iPod/i.test(ua);
-    },
+  const isMobile = {
+    android: () => /Android/i.test(ua),
+    ios: () => /iPhone|iPad|iPod/i.test(ua),
   };
-
-  // fallback to the application store on mobile devices
-  if (isMobile.ios() && urls.deepLink && urls.iosStoreLink) {
-    iosLaunch();
-  } else if (isMobile.android() && androidPackageName) {
-    androidLaunch();
-  } else {
-    window.location = urls.fallback;
-  }
 
   function launchWekitApproach(url, fallback) {
     document.location = url;
-    setTimeout(function() {
+    setTimeout(() => {
       document.location = fallback;
     }, 250);
   }
@@ -50,15 +37,15 @@ function deepLink(options) {
     iframe.style.border = 'none';
     iframe.style.width = '1px';
     iframe.style.height = '1px';
-    iframe.onload = function() {
+    iframe.onload = () => {
       document.location = url;
     };
     iframe.src = url;
 
-    window.onload = function() {
+    window.onload = () => {
       document.body.appendChild(iframe);
 
-      setTimeout(function() {
+      setTimeout(() => {
         window.location = fallback;
       }, 25);
     };
@@ -81,6 +68,15 @@ function deepLink(options) {
     } else {
       launchIframeApproach(url, urls.playStoreLink || urls.fallback);
     }
+  }
+
+  // fallback to the application store on mobile devices
+  if (isMobile.ios() && urls.deepLink && urls.iosStoreLink) {
+    iosLaunch();
+  } else if (isMobile.android() && androidPackageName) {
+    androidLaunch();
+  } else {
+    window.location = urls.fallback;
   }
 }
 
