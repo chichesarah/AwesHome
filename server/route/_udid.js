@@ -77,7 +77,7 @@ router.post('/create', async (req, next) => {
    * @apiSuccess  {String} updatedAt Date
 
    * @apiName UpdateUdid
-   * @api {PUT} /api/v1/udid/update/id Update udid
+   * @api {PUT} /api/v1/udid/update Update udid
 
    * @apiVersion 0.0.1
 
