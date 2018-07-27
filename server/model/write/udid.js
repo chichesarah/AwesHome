@@ -12,22 +12,39 @@ class UdidModel {
     });
   }
 
-  async findTokenById(userIdList) {
-    const result = await udidWrite.findRows({
+  findTokenById(userIdList) {
+    return udidWrite.findRows({
       query: {
         userId: {
           $in: userIdList,
         },
       },
     });
+  }
 
-    return result;
+  findUdidByToken(token) {
+    return udidWrite.findRow({
+      query: {
+        token,
+      },
+    });
   }
 
   findUdidById(_id) {
     return udidWrite.findRow({
       query: {
         _id,
+      },
+    });
+  }
+
+  update(data) {
+    return udidWrite.updateRow({
+      query: {
+        _id: data._id,
+      },
+      data: {
+        token: data.newToken,
       },
     });
   }
