@@ -54,7 +54,7 @@ class UdidValidate {
     return Object.assign(udidObj, { newToken: body.newToken });
   }
 
-  async delete(params, userId) {
+  async delete(params) {
     const errorList = validator.check(params, {
       id: {
         isMongoId: {
@@ -71,10 +71,6 @@ class UdidValidate {
 
     if (!udidObj) {
       throw ([{ param: 'id', message: 'This udid not found' }]);
-    }
-
-    if (udidObj.userId.toString() !== userId.toString()) {
-      throw ([{ param: 'userId', message: 'You can not delete this udid, have not permissions' }]);
     }
 
     return params.id;

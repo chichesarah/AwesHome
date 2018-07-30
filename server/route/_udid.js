@@ -139,7 +139,7 @@ router.put('/update', async (req, next) => {
    * @apiSuccess  {Number} __v Number
 
    * @apiName DeleteUdid
-   * @api {DELETE} /api/v1/udid/delete/id Delete udid
+   * @api {DELETE} /udid/delete/id Delete udid
 
    * @apiVersion 0.0.1
 
@@ -150,7 +150,7 @@ router.put('/update', async (req, next) => {
 
    * @apiExample {curl} Example usage:
    *  curl -X DELETE
-   *  http://localhost:3000/api/v1/udid/delete/5b48da7f40ac0627cc84304a
+   *  http://localhost:3000/udid/delete/5b48da7f40ac0627cc84304a
    *  -H 'Authorization: Bearer VvMjAY0EHT+v+a8WcnTESayg8PugwwEOEjo1T4p4WHocGJBgwIfze6hv2LKQJK582XByD3iCjoorAe9HpTmJy/T9c6YYuCDPvD0E6Zu+fAtJwa/tR33S8pq9FJpboQ=='
    *  -H 'Content-Type: application/json'
 
@@ -166,14 +166,18 @@ router.put('/update', async (req, next) => {
       }
 
    * @apiErrorExample {json} Error-Response:
-    [{ param : 'accessToken', message : 'Access token is incorrect'}]
+    [{ param : 'id', message : 'Udid not found'}]
 
    * @apiUse accessTokenError
 */
 
-router.delete('/delete/:id', async (req, next) => {
+export const routerUdid = koaRouter({
+  prefix: '/udid',
+});
+
+routerUdid.delete('/delete/:id', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    const udid = await udidValidate.delete(req.params, req.request.user._id);
+    const udid = await udidValidate.delete(req.params);
 
     return udidAction.delete(udid);
   });
