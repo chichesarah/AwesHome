@@ -26,9 +26,9 @@ router.all('/*', bearerMiddleware);
   * @apiParam  {String} endDate     End date of period
 
   * @apiExample {curl} Example usage:
-  * curl -X GET \
-  *   'http://localhost:3000/api/v1/calendar/task?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z' \
-  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ==' \
+  * curl -X GET
+  *   'http://localhost:3000/api/v1/calendar/task?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z'
+  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ=='
 
   * @apiSuccessExample {json} Success-Response:
   {
@@ -108,9 +108,9 @@ router.get('/task', async (req, next) => {
   * @apiParam  {String} endDate     End date of period
 
   * @apiExample {curl} Example usage:
-  * curl -X GET \
-  *   'http://localhost:3000/api/v1/calendar/task?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z' \
-  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ==' \
+  * curl -X GET
+  *   'http://localhost:3000/api/v1/calendar/task?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z'
+  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ=='
 
   * @apiSuccessExample {json} Success-Response:
   {
@@ -317,9 +317,9 @@ router.get('/fulltask', async (req, next) => {
   * @apiParam  {String} endDate     End date of period
 
   * @apiExample {curl} Example usage:
-  * curl -X GET \
-  *   'http://localhost:3000/api/v1/calendar/event?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z' \
-  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ==' \
+  * curl -X GET
+  *   'http://localhost:3000/api/v1/calendar/event?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z'
+  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ=='
 
   * @apiSuccessExample {json} Success-Response:
       {
@@ -366,9 +366,9 @@ router.get('/event', async (req, next) => {
   * @apiParam  {String} endDate     End date of period
 
   * @apiExample {curl} Example usage:
-  * curl -X GET \
-  *   'http://localhost:3000/api/v1/calendar/fullevent?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z' \
-  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ==' \
+  * curl -X GET
+  *   'http://localhost:3000/api/v1/calendar/fullevent?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z'
+  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ=='
 
   * @apiSuccessExample {json} Success-Response:
       {
@@ -446,9 +446,9 @@ router.get('/fullEvent', async (req, next) => {
   * @apiParam  {String} endDate     End date of period
 
   * @apiExample {curl} Example usage:
-  * curl -X GET \
-  *   'http://localhost:3000/api/v1/calendar/list?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z' \
-  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ==' \
+  * curl -X GET
+  *   'http://localhost:3000/api/v1/calendar/list?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z'
+  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ=='
 
   * @apiSuccessExample {json} Success-Response:
             {
@@ -511,9 +511,9 @@ router.get('/list', async (req, next) => {
   * @apiParam  {String} endDate     End date of period
 
   * @apiExample {curl} Example usage:
-  * curl -X GET \
-  *   'http://localhost:3000/api/v1/calendar/fullList?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z' \
-  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ==' \
+  * curl -X GET
+  *   'http://localhost:3000/api/v1/calendar/fullList?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z'
+  *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ=='
 
   * @apiSuccessExample {json} Success-Response:
             {

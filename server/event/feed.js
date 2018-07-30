@@ -54,3 +54,13 @@ eventBus.onSeries('addGuestPushEventObj', async (data, next) => {
   await notificationAction.addNewGuestPushEventObj(data);
   await next();
 });
+
+eventBus.onSeries('joinHousehold', async (data, next) => {
+  await feedAction.joinHousehold(data);
+  await next();
+});
+
+eventBus.onSeries('leaveHousehold', async (data, next) => {
+  await feedAction.leaveHousehold(data);
+  await next();
+});

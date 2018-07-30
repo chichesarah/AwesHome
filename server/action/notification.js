@@ -1,5 +1,6 @@
 import config from '../config';
 import udidWrite from '../model/write/udid';
+import userWrite from '../model/write/user';
 
 const FCM = require('fcm-node');
 
@@ -8,13 +9,13 @@ const fcm = new FCM(config.notification.serverKey);
 class notificationAction {
   async addPushTaskEvent(data) {
     const udid = (await udidWrite.findTokenById(data.assignee)).map(item => item.token);
+    const user = await userWrite.findById(data.ownerId);
 
     const message = {
       registration_ids: udid,
       collapse_key: 'your_collapse_key',
       notification: {
-        title: `Create a task ${data.taskName}`,
-        body: 'Do this',
+        title: `- ${user.firstName} ${user.lastName} added ${data.taskName} to the task organizer.`,
       },
       data: {
         id: data._id,
@@ -30,13 +31,13 @@ class notificationAction {
 
   async createPushListEvent(data) {
     const udid = (await udidWrite.findTokenById(data.member)).map(item => item.token);
+    const user = await userWrite.findById(data.ownerId);
 
     const message = {
       registration_ids: udid,
       collapse_key: 'your_collapse_key',
       notification: {
-        title: `Create a list ${data.name}`,
-        body: 'You create a new list',
+        title: `- ${user.firstName} ${user.lastName} created the list ${data.name}.`,
       },
       data: {
         id: data._id,
@@ -52,13 +53,13 @@ class notificationAction {
 
   async createPushEventObj(data) {
     const udid = (await udidWrite.findTokenById(data.member)).map(item => item.token);
+    const user = await userWrite.findById(data.ownerId);
 
     const message = {
       registration_ids: udid,
       collapse_key: 'your_collapse_key',
       notification: {
-        title: `Create a event ${data.title}`,
-        body: 'You create a new event',
+        title: `- ${user.firstName} ${user.lastName} added ${data.title}.`,
       },
       data: {
         id: data._id,
@@ -82,7 +83,6 @@ class notificationAction {
       collapse_key: 'your_collapse_key',
       notification: {
         title: `Create a event ${data.event.title}`,
-        body: 'You create a new event',
       },
       data: {
         id: data.event._id,

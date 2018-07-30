@@ -40,12 +40,12 @@ router.all('/*', bearerMiddleware);
    * @apiParam  {Array} member Member
 
    * @apiExample {curl} Example usage:
-   *   curl -X POST \
-   *   http://localhost:3000/api/v1/sharedList/create \
-   *   -H 'Authorization: Bearer eBvM9gTFmDh/YtaWxUMrIPzWU+1kxNLXc+ErlQCqF6rzyYJdc/lySe2JCMQQs15E6Eyb6ARKrJeBQHYWI7g6cDO+nkMGPO46RFWmLAZ1pbGLQalOFYqcMKXy2dg03w==' \
-   *   -H 'Cache-Control: no-cache' \
-   *   -H 'Content-Type: application/json' \
-   *   -H 'Postman-Token: 8142dcd5-daf7-4318-bb20-bf126ab73665' \
+   *   curl -X POST
+   *   http://localhost:3000/api/v1/sharedList/create
+   *   -H 'Authorization: Bearer eBvM9gTFmDh/YtaWxUMrIPzWU+1kxNLXc+ErlQCqF6rzyYJdc/lySe2JCMQQs15E6Eyb6ARKrJeBQHYWI7g6cDO+nkMGPO46RFWmLAZ1pbGLQalOFYqcMKXy2dg03w=='
+   *   -H 'Cache-Control: no-cache'
+   *   -H 'Content-Type: application/json'
+   *   -H 'Postman-Token: 8142dcd5-daf7-4318-bb20-bf126ab73665'
    *   -d '{"name": "third new name","member": ["5b4471521d39a96dd14a53c6", "5b4473ae22bd3b6f0861bc4e"]}'
 
    * @apiSuccessExample {json} Success-Response:
@@ -89,10 +89,10 @@ router.post('/create', async (req, next) => {
    * @apiParam  {String} memberId Member id
 
    * @apiExample {curl} Example usage:
-   *  curl -X PUT \
-   *  http://localhost:3000/api/v1/sharedList/addItem \
-   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q==' \
-   *  -H 'Content-Type: application/json' \
+   *  curl -X PUT
+   *  http://localhost:3000/api/v1/sharedList/addItem
+   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q=='
+   *  -H 'Content-Type: application/json'
    *  -d '{
    *  "sharedListId": "5b45afa621ec57b9f189fd00",
    *  "name": "first item name",
@@ -139,10 +139,10 @@ router.put('/addItem', async (req, next) => {
    * @apiParam  {String} itemId Item id
 
    * @apiExample {curl} Example usage:
-   *  curl -X PUT \
-   *  http://localhost:3000/api/v1/sharedList/checkItem \
-   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q==' \
-   *  -H 'Content-Type: application/json' \
+   *  curl -X PUT
+   *  http://localhost:3000/api/v1/sharedList/checkItem
+   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q=='
+   *  -H 'Content-Type: application/json'
    *  -d '{
    *  "sharedListId": "5b45afa621ec57b9f189fd00",
    *  "itemId": "5b45dc3a32c623d06dc24fb8",
@@ -185,9 +185,9 @@ router.put('/checkItem', async (req, next) => {
    * @apiHeader  {String} Authorization User bearer access token
 
    * @apiExample {curl} Example usage:
-   *  curl -X DELETE \
-   *  http://localhost:3000/api/v1/sharedList/5b45afa621ec57b9f189fd00 \
-   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q==' \
+   *  curl -X DELETE
+   *  http://localhost:3000/api/v1/sharedList/5b45afa621ec57b9f189fd00
+   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q=='
 
    * @apiSuccessExample {json} Success-Response:
     {"isDeleted": false,"householdId": null,"member": ["5b4471521d39a96dd14a53c6","5b4473ae22bd3b6f0861bc4e"],"_id": "5b45afa621ec57b9f189fd00","name": "first item name 2 2 2","ownerId": "5b4473ae22bd3b6f0861bc4e","createdAt": "2018-07-11T07:20:06.493Z","updatedAt": "2018-07-11T07:20:06.493Z","item": [],"__v": 14}
@@ -223,9 +223,9 @@ router.delete('/:id', async (req, next) => {
    * @apiHeader  {String} Authorization User bearer access token
 
    * @apiExample {curl} Example usage:
-   *  curl -X GET \
-   *  http://localhost:3000/api/v1/sharedList/all \
-   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q==' \
+   *  curl -X GET
+   *  http://localhost:3000/api/v1/sharedList/all
+   *  -H 'Authorization: Bearer exJtREkJH4o3XmH6+Qtta5IDzTlhNUvh6MwYlKN9p+yZoEG1n9VOoMFKoAgrMh2IacR7d7ZU8s3UANcqHPvK2a79XNugckEckhxZEFZSvNVGTV6+qXptnDKsDlU12Q=='
 
    * @apiSuccessExample {json} Success-Response:
       [{"_id": "5b459a25c422b4a74e72fe8d","isDeleted": false,"householdId": null,"member": ["5b4471521d39a96dd14a53c6","5b4473ae22bd3b6f0861bc4e","5b4471521d39a96dd14a53c6"],"name": "third new name","ownerId": "5b4471521d39a96dd14a53c6","createdAt": "2018-07-11T05:48:21.487Z","updatedAt": "2018-07-11T05:48:21.487Z","item": [],"__v": 0},]

@@ -10,7 +10,7 @@ class CalendarAction {
     const userData = _.cloneDeep(data.userObj);
 
     const startDate = convertDataUtc(data.body.startDate);
-    let endDate = convertDataUtc(data.body.endDate);
+    const endDate = convertDataUtc(data.body.endDate);
 
     const tasks = await taskWrite.getTasksByDuration({
       householdId: userData.householdId,
@@ -23,14 +23,14 @@ class CalendarAction {
     tasks.forEach((task) => {
       let nextDate = convertDataUtc(task.dueDate);
 
-      const taskEndDate = task.endDate ? convertDataUtc(task.endDate) : endDate;
-      endDate = taskEndDate < endDate ? taskEndDate : endDate;
+      let taskEndDate = task.endDate ? convertDataUtc(task.endDate) : endDate;
+      taskEndDate = taskEndDate.isBefore(endDate) ? taskEndDate : endDate;
 
-      while (nextDate < startDate && task.repeat !== 'not repeat') {
+      while (nextDate.isBefore(startDate) && task.repeat !== 'not repeat') {
         nextDate = countNextDate(nextDate, task.repeat);
       }
 
-      while (nextDate < endDate) {
+      while (nextDate.isBefore(taskEndDate) || nextDate.isSame(taskEndDate)) {
         const date = nextDate.format('YYYY-MM-DD');
 
         const taskObject = {

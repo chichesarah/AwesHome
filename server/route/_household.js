@@ -37,9 +37,9 @@ router.all('/*', bearerMiddleware);
   * @apiHeader {String} Authorization User bearer access token
 
   * @apiExample {curl} Example usage:
-  * curl -X POST /api/v1/household/create \
-  *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg==' \
-  *     -H 'content-type: application/json' \
+  * curl -X POST /api/v1/household/create
+  *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg=='
+  *     -H 'content-type: application/json'
 
   * @apiSuccessExample {json} Success-Response:
   {
@@ -84,7 +84,7 @@ router.post('/create', async (req, next) => {
 
 /**
   * @apiName ConnectToHousehold
-  * @api {PUT} /api/v1/connect/{_id} Connect to household
+  * @api {PUT} /api/v1/household/connect/{_id} Connect to household
 
   * @apiVersion 0.0.1
 
@@ -96,9 +96,9 @@ router.post('/create', async (req, next) => {
   * @apiParam  {String}  _id Household id
 
   * @apiExample {curl} Example usage:
-  * curl -X PUT /api/v1/household/connect/5b4ef3b60622f2430bed6f0b \
-  *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg==' \
-  *     -H 'content-type: application/json' \
+  * curl -X PUT /api/v1/household/connect/5b4ef3b60622f2430bed6f0b
+  *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg=='
+  *     -H 'content-type: application/json'
 
   * @apiSuccessExample {json} Success-Response:
   {
@@ -154,9 +154,9 @@ router.put('/connect/:_id', async (req, next) => {
   * @apiHeader {String} Authorization User bearer access token
 
   * @apiExample {curl} Example usage:
-  * curl -X PUT /api/v1/household/leave \
-  *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg==' \
-  *     -H 'content-type: application/json' \
+  * curl -X PUT /api/v1/household/leave
+  *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg=='
+  *     -H 'content-type: application/json'
 
   * @apiSuccessExample {json} Success-Response:
   {
@@ -212,9 +212,9 @@ router.put('/leave', async (req, next) => {
   * @apiParam  {String}  _id Household id
 
   * @apiExample {curl} Example usage:
-  * curl -X GET /api/v1/household/my \
-  *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg==' \
-  *     -H 'content-type: application/json' \
+  * curl -X GET /api/v1/household/my
+  *     -H 'authorization: Bearer HFWlsKleEJ3BV2IEpghcs8m+Kk5jx/i82VdF5UEfqG6b712dnpC3eFqP1ghTjwjd+wdDGlDHr2dBBErf8lLFgA93mS4nkNhzlha7P4DOl8QQVBkRNvx94HLtXByrNg=='
+  *     -H 'content-type: application/json'
 
   * @apiSuccessExample {json} Success-Response:
   {
@@ -265,9 +265,9 @@ router.get('/my', async (req, next) => {
   * @apiParam  {String} [fullAddress] Household fullAddress
 
   * @apiExample {curl} Example usage:
-  * curl -X PUT http://localhost:3000/api/v1/household/update \
-  *   -H 'authorization: Bearer WvjrYW5aeK/JX+5lXjTG3rTg0U6ODn2xUwEbESRhhv/TfqBtScG0bW1CFi6HINecGbZKGhjkkLHCQcpseFI4GIDXiZGa/SYia68VkuIy7bVNwGo/oX1p9oTSge8hWw==' \
-  *   -H 'content-type: application/json' \
+  * curl -X PUT http://localhost:3000/api/v1/household/update
+  *   -H 'authorization: Bearer WvjrYW5aeK/JX+5lXjTG3rTg0U6ODn2xUwEbESRhhv/TfqBtScG0bW1CFi6HINecGbZKGhjkkLHCQcpseFI4GIDXiZGa/SYia68VkuIy7bVNwGo/oX1p9oTSge8hWw=='
+  *   -H 'content-type: application/json'
   *     -d '{"addressLine": "910 N Harbor Dr","city": "San Diego","zip": "92101","state": "CA","fullAddress": "910 N Harbor Dr, San Diego, CA 92101, USA"}'
 
   * @apiSuccessExample {json} Success-Response:
@@ -305,3 +305,27 @@ router.put('/update', async (req, next) => {
     return householdAction.update(reqData);
   });
 });
+
+// router for deeplink
+export const routerDeep = koaRouter({
+  prefix: '/api/v1/deeplink',
+});
+
+/**
+  * @apiName DeepLink
+  * @api {GET} /api/v1/deeplink/:householdId
+
+  * @apiVersion 0.0.1
+
+  * @apiGroup Household
+
+  * @apiHeader {String} Content-Type=application/json Content-Type
+
+  * @apiExample {curl} Example usage:
+  * curl -X GET
+    http://localhost:3000/api/v1/deeplink/5b44b9626b7f1a82c4ce1473
+
+  * @apiSuccessExample {json} Success-Response:
+    Deep link needed for redirect to application
+  */
+routerDeep.get('/:householdId', async (req, next) => req.render('index', req.params));

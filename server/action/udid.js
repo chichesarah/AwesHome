@@ -7,6 +7,10 @@ class UdidAction {
     return udidWrite.create(udidToken, userId);
   }
 
+  update(data) {
+    return udidWrite.update(data);
+  }
+
   delete(_id) {
     return udidWrite.delete(_id);
   }
