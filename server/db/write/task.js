@@ -3,12 +3,12 @@ import _ from 'lodash';
 import standardField from '../../component/db/dbStandardField';
 
 const repeatValues = [
-  'not repeat',
-  'day',
-  'week',
-  '2 weeks',
-  'month',
-  'year',
+  'Does not repeat',
+  'Every day',
+  'Every week',
+  'Every 2 weeks',
+  'Every month',
+  'Every year',
 ];
 
 export default new mongoose.Schema(

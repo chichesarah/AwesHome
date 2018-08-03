@@ -21,12 +21,12 @@ const taskFreeData = [
 ];
 
 const repeatValues = [
-  'not repeat',
-  'day',
-  'week',
-  '2 weeks',
-  'month',
-  'year',
+  'Does not repeat',
+  'Every day',
+  'Every week',
+  'Every 2 weeks',
+  'Every month',
+  'Every year',
 ];
 
 class TaskValidate {
