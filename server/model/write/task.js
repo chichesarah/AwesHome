@@ -77,6 +77,32 @@ taskWrite.getTasksByHousehold = _id =>
         },
       },
       {
+        $unwind: '$assignee',
+      },
+      {
+        $project: {
+          isDeleted: 1,
+          householdId: 1,
+          reminder: 1,
+          nextDate: 1,
+          endDate: 1,
+          taskNameId: 1,
+          dueDate: 1,
+          repeat: 1,
+          ownerId: 1,
+          taskName: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          'assignee._id': 1,
+          'assignee.firstName': 1,
+          'assignee.lastName': 1,
+          'assignee.avatar': 1,
+          'assignee.createdAt': 1,
+          'assignee.updatedAt': 1,
+          'assignee.isDeleted': 1,
+        },
+      },
+      {
         $group: {
           _id: {
             _id: '$_id',
@@ -143,14 +169,36 @@ taskWrite.getByAssignedUser = async (_id, householdId) =>
           as: 'assignee',
         },
       },
-      // {
-      //   $project: {
-      //     assignee: '$assignee',
-      //   },
-      // },
+      {
+        $unwind: '$assignee',
+      },
+      {
+        $project: {
+          isDeleted: 1,
+          householdId: 1,
+          reminder: 1,
+          nextDate: 1,
+          endDate: 1,
+          taskNameId: 1,
+          dueDate: 1,
+          repeat: 1,
+          ownerId: 1,
+          taskName: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          'assignee._id': 1,
+          'assignee.firstName': 1,
+          'assignee.lastName': 1,
+          'assignee.avatar': 1,
+          'assignee.createdAt': 1,
+          'assignee.updatedAt': 1,
+          'assignee.isDeleted': 1,
+        },
+      },
       {
         $group: {
           _id: {
+            _id: '$_id',
             isDeleted: '$isDeleted',
             householdId: '$householdId',
             reminder: '$reminder',
@@ -171,7 +219,7 @@ taskWrite.getByAssignedUser = async (_id, householdId) =>
       },
       {
         $project: {
-          _id: '$_id',
+          _id: '$_id._id',
           isDeleted: '$_id.isDeleted',
           householdId: '$_id.householdId',
           reminder: '$_id.reminder',
@@ -186,9 +234,6 @@ taskWrite.getByAssignedUser = async (_id, householdId) =>
           createdAt: '$_id.createdAt',
           updatedAt: '$_id.updatedAt',
         },
-      },
-      {
-        $unwind: '$assignee',
       },
     ],
   });
