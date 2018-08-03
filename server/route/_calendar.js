@@ -295,7 +295,7 @@ router.get('/task', async (req, next) => {
   * @apiUse accessTokenError
   */
 
-router.get('/fulltask', async (req, next) => {
+router.get('/fullTask', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
     const reqData = await calendarValidate.duration(req.query, req.request.user);
     const fullResponse = true;

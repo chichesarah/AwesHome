@@ -26,7 +26,7 @@ class CalendarAction {
       let taskEndDate = task.endDate ? convertDataUtc(task.endDate) : endDate;
       taskEndDate = taskEndDate.isBefore(endDate) ? taskEndDate : endDate;
 
-      while (nextDate.isBefore(startDate) && task.repeat !== 'not repeat') {
+      while (nextDate.isBefore(startDate) && task.repeat !== 'Does not repeat') {
         nextDate = countNextDate(nextDate, task.repeat);
       }
 
@@ -48,7 +48,7 @@ class CalendarAction {
           calendar[date].push(taskObject);
         }
 
-        if (task.repeat === 'not repeat') {
+        if (task.repeat === 'Does not repeat') {
           break;
         }
 

@@ -251,15 +251,101 @@ taskWrite.getOverdueTasks = today =>
     },
   });
 
-taskWrite.getTasksByDuration = ({ householdId, startDate, endDate }) =>
-  taskWrite.findRows({
-    query: {
-      householdId,
-      dueDate: { $lte: endDate },
-      $or: [
-        { endDate: { $exists: false } },
-        { endDate: { $eq: null } },
-        { endDate: { $gte: startDate } },
-      ],
-    },
+taskWrite.getTasksByDuration = ({ householdId, startDate, endDate }) => {
+  const start = startDate.toDate();
+  const end = endDate.toDate();
+
+  return taskWrite.aggregateRows({
+    query: [
+      {
+        $match: {
+          householdId,
+          dueDate: { $lte: end },
+          $or: [
+            { endDate: { $exists: false } },
+            { endDate: { $eq: null } },
+            { endDate: { $gte: start } },
+          ],
+        },
+      },
+      {
+        $unwind: '$assignee',
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'assignee',
+          foreignField: '_id',
+          as: 'assignee',
+        },
+      },
+      {
+        $unwind: '$assignee',
+      },
+      {
+        $project: {
+          isDeleted: 1,
+          householdId: 1,
+          reminder: 1,
+          nextDate: 1,
+          endDate: 1,
+          taskNameId: 1,
+          dueDate: 1,
+          repeat: 1,
+          ownerId: 1,
+          taskName: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          'assignee._id': 1,
+          'assignee.firstName': 1,
+          'assignee.lastName': 1,
+          'assignee.avatar': 1,
+          'assignee.avatarId': 1,
+          'assignee.createdAt': 1,
+          'assignee.updatedAt': 1,
+          'assignee.isDeleted': 1,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            _id: '$_id',
+            isDeleted: '$isDeleted',
+            householdId: '$householdId',
+            reminder: '$reminder',
+            nextDate: '$nextDate',
+            endDate: '$endDate',
+            taskNameId: '$taskNameId',
+            dueDate: '$dueDate',
+            repeat: '$repeat',
+            ownerId: '$ownerId',
+            taskName: '$taskName',
+            createdAt: '$createdAt',
+            updatedAt: '$updatedAt',
+          },
+          assignee: {
+            $push: '$assignee',
+          },
+        },
+      },
+      {
+        $project: {
+          _id: '$_id._id',
+          isDeleted: '$_id.isDeleted',
+          householdId: '$_id.householdId',
+          reminder: '$_id.reminder',
+          nextDate: '$_id.nextDate',
+          endDate: '$_id.endDate',
+          assignee: '$assignee',
+          taskNameId: '$_id.taskNameId',
+          dueDate: '$_id.dueDate',
+          repeat: '$_id.repeat',
+          ownerId: '$_id.ownerId',
+          taskName: '$_id.taskName',
+          createdAt: '$_id.createdAt',
+          updatedAt: '$_id.updatedAt',
+        },
+      },
+    ],
   });
+};
