@@ -69,6 +69,93 @@ class EventModel {
       },
     });
   }
+
+  getOne(event) {
+    return eventWrite.aggregateRows({
+      query: [
+        {
+          $match: {
+            _id: event._id,
+            isDeleted: false,
+          },
+        },
+        {
+          $unwind: '$member',
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'member',
+            foreignField: '_id',
+            as: 'member',
+          },
+        },
+        {
+          $unwind: '$member',
+        },
+        {
+          $project: {
+            _id: 1,
+            isDeleted: 1,
+            householdId: 1,
+            notify: 1,
+            startDate: 1,
+            endDate: 1,
+            title: 1,
+            fullAddress: 1,
+            ownerId: 1,
+            createdAt: 1,
+            updatedAt: 1,
+            'member._id': 1,
+            'member.firstName': 1,
+            'member.lastName': 1,
+            'member.avatar': 1,
+            'member.avatarId': 1,
+            'member.createdAt': 1,
+            'member.updatedAt': 1,
+            'member.isDeleted': 1,
+          },
+        },
+        {
+          $group: {
+            _id: {
+              _id: '$_id',
+              isDeleted: '$isDeleted',
+              householdId: '$householdId',
+              notify: '$notify',
+              startDate: '$startDate',
+              endDate: '$endDate',
+              title: '$title',
+              fullAddress: '$fullAddress',
+              ownerId: '$ownerId',
+              createdAt: '$createdAt',
+              updatedAt: '$updatedAt',
+            },
+            member: {
+              $push: '$member',
+            },
+          },
+        },
+        {
+          $project: {
+            _id: '$_id._id',
+            isDeleted: '$_id.isDeleted',
+            householdId: '$_id.householdId',
+            notify: '$_id.notify',
+            startDate: '$_id.startDate',
+            endDate: '$_id.endDate',
+            member: '$member',
+            title: '$_id.title',
+            fullAddress: '$_id.fullAddress',
+            ownerId: '$_id.ownerId',
+            taskName: '$_id.taskName',
+            createdAt: '$_id.createdAt',
+            updatedAt: '$_id.updatedAt',
+          },
+        },
+      ],
+    });
+  }
 }
 
 export default new EventModel();

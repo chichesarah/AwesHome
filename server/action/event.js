@@ -43,6 +43,10 @@ class EventAction {
     eventBus.emit('addGuestPushEventObj', { event, newMember });
     return event;
   }
+
+  getOne(event) {
+    return eventWrite.getOne(event);
+  }
 }
 
 export default new EventAction();

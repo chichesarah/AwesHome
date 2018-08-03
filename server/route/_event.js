@@ -75,7 +75,11 @@ router.all('/*', bearerMiddleware);
 */
 
 router.get('/:id', async (req, next) => {
-  await middlewareWrapper.wrape(req, next, async () => eventValidate.getOne(req.params));
+  await middlewareWrapper.wrape(req, next, async () => {
+    const event = await eventValidate.getOne(req.params);
+
+    return eventAction.getOne(event);
+  });
 });
 
 /**

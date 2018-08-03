@@ -54,9 +54,9 @@
   "devDependencies": {},
   "scripts": {
     "postinstall": "npm run build && npm run doc",
-    "build": "babel 'server/' -d 'dist/' --copy-files",
+    "build": "babel \"server/\" -d \"dist/\" --copy-files",
     "start": "nodemon --watch server --exec babel-node server/index.js",
-    "doc": "apidoc -i 'server/route' -o apidoc/",
+    "doc": "apidoc -i \"server/route\" -o apidoc/",
     "docServer": "node doc.js"
   },
   "repository": {
