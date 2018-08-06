@@ -20,7 +20,7 @@ mongoose.Promise = global.Promise;
 let dbList = {};
 let db = {},
   connect = function(connectionString, name) {
-    db[name] = mongoose.createConnection(connectionString);
+    db[name] = mongoose.createConnection(connectionString, { useNewUrlParser: true });
   };
 
 // connect to write, read and static databases
