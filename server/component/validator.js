@@ -62,7 +62,7 @@ class validate {
 
         const prop = [];
 
-        if (!data || !data[param]) {
+        if (_.isUndefined(data) || _.isUndefined(data[param])) {
           errorList.push({ param, message: constraints[param][check].message });
           continue;
         }

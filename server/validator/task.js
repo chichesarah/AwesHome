@@ -98,7 +98,7 @@ class TaskValidate {
         },
       },
       reminder: {
-        toBoolean: {
+        isBoolean: {
           message: 'Valid reminder is required',
         },
       },
