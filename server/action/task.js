@@ -93,7 +93,7 @@ class TaskAction {
     } else {
       let nextDate = countNextDate(taskData.dueDate, taskData.repeat);
 
-      while (nextDate < today && taskData.repeat !== 'not repeat') {
+      while (nextDate < today && taskData.repeat !== 'Does not repeat') {
         nextDate = countNextDate(nextDate, taskData.repeat);
       }
 
@@ -119,7 +119,7 @@ class TaskAction {
   async complete(_id) {
     const taskData = await taskWrite.findById(_id);
 
-    if (taskData.repeat === 'not repeat') {
+    if (taskData.repeat === 'Does not repeat') {
       taskData.endDate = taskData.nextDate;
       taskData.isDeleted = true;
     } else {
@@ -157,7 +157,7 @@ class TaskAction {
       const currentTask = _.cloneDeep(task);
       let nextDate = countNextDate(task.nextDate, task.repeat);
 
-      if (task.repeat === 'not repeat') {
+      if (task.repeat === 'Does not repeat') {
         currentTask.endDate = task.nextDate;
         currentTask.isDeleted = true;
       } else {
