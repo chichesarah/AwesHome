@@ -388,6 +388,7 @@ router.get('/event', async (req, next) => {
                     "title": "hhh1",
                     "startDate": "2018-08-11T06:27:17.279Z",
                     "endDate": "2018-08-20T06:27:17.279Z",
+                    "allDay": false,
                     "fullAddress": "910 N Harbor Dr, San Diego, CA 92101, USA",
                     "ownerId": "5b4da1395ce3967bc872aa4b",
                     "createdAt": "2018-07-17T10:52:52.588Z",
@@ -409,6 +410,7 @@ router.get('/event', async (req, next) => {
   * @apiSuccess  {String}    event.object.title          Event title id
   * @apiSuccess  {Date}      event.object.startDate      StartDate date
   * @apiSuccess  {Date}      event.object.endDate        EndDate date
+  * @apiSuccess  {Date}      event.object.allDay         Use all day or not
   * @apiSuccess  {String[]}  event.object.member         Array of members users id
   * @apiSuccess  {Boolean}   event.object.notify         Notify true or false
   * @apiSuccess  {Boolean}   event.object.isDeleted      Is event deleted
