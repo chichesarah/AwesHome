@@ -39,7 +39,9 @@ class CalendarAction {
         };
 
         if (fullResponse) {
-          taskObject.object = task;
+          const taskObj = _.cloneDeep(task);
+          taskObj.nextDate = nextDate;
+          taskObject.object = taskObj;
         }
 
         if (!calendar[date]) {
