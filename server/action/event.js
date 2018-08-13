@@ -2,10 +2,18 @@ import _ from 'lodash';
 
 import eventWrite from '../model/write/event';
 import eventBus from '../component/eventBus';
+import { convertDataUtc } from './task';
 
 class EventAction {
   async create(data) {
-    const event = await eventWrite.create(data);
+    const eventData = _.cloneDeep(data);
+
+    if (data.allDay) {
+      eventData.startDate = convertDataUtc(eventData.startDate);
+      eventData.endDate = convertDataUtc(eventData.startDate).add(1, 'd').add(-1, 's');
+    }
+
+    const event = await eventWrite.create(eventData);
 
     eventBus.emit('createEventObj', event);
     return event;
@@ -19,7 +27,14 @@ class EventAction {
   }
 
   async update(data) {
-    return eventWrite.update(data);
+    const eventData = _.cloneDeep(data);
+
+    if (data.allDay) {
+      eventData.startDate = convertDataUtc(eventData.startDate);
+      eventData.endDate = convertDataUtc(eventData.startDate).add(1, 'd').add(-1, 's');
+    }
+
+    return eventWrite.update(eventData);
   }
 
   async addGuest(data) {

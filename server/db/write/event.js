@@ -15,4 +15,5 @@ export default new mongoose.Schema(
       endDate: { type: Date, required: true, default: Date.now },
       fullAddress: { type: String, required: true },
       notify: { type: Boolean, default: false },
+      allDay: { type: Boolean, default: false },
     }));

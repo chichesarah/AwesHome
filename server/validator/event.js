@@ -13,6 +13,7 @@ const eventFreeData = [
   'fullAddress',
   'notify',
   'ownerId',
+  'allDay',
 ];
 
 class EventValidate {
@@ -43,7 +44,7 @@ class EventValidate {
       body.member = body.member.filter(i => i.trim());
     }
 
-    const errorList = validator.check(body, {
+    const checkList = {
       title: {
         notEmpty: {
           message: 'Title should not be empty.',
@@ -69,7 +70,17 @@ class EventValidate {
           message: 'Full address shoud not be empty.',
         },
       },
-    });
+    };
+
+    if (body.allDay) {
+      checkList.allDay = {
+        isBoolean: {
+          message: 'Invalid `allDay` field.',
+        },
+      };
+    }
+
+    const errorList = validator.check(body, checkList);
 
     if (errorList.length) {
       throw errorList;
@@ -152,6 +163,11 @@ class EventValidate {
           message: 'Full address shoud not be empty.',
         },
       },
+      allDay: {
+        isBoolean: {
+          message: 'Invalid `allDay` field.',
+        },
+      }
     };
 
     const validateObj = {};
