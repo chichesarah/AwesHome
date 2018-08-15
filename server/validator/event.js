@@ -14,6 +14,7 @@ const eventFreeData = [
   'notify',
   'ownerId',
   'allDay',
+  'member',
 ];
 
 class EventValidate {
@@ -137,6 +138,10 @@ class EventValidate {
   async update(body, param, userId) {
     body._id = param.id;
 
+    if (body.member) {
+      body.member = body.member.filter(i => i.trim());
+    }
+
     const fullValidateObj = {
       _id: {
         isMongoId: {
@@ -167,7 +172,12 @@ class EventValidate {
         isBoolean: {
           message: 'Invalid `allDay` field.',
         },
-      }
+      },
+      member: {
+        notEmpty: {
+          message: 'Member should not be empty.',
+        },
+      },
     };
 
     const validateObj = {};
@@ -192,6 +202,14 @@ class EventValidate {
 
     if (event.ownerId.toString() !== userId.toString()) {
       throw ([{ param: 'userId', message: 'User can not delete this event, don\'t have permission' }]);
+    }
+
+    const userObj = await userValidate.checkForHousehold(userId);
+
+    const members = await userWrite.checkMembers(body.member, userObj.householdId);
+
+    if (members.length !== body.member.length) {
+      throw ([{ param: 'member', message: 'Not all members from the same household' }]);
     }
 
     return _.pick(body, eventFreeData);
