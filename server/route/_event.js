@@ -222,6 +222,7 @@ router.post('/create', async (req, next) => {
   * @apiError {Object} StartDate { param: 'startDate', message: 'Start date already passed' }
   * @apiError {Object} StartDate { param: 'startDate', message: 'Start date can not be after the end date' }
   * @apiError {Object} InvalidAllDay { param: 'allDay', message: 'Invalid `allDay` field.' }
+  * @apiError {Object} MemberIdInvalid { param: 'member', message: 'Not all members from the same household' }
   * @apiUse accessTokenError
 */
 

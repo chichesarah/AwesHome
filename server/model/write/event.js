@@ -71,6 +71,7 @@ class EventModel {
             householdId,
             startDate: { $lte: end },
             endDate: { $gte: start },
+            isDeleted: false,
           },
         },
         {
