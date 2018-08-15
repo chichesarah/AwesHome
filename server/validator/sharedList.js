@@ -63,12 +63,12 @@ class SharedListValidate {
       },
       sharedListId: {
         isMongoId: {
-          message: 'sharedListId is incorect',
+          message: 'sharedListId is incorrect',
         },
       },
       memberId: {
         isMongoId: {
-          message: 'memberId is incorect',
+          message: 'memberId is incorrect',
         },
       },
     };
@@ -110,12 +110,17 @@ class SharedListValidate {
     const validateObj = {
       sharedListId: {
         isMongoId: {
-          message: 'sharedListId is incorect',
+          message: 'sharedListId is incorrect',
         },
       },
       itemId: {
         isMongoId: {
-          message: 'itemId is incorect',
+          message: 'itemId is incorrect',
+        },
+      },
+      status: {
+        isBoolean: {
+          message: 'Status is incorrect',
         },
       },
     };
@@ -142,10 +147,7 @@ class SharedListValidate {
       throw ([{ param: 'userId', message: 'User don\'t have permission' }]);
     }
 
-    if (sharedListObj.item[itemIndex].status) {
-      throw ([{ param: 'status', message: 'Item has already checked' }]);
-    }
-
+    body.status = typeof(body.status) === 'string' ? body.status !== 'false' : body.status;
     return body;
   }
 
@@ -153,7 +155,7 @@ class SharedListValidate {
     const errorList = validator.check(param, {
       id: {
         isMongoId: {
-          message: 'sharedListId is incorect',
+          message: 'sharedListId is incorrect',
         },
       },
     });

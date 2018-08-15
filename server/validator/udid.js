@@ -58,7 +58,7 @@ class UdidValidate {
     const errorList = validator.check(params, {
       id: {
         isMongoId: {
-          message: 'Udid id is incorect',
+          message: 'Udid id is incorrect',
         },
       },
     });

@@ -126,7 +126,7 @@ router.put('/addItem', async (req, next) => {
 /**
 
    * @apiName ChangeItemStatus
-   * @api {PUT} /api/v1/sharedList/checkItem Change Item Status to true
+   * @api {PUT} /api/v1/sharedList/checkItem Change Item Status
 
    * @apiVersion 0.0.1
 
@@ -137,6 +137,7 @@ router.put('/addItem', async (req, next) => {
 
    * @apiParam  {String} sharedListId Shared list id
    * @apiParam  {String} itemId Item id
+   * @apiParam  {Boolean} status Status
 
    * @apiExample {curl} Example usage:
    *  curl -X PUT
@@ -146,7 +147,8 @@ router.put('/addItem', async (req, next) => {
    *  -d '{
    *  "sharedListId": "5b45afa621ec57b9f189fd00",
    *  "itemId": "5b45dc3a32c623d06dc24fb8",
-}'
+   *  "status": true,
+   *  }'
 
    * @apiSuccessExample {json} Success-Response:
     {"isDeleted": false,"householdId": null,"member": ["5b4471521d39a96dd14a53c6",],"_id": "5b45afa621ec57b9f189fd00","name": "first item name 2 2 2","ownerId": "5b4473ae22bd3b6f0861bc4e","createdAt": "2018-07-11T07:20:06.493Z","updatedAt": "2018-07-11T07:20:06.493Z","item": [{"status": true,"_id": "5b45dc3a32c623d06dc24fb8","name": "first item name 2 2 3","memberId": "5b4473ae22bd3b6f0861bc4e"}],"__v": 9}
@@ -160,7 +162,7 @@ router.put('/addItem', async (req, next) => {
    * @apiError {Object} UserId { param: 'userId', message: 'User is not a member of shareList' }
    * @apiError {Object} MemberId { param: 'memberId', message: 'User is not a member of shareList' }
    * @apiError {Object} ItemId { param: 'itemId', message: 'Item im shared list not found' }
-   * @apiError {Object} Status { param: 'status', message: 'Item has already checked' }
+   * @apiError {Object} Status { param: 'status', message: 'Status is incorrect' }
    * @apiUse accessTokenError
 */
 
