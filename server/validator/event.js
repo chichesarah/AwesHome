@@ -113,7 +113,7 @@ class EventValidate {
     const errorList = validator.check(param, {
       id: {
         isMongoId: {
-          message: 'Id is incorect.',
+          message: 'Id is incorrect.',
         },
       },
     });
@@ -228,7 +228,7 @@ class EventValidate {
       },
       eventId: {
         isMongoId: {
-          message: 'Id is incorect.',
+          message: 'Id is incorrect.',
         },
       },
     });
