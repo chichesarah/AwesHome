@@ -25,17 +25,17 @@ export const convertDataUtc = data => moment(`${moment(data).format('YYYY-MM-DD'
 
 export const countNextDate = (dueDate, repeat) => {
   switch (repeat) {
-    case 'day':
+    case 'Every day':
       return moment(dueDate).add(1, 'd');
-    case 'week':
+    case 'Every week':
       return moment(dueDate).add(1, 'w');
-    case '2 weeks':
+    case 'Every 2 weeks':
       return moment(dueDate).add(2, 'w');
-    case 'month':
+    case 'Every month':
       return moment(dueDate).add(1, 'M');
-    case 'year':
+    case 'Every year':
       return moment(dueDate).add(1, 'y');
-    case 'not repeat':
+    case 'Does not repeat':
       return moment(dueDate);
     default:
       return null;
@@ -44,17 +44,17 @@ export const countNextDate = (dueDate, repeat) => {
 
 export const countEndDate = (dueDate, repeat) => {
   switch (repeat) {
-    case 'day':
+    case 'Every day':
       return moment(dueDate).subtract(1, 'd');
-    case 'week':
+    case 'Every week':
       return moment(dueDate).subtract(1, 'w');
-    case '2 weeks':
+    case 'Every 2 weeks':
       return moment(dueDate).subtract(2, 'w');
-    case 'month':
+    case 'Every month':
       return moment(dueDate).subtract(1, 'M');
-    case 'year':
+    case 'Every year':
       return moment(dueDate).subtract(1, 'y');
-    case 'not repeat':
+    case 'Does not repeat':
       return moment(dueDate);
     default:
       return null;
@@ -93,7 +93,7 @@ class TaskAction {
     } else {
       let nextDate = countNextDate(taskData.dueDate, taskData.repeat);
 
-      while (nextDate < today && taskData.repeat !== 'not repeat') {
+      while (nextDate < today && taskData.repeat !== 'Does not repeat') {
         nextDate = countNextDate(nextDate, taskData.repeat);
       }
 
@@ -119,7 +119,7 @@ class TaskAction {
   async complete(_id) {
     const taskData = await taskWrite.findById(_id);
 
-    if (taskData.repeat === 'not repeat') {
+    if (taskData.repeat === 'Does not repeat') {
       taskData.endDate = taskData.nextDate;
       taskData.isDeleted = true;
     } else {
@@ -157,7 +157,7 @@ class TaskAction {
       const currentTask = _.cloneDeep(task);
       let nextDate = countNextDate(task.nextDate, task.repeat);
 
-      if (task.repeat === 'not repeat') {
+      if (task.repeat === 'Does not repeat') {
         currentTask.endDate = task.nextDate;
         currentTask.isDeleted = true;
       } else {

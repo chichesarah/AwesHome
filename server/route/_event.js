@@ -24,6 +24,7 @@ router.all('/*', bearerMiddleware);
   * @apiSuccess  {String}    event.fullAddress    Address where will event
   * @apiSuccess  {Date}      event.startDate      StartDate event date
   * @apiSuccess  {Date}      event.endDate        EndDate event date
+  * @apiSuccess  {Boolean}   event.allDay         Use all day or not
   * @apiSuccess  {Boolean}   event.isDeleted      Is event deleted
   * @apiSuccess  {String}    event.createdAt      Event create date
   * @apiSuccess  {String}    event.updatedAt      Event update date
@@ -58,6 +59,7 @@ router.all('/*', bearerMiddleware);
         "title": "hhh",
         "startDate": "2018-07-17T06:27:17.279Z",
         "endDate": "2018-07-20T06:27:17.279Z",
+        "allDay": false,
         "fullAddress": "910 N Harbor Dr, San Diego, CA 92101, USA",
         "ownerId": "5b48813ba3537d252ad8e76b",
         "createdAt": "2018-07-17T04:29:00.205Z",
@@ -75,7 +77,11 @@ router.all('/*', bearerMiddleware);
 */
 
 router.get('/:id', async (req, next) => {
-  await middlewareWrapper.wrape(req, next, async () => eventValidate.getOne(req.params));
+  await middlewareWrapper.wrape(req, next, async () => {
+    const event = await eventValidate.getOne(req.params);
+
+    return eventAction.getOne(event);
+  });
 });
 
 /**
@@ -92,7 +98,8 @@ router.get('/:id', async (req, next) => {
   * @apiParam  {String}  title Name for event
   * @apiParam  {String[]}  member Array of member users id
   * @apiParam  {String}  startDate Date when event start
-  * @apiParam  {String}  endDate Date when event end
+  * @apiParam  {String}  [endDate] Date when event end. Not mandatory if `allDay` is true
+  * @apiParam  {Boolean} [allDay=false] Use all day or not. Not mandatory if `endDate` is specified
   * @apiParam  {String} fullAddress Address where event will start
   * @apiParam  {Boolean} [notify] Do or not notifications
 
@@ -122,6 +129,7 @@ router.get('/:id', async (req, next) => {
       "title": "new event",
       "startDate": "2018-07-17T06:27:17.279Z",
       "endDate": "2018-07-20T06:27:17.279Z",
+      "allDay": false,
       "fullAddress": "910 N Harbor Dr, San Diego, CA 92101, USA",
       "ownerId": "5b48813ba3537d252ad8e76b",
       "createdAt": "2018-07-16T11:02:35.365Z",
@@ -137,6 +145,7 @@ router.get('/:id', async (req, next) => {
   * @apiError {Object} MemberIdInvalid { param: 'member', message: 'Not all members from the same household' }
   * @apiError {Object} StartDate { param: 'startDate', message: 'Start date already passed' }
   * @apiError {Object} StartDate { param: 'startDate', message: 'Start date can not be after the end date' }
+  * @apiError {Object} InvalidAllDay { param: 'allDay', message: 'Invalid `allDay` field.' }
   * @apiUse accessTokenError
 */
 
@@ -162,7 +171,8 @@ router.post('/create', async (req, next) => {
   * @apiParam  {String}  [title] Name for event
   * @apiParam  {String[]}  [member] Array of member users id
   * @apiParam  {String}  [startDate] Date when event start
-  * @apiParam  {String}  [endDate] Date when event end
+  * @apiParam  {String}  [endDate] Date when event end. Not mandatory if `allDay` is true
+  * @apiParam  {Boolean} [allDay=false] Use all day or not. Not mandatory if `endDate` is specified
   * @apiParam  {String} [fullAddress] Address where event will start
   * @apiParam  {Boolean} [notify] Do or not notifications
 
@@ -193,6 +203,7 @@ router.post('/create', async (req, next) => {
       "title": "new event",
       "startDate": "2018-07-17T06:27:17.279Z",
       "endDate": "2018-07-20T06:27:17.279Z",
+      "allDay": false,
       "fullAddress": "910 N Harbor Dr, San Diego, CA 92101, USA",
       "ownerId": "5b48813ba3537d252ad8e76b",
       "createdAt": "2018-07-16T11:02:35.365Z",
@@ -210,6 +221,8 @@ router.post('/create', async (req, next) => {
   * @apiError {Object} MemberIdInvalid { param: 'member', message: 'Not all members from the same household' }
   * @apiError {Object} StartDate { param: 'startDate', message: 'Start date already passed' }
   * @apiError {Object} StartDate { param: 'startDate', message: 'Start date can not be after the end date' }
+  * @apiError {Object} InvalidAllDay { param: 'allDay', message: 'Invalid `allDay` field.' }
+  * @apiError {Object} MemberIdInvalid { param: 'member', message: 'Not all members from the same household' }
   * @apiUse accessTokenError
 */
 
@@ -250,6 +263,7 @@ router.put('/update/:id', async (req, next) => {
         "title": "new event",
         "startDate": "2018-07-17T06:27:17.279Z",
         "endDate": "2018-07-20T06:27:17.279Z",
+        "allDay": false,
         "fullAddress": "910 N Harbor Dr, San Diego, CA 92101, USA",
         "ownerId": "5b48813ba3537d252ad8e76b",
         "createdAt": "2018-07-16T10:59:25.210Z",
@@ -313,6 +327,7 @@ router.delete('/delete/:id', async (req, next) => {
         "title": "new event",
         "startDate": "2018-07-17T06:27:17.279Z",
         "endDate": "2018-07-20T06:27:17.279Z",
+        "allDay": false,
         "fullAddress": "910 N Harbor Dr, San Diego, CA 92101, USA",
         "ownerId": "5b48813ba3537d252ad8e76b",
         "createdAt": "2018-07-17T05:59:10.767Z",

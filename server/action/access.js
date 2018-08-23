@@ -25,6 +25,7 @@ const userFreeData = [
   'householdId',
   'notification',
   'birthday',
+  'phone',
   'neighbourhood',
 ];
 

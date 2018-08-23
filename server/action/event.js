@@ -1,15 +1,19 @@
 import _ from 'lodash';
 
 import eventWrite from '../model/write/event';
-import { userAction } from './user';
 import eventBus from '../component/eventBus';
+import { convertDataUtc } from './task';
 
 class EventAction {
   async create(data) {
-    const address = await userAction.getGoogleAddress(data.fullAddress);
-    data.fullAddress = address.fullAddress;
+    const eventData = _.cloneDeep(data);
 
-    const event = await eventWrite.create(data);
+    if (data.allDay) {
+      eventData.startDate = convertDataUtc(eventData.startDate);
+      eventData.endDate = convertDataUtc(eventData.startDate).add(1, 'd').add(-1, 's');
+    }
+
+    const event = await eventWrite.create(eventData);
 
     eventBus.emit('createEventObj', event);
     return event;
@@ -23,13 +27,14 @@ class EventAction {
   }
 
   async update(data) {
-    if (data.fullAddress) {
-      const address = await userAction.getGoogleAddress(data.fullAddress);
-      data.fullAddress = address.fullAddress;
+    const eventData = _.cloneDeep(data);
+
+    if (data.allDay) {
+      eventData.startDate = convertDataUtc(eventData.startDate);
+      eventData.endDate = convertDataUtc(eventData.startDate).add(1, 'd').add(-1, 's');
     }
 
-    const event = await eventWrite.update(data);
-    return event;
+    return eventWrite.update(eventData);
   }
 
   async addGuest(data) {
@@ -42,6 +47,10 @@ class EventAction {
 
     eventBus.emit('addGuestPushEventObj', { event, newMember });
     return event;
+  }
+
+  getOne(event) {
+    return eventWrite.getOne(event);
   }
 }
 

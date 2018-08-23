@@ -13,6 +13,8 @@ const eventFreeData = [
   'fullAddress',
   'notify',
   'ownerId',
+  'allDay',
+  'member',
 ];
 
 class EventValidate {
@@ -43,7 +45,7 @@ class EventValidate {
       body.member = body.member.filter(i => i.trim());
     }
 
-    const errorList = validator.check(body, {
+    const checkList = {
       title: {
         notEmpty: {
           message: 'Title should not be empty.',
@@ -69,7 +71,17 @@ class EventValidate {
           message: 'Full address shoud not be empty.',
         },
       },
-    });
+    };
+
+    if (body.allDay) {
+      checkList.allDay = {
+        isBoolean: {
+          message: 'Invalid `allDay` field.',
+        },
+      };
+    }
+
+    const errorList = validator.check(body, checkList);
 
     if (errorList.length) {
       throw errorList;
@@ -101,7 +113,7 @@ class EventValidate {
     const errorList = validator.check(param, {
       id: {
         isMongoId: {
-          message: 'Id is incorect.',
+          message: 'Id is incorrect.',
         },
       },
     });
@@ -125,6 +137,10 @@ class EventValidate {
 
   async update(body, param, userId) {
     body._id = param.id;
+
+    if (body.member) {
+      body.member = body.member.filter(i => i.trim());
+    }
 
     const fullValidateObj = {
       _id: {
@@ -150,6 +166,16 @@ class EventValidate {
       fullAddress: {
         notEmpty: {
           message: 'Full address shoud not be empty.',
+        },
+      },
+      allDay: {
+        isBoolean: {
+          message: 'Invalid `allDay` field.',
+        },
+      },
+      member: {
+        notEmpty: {
+          message: 'Member should not be empty.',
         },
       },
     };
@@ -178,6 +204,14 @@ class EventValidate {
       throw ([{ param: 'userId', message: 'User can not delete this event, don\'t have permission' }]);
     }
 
+    const userObj = await userValidate.checkForHousehold(userId);
+
+    const members = await userWrite.checkMembers(body.member, userObj.householdId);
+
+    if (members.length !== body.member.length) {
+      throw ([{ param: 'member', message: 'Not all members from the same household' }]);
+    }
+
     return _.pick(body, eventFreeData);
   }
 
@@ -194,7 +228,7 @@ class EventValidate {
       },
       eventId: {
         isMongoId: {
-          message: 'Id is incorect.',
+          message: 'Id is incorrect.',
         },
       },
     });

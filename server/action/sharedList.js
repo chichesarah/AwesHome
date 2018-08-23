@@ -11,13 +11,13 @@ class SharedListAction {
   async addItem(sharedList, userId) {
     const list = await sharedListWrite.addItem(sharedList);
     eventBus.emit('addItemToList', { list, userId, itemName: sharedList.name });
-    return list;
+    return sharedListWrite.findFullDataById(list._id);
   }
 
-  async checkItem({ sharedListId, itemId }, userId) {
-    const list = await sharedListWrite.checkItem(sharedListId, itemId);
+  async checkItem({ sharedListId, itemId, status }, userId) {
+    const list = await sharedListWrite.checkItem(sharedListId, itemId, status);
     eventBus.emit('checkItemInList', { list, userId, itemId });
-    return list;
+    return sharedListWrite.findFullDataById(list._id);
   }
 
   async deleteSharedList(sharedListId, userId) {
