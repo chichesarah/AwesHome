@@ -4,8 +4,6 @@ module.exports = {
   hostUrl,
   mongoConnectionStrings: {
     write: 'mongodb://heroku_b7dbwjw7:b100nln16srjnc59kqolt80jq@ds259410.mlab.com:59410/heroku_b7dbwjw7',
-    // read: '',
-    // static: ''
   },
   facebook: {
     clientID: '1679771432332193',
@@ -34,6 +32,6 @@ module.exports = {
     facebook: 'https://graph.facebook.com/v3.0/me?fields=email,birthday,name,first_name,last_name,id,picture&access_token=',
   },
   notification: {
-    serverKey: 'AAAA81gJKgA:APA91bGEvRXL28V9ClnPW3lbRtHUcKVWjumNT6YgUQfaOvVM8F1_h5bTDtxhlHhvYVBEItbCrm5e3UpRE19ARTw3tdw_BUHyr6AWFSj0DDHqNk6ffwCYXdSYwYMfn7HQpDNtC6mdpPLwiKEVm1X893iLkKFcY2kbOg',
+    serverKey: 'AAAADLVmsEM:APA91bGBIayuVpjJEv3OaaWJV8yUn9AtFToTdLmtb2qz02EKXoIqizMpzaUgDGGR-CkSr9SrwYjal1dffY5lpyVoFobayl72cKh0M_JudxkJ8tJY9c9ngONpmXHRm13sHg_m-mR0Z-XpQ8NQRw1a3Tdx_zo46BKkLw',
   },
 };
