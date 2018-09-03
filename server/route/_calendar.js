@@ -96,7 +96,7 @@ router.get('/task', async (req, next) => {
 
 /**
   * @apiName GetFullTasksInfoForCalendar
-  * @api {GET} /api/v1/calendar/fulltask Get full tasks info for calendar by period
+  * @api {GET} /api/v1/calendar/fullTask Get full tasks info for calendar by period
 
   * @apiVersion 0.0.1
 
@@ -354,7 +354,7 @@ router.get('/event', async (req, next) => {
 
 /**
   * @apiName GetFullEventsInfoForCalendar
-  * @api {GET} /api/v1/calendar/fullevent Get full events info for calendar by period
+  * @api {GET} /api/v1/calendar/fullEvent Get full events info for calendar by period
 
   * @apiVersion 0.0.1
 
@@ -367,7 +367,7 @@ router.get('/event', async (req, next) => {
 
   * @apiExample {curl} Example usage:
   * curl -X GET
-  *   'http://localhost:3000/api/v1/calendar/fullevent?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z'
+  *   'http://localhost:3000/api/v1/calendar/fullEvent?startDate=2018-07-01T08%3A27%3A17.279Z&endDate=2018-08-01T20%3A27%3A17.279Z'
   *     -H 'authorization: Bearer xhGGqLk6e7/1PAm/Egi5Rl2PD7dYm7Xmz4D7PzaNdbZt5WCcllKDFCEG0tjs5Y4TzL0jYXVLSa2YBX9bAuMuPlRmQn5ZbVhIl2v1h20vzYjXFGRRP4mfgJhJm3iWxQ=='
 
   * @apiSuccessExample {json} Success-Response:
