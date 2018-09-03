@@ -15,6 +15,7 @@ const eventFreeData = [
   'ownerId',
   'allDay',
   'member',
+  'householdId',
 ];
 
 class EventValidate {

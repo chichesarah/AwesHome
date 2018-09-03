@@ -203,6 +203,7 @@ taskWrite.getTasksByDuration = ({ householdId, startDate, endDate }) => {
       {
         $match: {
           householdId,
+          isDeleted: false,
           dueDate: { $lte: end },
           $or: [
             { endDate: { $exists: false } },
