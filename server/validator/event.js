@@ -45,7 +45,7 @@ class EventValidate {
       body.member = body.member.filter(i => i.trim());
     }
 
-    const checkList = {
+    const fullValidateObj = {
       title: {
         notEmpty: {
           message: 'Title should not be empty.',
@@ -61,6 +61,11 @@ class EventValidate {
           message: 'Start date shoud not be empty.',
         },
       },
+      allDay: {
+        isBoolean: {
+          message: 'Invalid `allDay` field.',
+        },
+      },
       endDate: {
         isDate: {
           message: 'End date shoud not be empty.',
@@ -73,15 +78,15 @@ class EventValidate {
       },
     };
 
-    if (body.allDay) {
-      checkList.allDay = {
-        isBoolean: {
-          message: 'Invalid `allDay` field.',
-        },
-      };
-    }
+    const validateObj = {};
 
-    const errorList = validator.check(body, checkList);
+    Object.keys(fullValidateObj).forEach((field) => {
+      if (!_.isUndefined(body[field]) && fullValidateObj[field]) {
+        validateObj[field] = fullValidateObj[field];
+      }
+    });
+
+    const errorList = validator.check(body, validateObj);
 
     if (errorList.length) {
       throw errorList;
@@ -89,10 +94,12 @@ class EventValidate {
 
     const ownerObj = await userValidate.checkForHousehold(userId);
 
-    const members = await userWrite.checkMembers(body.member, ownerObj.householdId);
+    if (body.member) {
+      const members = await userWrite.checkMembers(body.member, ownerObj.householdId);
 
-    if (members.length !== body.member.length) {
-      throw ([{ param: 'member', message: 'Not all members from the same household' }]);
+      if (members.length !== body.member.length) {
+        throw ([{ param: 'member', message: 'Not all members from the same household' }]);
+      }
     }
 
     if (moment(body.startDate).isBefore(moment())) {
@@ -106,7 +113,7 @@ class EventValidate {
     body.ownerId = userId;
     body.householdId = ownerObj.householdId;
 
-    return body;
+    return _.pick(body, eventFreeData);
   }
 
   async delete(param, userId) {
