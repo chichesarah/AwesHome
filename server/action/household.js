@@ -38,7 +38,6 @@ class HouseholdAction {
 
   async leave(data) {
     const userObj = await userWrite.setHouseholdId(data._id, null);
-
     eventBus.emit('leaveHousehold', userObj);
     return _.pick(userObj, userFreeData);
   }

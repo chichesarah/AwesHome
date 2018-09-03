@@ -18,6 +18,11 @@ eventBus.onSeries('checkItemInList', async (data, next) => {
   await next();
 });
 
+eventBus.onSeries('unCheckItemInList', async (data, next) => {
+  await feedAction.unCheckItemInListEvent(data);
+  await next();
+});
+
 eventBus.onSeries('deleteList', async (data, next) => {
   await feedAction.deleteListEvent(data);
   await next();

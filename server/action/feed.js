@@ -77,6 +77,28 @@ class FeedAction {
     });
   }
 
+  unCheckItemInListEvent(data) {
+    const item = _.find(data.list.item, i => i._id.toString() === data.itemId);
+
+    return feedWrite.create({
+      userId: data.userId,
+      householdId: data.list.householdId,
+      type: 'unCheck listItem',
+      operation: [
+        {
+          id: data.list._id,
+          name: data.list.name,
+          type: 'sharedList',
+        },
+        {
+          id: item._id,
+          name: item.name,
+          type: 'sharedListItem',
+        },
+      ],
+    });
+  }
+
   addTaskEvent(data) {
     return feedWrite.create({
       userId: data.ownerId,
@@ -171,7 +193,7 @@ class FeedAction {
     return feedWrite.create({
       userId: data._id,
       householdId: null,
-      type: 'remove household',
+      type: 'leave household',
       operation: [
         {
           id: data._id,

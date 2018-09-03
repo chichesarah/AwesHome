@@ -16,7 +16,13 @@ class SharedListAction {
 
   async checkItem({ sharedListId, itemId, status }, userId) {
     const list = await sharedListWrite.checkItem(sharedListId, itemId, status);
-    eventBus.emit('checkItemInList', { list, userId, itemId });
+
+    if (status) {
+      eventBus.emit('checkItemInList', { list, userId, itemId });
+    } else {
+      eventBus.emit('unCheckItemInList', { list, userId, itemId });
+    }
+
     return sharedListWrite.findFullDataById(list._id);
   }
 

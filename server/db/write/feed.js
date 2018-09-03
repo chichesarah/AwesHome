@@ -7,13 +7,13 @@ export default new mongoose.Schema(
     _.cloneDeep(standardField),
     {
       userId: { type: 'ObjectId', required: true },
-      householdId: { type: 'ObjectId', required: true },
+      householdId: { type: 'ObjectId' },
       type: {
         type: String,
         required: true,
         enum: [
           'join household',
-          'remove household',
+          'leave household',
           'add task',
           'delete task',
           'complete task',
@@ -23,6 +23,7 @@ export default new mongoose.Schema(
           'delete list',
           'add listItem',
           'check listItem',
+          'unCheck listItem',
         ],
       },
       operation: [{
