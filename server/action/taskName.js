@@ -1,8 +1,8 @@
 import taskWrite from '../model/write/taskName';
 
 class TaskNameAction {
-  getAll(data) {
-    return taskWrite.getAll(data);
+  getAll(userId) {
+    return taskWrite.getAll(userId);
   }
 
   create(data) {

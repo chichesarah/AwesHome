@@ -44,10 +44,7 @@ router.all('/*', bearerMiddleware);
 */
 
 router.get('/all', async (req, next) => {
-  await middlewareWrapper.wrape(req, next, async () => {
-    const tasks = await taskNameValidate.getAll(req.request.user._id);
-    return taskNameAction.getAll(tasks);
-  });
+  await middlewareWrapper.wrape(req, next, async () => taskNameAction.getAll(req.request.user._id));
 });
 
 

@@ -1,16 +1,23 @@
 import dbList from './../../db';
 
 const taskNameWrite = dbList.write('taskName');
+const userWrite = dbList.write('user');
 
 class TaskNameModel {
-  getAll(userData) {
+  async getAll(_id) {
+    const user = await userWrite.findRow({
+      query: {
+        _id,
+      },
+    });
+
     return taskNameWrite.aggregateRows({
       query: [
         {
           $match: {
             $or: [
               {
-                householdId: userData.householdId,
+                householdId: user.householdId,
               },
               {
                 householdId: null,

@@ -18,6 +18,7 @@ const taskFreeData = [
   'assignee',
   'nextDate',
   'endDate',
+  'rotate',
 ];
 
 const repeatValues = [
@@ -51,6 +52,11 @@ class TaskValidate {
       assignee: {
         notEmpty: {
           message: 'Assignee is required',
+        },
+      },
+      rotate: {
+        isBoolean: {
+          message: 'Invalid value',
         },
       },
     });
@@ -105,6 +111,11 @@ class TaskValidate {
       assignee: {
         notEmpty: {
           message: 'Assignee is required',
+        },
+      },
+      rotate: {
+        isBoolean: {
+          message: 'Invalid value',
         },
       },
     };

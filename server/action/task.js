@@ -19,6 +19,7 @@ const taskFreeData = [
   'assignee',
   'nextDate',
   'endDate',
+  'rotate',
 ];
 
 export const convertDataUtc = data => moment(`${moment(data).format('YYYY-MM-DD')} utc`, 'YYYY-MM-DD Z');
@@ -145,6 +146,7 @@ class TaskAction {
     const userData = await userWrite.findById({ id: user._id });
 
     const tasks = await taskWrite.getByAssignedUser(user._id, userData.householdId);
+    console.log(tasks)
 
     return tasks;
   }

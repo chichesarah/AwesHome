@@ -27,4 +27,5 @@ export default new mongoose.Schema(
 
       nextDate: { type: Date, required: true, default: null },
       endDate: { type: Date, default: null }, // set endDate = (nextDate - repeat), when user delete task
+      rotate: { type: Boolean, required: true, default: false },
     }));

@@ -75,7 +75,10 @@ class EventModel {
           },
         },
         {
-          $unwind: '$member',
+          $unwind: {
+            path: '$member',
+            preserveNullAndEmptyArrays: true,
+          },
         },
         {
           $lookup: {
@@ -86,7 +89,10 @@ class EventModel {
           },
         },
         {
-          $unwind: '$member',
+          $unwind: {
+            path: '$member',
+            preserveNullAndEmptyArrays: true,
+          },
         },
         {
           $project: {
@@ -165,7 +171,10 @@ class EventModel {
           },
         },
         {
-          $unwind: '$member',
+          $unwind: {
+            path: '$member',
+            preserveNullAndEmptyArrays: true,
+          },
         },
         {
           $lookup: {
@@ -176,7 +185,10 @@ class EventModel {
           },
         },
         {
-          $unwind: '$member',
+          $unwind: {
+            path: '$member',
+            preserveNullAndEmptyArrays: true,
+          },
         },
         {
           $project: {
