@@ -19,6 +19,7 @@ const taskFreeData = [
   'nextDate',
   'endDate',
   'rotate',
+  'startIndex',
 ];
 
 const repeatValues = [
@@ -82,6 +83,8 @@ class TaskValidate {
     if (checkHousehold.length !== body.assignee.length) {
       throw ([{ param: 'assignee', message: 'Not all members from the same household' }]);
     }
+
+    body.startIndex = Math.floor(Math.random() * body.assignee.length);
 
     return {
       ownerObj,

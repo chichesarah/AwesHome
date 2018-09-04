@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
+import { extendMoment } from 'moment-range';
 
 import taskWrite from '../model/write/task';
 import userWrite from '../model/write/user';
@@ -20,9 +21,11 @@ const taskFreeData = [
   'nextDate',
   'endDate',
   'rotate',
+  'startIndex',
 ];
 
-export const convertDataUtc = data => moment(`${moment(data).format('YYYY-MM-DD')} utc`, 'YYYY-MM-DD Z');
+export const convertDataUtc = data =>
+  moment(`${moment(data).format('YYYY-MM-DD')} utc`, 'YYYY-MM-DD Z');
 
 export const countNextDate = (dueDate, repeat) => {
   switch (repeat) {
@@ -145,8 +148,25 @@ class TaskAction {
   async getByAssignedUser(user) {
     const userData = await userWrite.findById({ id: user._id });
 
-    const tasks = await taskWrite.getByAssignedUser(user._id, userData.householdId);
-    console.log(tasks)
+    const tasks = await taskWrite.getByAssignedUser(
+      user._id,
+      userData.householdId,
+    );
+
+    tasks.map((task) => {
+      if (!task.rotate) return task;
+
+      const startDate = moment(task.dueDate);
+      const nextDate = countNextDate(startDate, task.repeat);
+      const diff = nextDate.diff(startDate, 'days');
+
+      if (moment().isSameOrAfter(startDate)) {
+        const y = diff + task.startIndex;
+        const currentIndex = y % task.assignee.length;
+      }
+
+      return task;
+    });
 
     return tasks;
   }
