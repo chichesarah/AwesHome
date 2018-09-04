@@ -7,10 +7,19 @@ class TaskNameModel {
     return taskNameWrite.findRows();
   }
 
-  addName(name) {
+  addName(data) {
     return taskNameWrite.insertRow({
       data: {
-        name,
+        name: data.name,
+        householdId: data.householdId,
+      },
+    });
+  }
+
+  delete(data) {
+    return taskNameWrite.deleteRow({
+      query: {
+        _id: data._id,
       },
     });
   }

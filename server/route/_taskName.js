@@ -90,8 +90,17 @@ router.get('/all', async (req, next) => {
 
 router.post('/create', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    const name = await taskNameValidate.create(req.request.body, req.request.user._id);
+    const taskName = await taskNameValidate.create(req.request.body, req.request.user._id);
 
-    return taskNameAction.create(name);
+    return taskNameAction.create(taskName);
+  });
+});
+
+// Inner method
+router.delete('/delete/:id', async (req, next) => {
+  await middlewareWrapper.wrape(req, next, async () => {
+    const taskName = await taskNameValidate.delete(req.params);
+
+    return taskNameAction.delete(taskName);
   });
 });

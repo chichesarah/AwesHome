@@ -5,8 +5,12 @@ class TaskNameAction {
     return taskWrite.getAll();
   }
 
-  create(name) {
-    return taskWrite.addName(name);
+  create(data) {
+    return taskWrite.addName(data);
+  }
+
+  delete(data) {
+    return taskWrite.delete(data);
   }
 }
 

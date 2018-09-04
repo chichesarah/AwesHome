@@ -1,6 +1,5 @@
 import udidWrite from '../model/write/udid';
 import validator from '../component/validator';
-import udid from '../model/write/udid';
 
 class UdidValidate {
   async create(body) {
