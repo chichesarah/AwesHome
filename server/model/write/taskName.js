@@ -3,8 +3,23 @@ import dbList from './../../db';
 const taskNameWrite = dbList.write('taskName');
 
 class TaskNameModel {
-  getAll() {
-    return taskNameWrite.findRows();
+  getAll(userData) {
+    return taskNameWrite.aggregateRows({
+      query: [
+        {
+          $match: {
+            $or: [
+              {
+                householdId: userData.householdId,
+              },
+              {
+                householdId: null,
+              },
+            ],
+          },
+        },
+      ],
+    });
   }
 
   addName(data) {

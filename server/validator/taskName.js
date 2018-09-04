@@ -35,6 +35,12 @@ class TaskNameValidate {
     return _.pick(body, taskNameFreeData);
   }
 
+  async getAll(userId) {
+    const userData = await userValidate.checkForHousehold(userId);
+
+    return userData;
+  }
+
   async delete(param) {
     const errorList = validator.check(param, {
       id: {

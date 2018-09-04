@@ -30,7 +30,10 @@ class HouseholdAction {
   }
 
   async connect(data) {
-    const userObj = await userWrite.setHouseholdId(data.userObj._id, data.householdObj._id);
+    const userObj = await userWrite.setHouseholdId(
+      data.userObj._id,
+      data.householdObj._id,
+    );
 
     eventBus.emit('joinHousehold', userObj);
     return _.pick(userObj, userFreeData);
@@ -38,7 +41,10 @@ class HouseholdAction {
 
   async leave(data) {
     const userObj = await userWrite.setHouseholdId(data._id, null);
-    eventBus.emit('leaveHousehold', userObj);
+    eventBus.emit(
+      'leaveHousehold',
+      Object.assign(userObj, { householdId: data.householdId }),
+    );
     return _.pick(userObj, userFreeData);
   }
 

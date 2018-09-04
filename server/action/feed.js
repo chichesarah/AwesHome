@@ -192,7 +192,7 @@ class FeedAction {
   leaveHousehold(data) {
     return feedWrite.create({
       userId: data._id,
-      householdId: null,
+      householdId: data.householdId,
       type: 'leave household',
       operation: [
         {
