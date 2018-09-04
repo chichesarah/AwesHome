@@ -22,13 +22,15 @@ class TaskNameValidate {
       throw errorList;
     }
 
+    const userData = await userValidate.checkForHousehold(userId);
+
     const taskNameObj = await taskWrite.findByName(body.name);
 
     if (taskNameObj) {
       throw [{ param: 'name', message: 'Name is already exists' }];
     }
 
-    body.householdId = null;
+    body.householdId = userData.householdId;
 
     return _.pick(body, taskNameFreeData);
   }
