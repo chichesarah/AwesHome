@@ -142,6 +142,11 @@ class TaskAction {
       taskData.isDeleted = true;
     } else {
       taskData.nextDate = countNextDate(taskData.nextDate, taskData.repeat);
+
+      if (taskData.nextDate.isAfter(taskData.dueDate)) {
+        taskData.endDate = taskData.dueDate;
+        taskData.isDeleted = true;
+      }
     }
 
     const task = await taskWrite.completeTask(_id, taskData);
@@ -172,6 +177,10 @@ class TaskAction {
 
       task.nextDate = nextDate;
 
+      if (task.nextDate.isAfter(task.dueDate)) {
+        task.nextDate = task.dueDate;
+      }
+
       return task;
     }).filter(task => Object.keys(task).length);
   }
@@ -200,6 +209,10 @@ class TaskAction {
 
       task.nextDate = nextDate;
 
+      if (task.nextDate.isAfter(task.dueDate)) {
+        task.nextDate = task.dueDate;
+      }
+
       return task;
     }).filter(task => Object.keys(task).length);
   }
@@ -218,6 +231,11 @@ class TaskAction {
       } else {
         while (nextDate < today) {
           nextDate = countNextDate(nextDate, task.repeat);
+
+          if (nextDate.isAfter(task.dueDate)) {
+            currentTask.endDate = task.dueDate;
+            currentTask.isDeleted = true;
+          }
         }
       }
 
