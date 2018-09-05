@@ -156,7 +156,24 @@ class TaskAction {
 
     const tasks = await taskWrite.getTasksByHousehold(userData.householdId);
 
-    return tasks;
+    return tasks.map((task) => {
+      const startDate = convertDataUtc(moment());
+      const endDate = convertDataUtc(task.dueDate);
+      const nextDate = countNextDate(startDate, task.repeat);
+
+      if (task.rotate) {
+        if (
+          startDate.isAfter(nextDate) ||
+          startDate.isAfter(endDate)
+        ) {
+          return {};
+        }
+      }
+
+      task.nextDate = nextDate;
+
+      return task;
+    }).filter(task => Object.keys(task).length);
   }
 
   async getByAssignedUser(user) {
@@ -168,7 +185,7 @@ class TaskAction {
     );
 
     return tasks.map((task) => {
-      const startDate = moment();
+      const startDate = convertDataUtc(moment());
       const endDate = convertDataUtc(task.dueDate);
       const nextDate = countNextDate(endDate, task.repeat);
 
@@ -180,6 +197,8 @@ class TaskAction {
           return {};
         }
       }
+
+      task.nextDate = nextDate;
 
       return task;
     }).filter(task => Object.keys(task).length);
