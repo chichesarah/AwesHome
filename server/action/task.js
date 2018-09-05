@@ -90,7 +90,10 @@ class TaskAction {
     taskData.taskName = data.taskNameObj.name;
 
     taskData.dueDate = convertDataUtc(taskData.dueDate);
-    taskData.nextDate = countNextDate(convertDataUtc(taskData.createdAt), taskData.repeat);
+    taskData.nextDate = countNextDate(
+      convertDataUtc(taskData.createdAt),
+      taskData.repeat,
+    );
 
     if (taskData.nextDate.isAfter(taskData.dueDate)) {
       taskData.nextDate = convertDataUtc(taskData.dueDate);
@@ -176,22 +179,39 @@ class TaskAction {
       userData.householdId,
     );
 
-    return tasks.map((task) => {
-      const startDate = convertDataUtc(moment());
-      const endDate = convertDataUtc(task.dueDate);
-      const nextDate = countNextDate(endDate, task.repeat);
+    return tasks
+      .map((task) => {
+        if (task.rotate) {
+          const startDate = convertDataUtc(task.createdAt);
+          const nextDate = moment(task.nextDate);
 
-      if (task.rotate) {
-        if (
-          startDate.isAfter(nextDate) ||
-          startDate.isAfter(endDate)
-        ) {
-          return {};
+          let diff;
+          let currentIndex;
+
+          if (task.repeat === 'Every 2 weeks') {
+            diff = nextDate.diff(startDate, 'week');
+
+            const twiceDiff = diff * 2;
+            currentIndex = (twiceDiff + task.startIndex) % task.assignee.length;
+          } else {
+            diff = nextDate.diff(startDate, timeDiff(task.repeat));
+
+            currentIndex = (diff + task.startIndex) % task.assignee.length;
+          }
+
+          const currentMember = task.assignee.filter(
+            (member, index) => index === currentIndex,
+          );
+          task.currentMember = currentMember;
+
+          if (currentMember[0]._id !== user._id) {
+            return {};
+          }
         }
-      }
 
-      return task;
-    }).filter(task => Object.keys(task).length);
+        return task;
+      })
+      .filter(task => Object.keys(task).length);
   }
 
   async autocompleteTask() {
