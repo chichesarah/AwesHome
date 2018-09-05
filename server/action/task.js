@@ -90,7 +90,7 @@ class TaskAction {
     taskData.taskName = data.taskNameObj.name;
 
     taskData.dueDate = convertDataUtc(taskData.dueDate);
-    taskData.nextDate = taskData.dueDate;
+    taskData.nextDate = countNextDate(taskData.createdAt, taskData.repeat);
 
     const task = await taskWrite.newTask(taskData);
 
