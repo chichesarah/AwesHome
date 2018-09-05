@@ -90,7 +90,11 @@ class TaskAction {
     taskData.taskName = data.taskNameObj.name;
 
     taskData.dueDate = convertDataUtc(taskData.dueDate);
-    taskData.nextDate = countNextDate(taskData.createdAt, taskData.repeat);
+    taskData.nextDate = countNextDate(convertDataUtc(taskData.createdAt), taskData.repeat);
+
+    if (taskData.nextDate.isAfter(taskData.dueDate)) {
+      taskData.nextDate = convertDataUtc(taskData.dueDate);
+    }
 
     const task = await taskWrite.newTask(taskData);
 
@@ -161,28 +165,7 @@ class TaskAction {
 
     const tasks = await taskWrite.getTasksByHousehold(userData.householdId);
 
-    return tasks.map((task) => {
-      const startDate = convertDataUtc(moment());
-      const endDate = convertDataUtc(task.dueDate);
-      const nextDate = countNextDate(startDate, task.repeat);
-
-      if (task.rotate) {
-        if (
-          startDate.isAfter(nextDate) ||
-          startDate.isAfter(endDate)
-        ) {
-          return {};
-        }
-      }
-
-      task.nextDate = nextDate;
-
-      if (task.nextDate.isAfter(task.dueDate)) {
-        task.nextDate = task.dueDate;
-      }
-
-      return task;
-    }).filter(task => Object.keys(task).length);
+    return tasks;
   }
 
   async getByAssignedUser(user) {
@@ -205,12 +188,6 @@ class TaskAction {
         ) {
           return {};
         }
-      }
-
-      task.nextDate = nextDate;
-
-      if (task.nextDate.isAfter(task.dueDate)) {
-        task.nextDate = task.dueDate;
       }
 
       return task;
