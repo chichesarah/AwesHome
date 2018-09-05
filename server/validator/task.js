@@ -213,10 +213,6 @@ class TaskValidate {
       throw ([{ param: 'taskId', message: 'Task not found or user permission denied' }]);
     }
 
-    if (moment(taskObj.nextDate).format('YYYY-MM-DD') !== moment().format('YYYY-MM-DD')) {
-      throw ([{ param: 'taskId', message: 'Cant complete task today' }]);
-    }
-
     return body._id;
   }
 }
