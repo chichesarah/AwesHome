@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { extendMoment } from 'moment-range';
 
 import taskWrite from '../model/write/task';
 import userWrite from '../model/write/user';
@@ -62,6 +61,21 @@ export const countEndDate = (dueDate, repeat) => {
       return moment(dueDate);
     default:
       return null;
+  }
+};
+
+export const timeDiff = (type) => {
+  switch (type) {
+    case 'Every day':
+      return 'days';
+    case 'Every week':
+      return 'weeks';
+    case 'Every month':
+      return 'months';
+    case 'Every year':
+      return 'years';
+    default:
+      return 'days';
   }
 };
 
@@ -153,22 +167,18 @@ class TaskAction {
       userData.householdId,
     );
 
-    tasks.map((task) => {
-      if (!task.rotate) return task;
+    return tasks.map((task) => {
+      const startIndexDate = convertDataUtc(task.dueDate);
+      const nextDate = countNextDate(startIndexDate, task.repeat);
 
-      const startDate = moment(task.dueDate);
-      const nextDate = countNextDate(startDate, task.repeat);
-      const diff = nextDate.diff(startDate, 'days');
-
-      if (moment().isSameOrAfter(startDate)) {
-        const y = diff + task.startIndex;
-        const currentIndex = y % task.assignee.length;
+      if (task.rotate) {
+        if (moment().isBefore(startIndexDate) || moment().isAfter(nextDate)) {
+          return {};
+        }
       }
 
       return task;
     });
-
-    return tasks;
   }
 
   async autocompleteTask() {
@@ -190,6 +200,10 @@ class TaskAction {
 
       taskWrite.updateTask(_.assignIn(currentTask, { nextDate }));
     });
+  }
+
+  async myTaskIsMine() {
+    console.log('here');
   }
 }
 

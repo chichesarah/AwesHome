@@ -96,11 +96,11 @@ router.get('/:id', async (req, next) => {
   * @apiHeader {String} Authorization User bearer access token
 
   * @apiParam  {String}  title Name for event
-  * @apiParam  {String[]}  member Array of member users id
+  * @apiParam  {String[]}  [member] Array of member users id
   * @apiParam  {String}  startDate Date when event start
   * @apiParam  {String}  [endDate] Date when event end. Not mandatory if `allDay` is true
   * @apiParam  {Boolean} [allDay=false] Use all day or not. Not mandatory if `endDate` is specified
-  * @apiParam  {String} fullAddress Address where event will start
+  * @apiParam  {String} [fullAddress] Address where event will start
   * @apiParam  {Boolean} [notify] Do or not notifications
 
   * @apiExample {curl} Example usage:

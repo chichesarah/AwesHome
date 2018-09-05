@@ -1,12 +1,12 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 import taskWrite from '../model/write/task';
 import eventWrite from '../model/write/event';
-import { convertDataUtc, countNextDate } from './task';
+import { convertDataUtc, countNextDate, timeDiff } from './task';
 
 class CalendarAction {
   async getTasks(data, fullResponse = false) {
-
     const userData = _.cloneDeep(data.userObj);
 
     const startDate = convertDataUtc(data.body.startDate);
@@ -26,7 +26,10 @@ class CalendarAction {
       let taskEndDate = task.endDate ? convertDataUtc(task.endDate) : endDate;
       taskEndDate = taskEndDate.isBefore(endDate) ? taskEndDate : endDate;
 
-      while (nextDate.isBefore(startDate) && task.repeat !== 'Does not repeat') {
+      while (
+        nextDate.isBefore(startDate) &&
+        task.repeat !== 'Does not repeat'
+      ) {
         nextDate = countNextDate(nextDate, task.repeat);
       }
 
@@ -40,6 +43,31 @@ class CalendarAction {
 
         if (fullResponse) {
           const taskObj = _.cloneDeep(task);
+
+          if (taskObj.rotate) {
+            const startIndexDate = moment(taskObj.dueDate);
+            let diff;
+            let currentIndex;
+
+            if (taskObj.repeat === 'Every 2 weeks') {
+              diff = nextDate.diff(startIndexDate, 'week');
+
+              const twiceDiff = diff * 2;
+              currentIndex =
+                (twiceDiff + taskObj.startIndex) % taskObj.assignee.length;
+            } else {
+              diff = nextDate.diff(startIndexDate, timeDiff(taskObj.repeat));
+
+              currentIndex =
+                (diff + taskObj.startIndex) % taskObj.assignee.length;
+            }
+
+            const currentMember = taskObj.assignee.filter(
+              (member, index) => index === currentIndex,
+            );
+            taskObj.currentMember = currentMember[0];
+          }
+
           taskObj.nextDate = nextDate;
           taskObject.object = taskObj;
         }

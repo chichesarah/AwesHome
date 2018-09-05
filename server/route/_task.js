@@ -18,6 +18,8 @@ router.all('/*', bearerMiddleware);
  * @apiSuccess  {String}  householdId   Household id
  * @apiSuccess  {String}  taskNameId    TaskName id
  * @apiSuccess  {String}  dueDate       Due date
+ * @apiSuccess  {String}  rotate        rotate
+ * @apiSuccess  {String}  startIndex    startIndex
  * @apiSuccess  {String}  repeat        How often this task will repeat
  * @apiSuccess  {Boolean} reminder      Need reminders
  * @apiSuccess  {String[]} assignee     Array of assigned users id
