@@ -168,17 +168,21 @@ class TaskAction {
     );
 
     return tasks.map((task) => {
-      const startIndexDate = convertDataUtc(task.dueDate);
-      const nextDate = countNextDate(startIndexDate, task.repeat);
+      const startDate = moment();
+      const endDate = convertDataUtc(task.dueDate);
+      const nextDate = countNextDate(endDate, task.repeat);
 
       if (task.rotate) {
-        if (moment().isBefore(startIndexDate) || moment().isAfter(nextDate)) {
+        if (
+          startDate.isAfter(nextDate) ||
+          startDate.isAfter(endDate)
+        ) {
           return {};
         }
       }
 
       return task;
-    });
+    }).filter(task => Object.keys(task).length);
   }
 
   async autocompleteTask() {

@@ -21,9 +21,9 @@ class CalendarAction {
     const calendar = {};
 
     tasks.forEach((task) => {
-      let nextDate = convertDataUtc(task.dueDate);
+      let nextDate = convertDataUtc(task.createdAt);
 
-      let taskEndDate = task.endDate ? convertDataUtc(task.endDate) : endDate;
+      let taskEndDate = convertDataUtc(task.dueDate);
       taskEndDate = taskEndDate.isBefore(endDate) ? taskEndDate : endDate;
 
       while (
@@ -45,7 +45,7 @@ class CalendarAction {
           const taskObj = _.cloneDeep(task);
 
           if (taskObj.rotate) {
-            const startIndexDate = moment(taskObj.dueDate);
+            const startIndexDate = convertDataUtc(taskObj.createdAt);
             let diff;
             let currentIndex;
 
@@ -65,7 +65,7 @@ class CalendarAction {
             const currentMember = taskObj.assignee.filter(
               (member, index) => index === currentIndex,
             );
-            taskObj.currentMember = currentMember[0];
+            taskObj.currentMember = currentMember;
           }
 
           taskObj.nextDate = nextDate;
