@@ -185,8 +185,6 @@ class TaskAction {
           const startDate = convertDataUtc(task.createdAt);
           const nextDate = moment(task.nextDate);
 
-          console.log(nextDate)
-
           let diff;
           let currentIndex;
 
@@ -206,10 +204,7 @@ class TaskAction {
           );
           task.currentMember = currentMember;
 
-          console.log(currentMember[0]._id !== user._id)
-          console.log(currentMember[0]._id)
-          console.log(user._id)
-          if (currentMember[0]._id !== user._id) {
+          if (currentMember[0]._id.toString() !== userData._id.toString()) {
             return {};
           }
           return task;
