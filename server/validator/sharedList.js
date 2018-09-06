@@ -43,11 +43,11 @@ class SharedListValidate {
       throw ([{ param: 'member', message: 'Not all users have been found in your household' }]);
     }
 
-    const sharedListName = await sharedListWrite.findByName(body.name);
+    // const sharedListName = await sharedListWrite.findByName(body.name);
 
-    if (sharedListName) {
-      throw ([{ param: 'name', message: 'This name is already exists' }]);
-    }
+    // if (sharedListName) {
+    //   throw ([{ param: 'name', message: 'This name is already exists' }]);
+    // }
 
     body.member.push(userId);
 
@@ -143,9 +143,9 @@ class SharedListValidate {
       throw ([{ param: 'itemId', message: 'Item im shared list not found' }]);
     }
 
-    if (sharedListObj.item[itemIndex].memberId.toString() !== userId) {
-      throw ([{ param: 'userId', message: 'User don\'t have permission' }]);
-    }
+    // if (sharedListObj.item[itemIndex].memberId.toString() !== userId) {
+    //   throw ([{ param: 'userId', message: 'User don\'t have permission' }]);
+    // }
 
     body.status = typeof(body.status) === 'string' ? body.status !== 'false' : body.status;
     return body;

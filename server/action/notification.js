@@ -7,20 +7,46 @@ const FCM = require('fcm-node');
 const fcm = new FCM(config.notification.serverKey);
 
 class notificationAction {
-  async pushNotificationEndTask(data) {
-    const udid = (await udidWrite.findTokenById(data.assignee)).map(
+  async pushToNextMember(data) {
+    const udid = (await udidWrite.findTokenById(data.currentMember)).map(
       item => item.token,
     );
 
     const message = {
-      registration_ids: udid,
+      to: udid[0],
       notification: {
         title: `Hey! Just wanted to remind you that your task ${
-          data.taskName
+          data.taskData.taskName
         } is due by dueDate`,
       },
       data: {
-        id: data._id,
+        id: data.taskData._id,
+      },
+    };
+
+    fcm.send(message, (success,err) => {
+      if (err) {
+        console.log('Something has gone wrong!', err);
+      } else {
+        console.log(success)
+      }
+    });
+  }
+
+  async pushNotificationEndTask(data) {
+    const udid = (await udidWrite.findTokenById(data.currentMember)).map(
+      item => item.token,
+    );
+
+    const message = {
+      to: udid[0],
+      notification: {
+        title: `Hey! Just wanted to remind you that your task ${
+          data.task.taskName
+        } is due by dueDate`,
+      },
+      data: {
+        id: data.task._id,
       },
     };
 

@@ -79,6 +79,27 @@ export const timeDiff = (type) => {
   }
 };
 
+export const calcUsers = (task, startDate, nextDate) => {
+  let diff;
+  let currentIndex;
+
+  if (task.repeat === 'Every 2 weeks') {
+    diff = nextDate.diff(startDate, 'week');
+
+    const twiceDiff = diff * 2;
+    currentIndex = (twiceDiff + task.startIndex) % task.assignee.length;
+  } else {
+    diff = nextDate.diff(startDate, timeDiff(task.repeat));
+
+    currentIndex = (diff + task.startIndex) % task.assignee.length;
+  }
+
+  const currentMember = task.assignee.filter(
+    (member, index) => index === currentIndex,
+  );
+  return currentMember;
+};
+
 class TaskAction {
   async create(data) {
     const taskData = _.cloneDeep(data.body);
@@ -96,24 +117,37 @@ class TaskAction {
     );
 
     if (taskData.nextDate.isAfter(taskData.dueDate)) {
-      taskData.nextDate = convertDataUtc(taskData.dueDate);
+      taskData.nextDate = taskData.dueDate;
     }
 
     const task = await taskWrite.newTask(taskData);
-
     eventBus.emit('addTask', task);
     eventBus.emit('assigneeToTask', task);
 
-    return _.pick(task, taskFreeData);
+    return _.pick(
+      _.assignIn(task, {
+        dueDate: `${moment(task.dueDate).format('YYYY-MM-DDTHH:mm:ss.SSS')}Z`,
+      }),
+      taskFreeData,
+    );
   }
 
   async update(data) {
     const taskData = _.assignIn(data.taskObj, data.body);
     delete taskData.taskId;
 
+    if (convertDataUtc(taskData.nextDate).isAfter(taskData.dueDate)) {
+      taskData.nextDate = taskData.dueDate;
+    }
+
     const task = await taskWrite.updateTask(taskData);
 
-    return _.pick(task, taskFreeData);
+    return _.pick(
+      _.assignIn(task, {
+        dueDate: `${moment(task.dueDate).format('YYYY-MM-DDTHH:mm:ss.SSS')}Z`,
+      }),
+      taskFreeData,
+    );
   }
 
   async delete(_id) {
@@ -133,20 +167,28 @@ class TaskAction {
     if (taskData.repeat === 'Does not repeat') {
       taskData.endDate = taskData.nextDate;
       taskData.isDeleted = true;
+
+      eventBus.emit('completeTask', taskData);
     } else {
       taskData.nextDate = countNextDate(taskData.nextDate, taskData.repeat);
-
-      // eventBus.emit('addTask', taskData);
 
       if (taskData.nextDate.isAfter(taskData.dueDate)) {
         taskData.endDate = taskData.dueDate;
         taskData.isDeleted = true;
+
+        eventBus.emit('completeTask', taskData);
       }
     }
 
-    const task = await taskWrite.completeTask(_id, taskData);
+    if (taskData.rotate) {
+      const startDate = convertDataUtc(taskData.createdAt);
+      const nextDate = moment(taskData.nextDate);
+      const currentMember = calcUsers(taskData, startDate, nextDate);
 
-    eventBus.emit('completeTask', task);
+      eventBus.emit('taskToNextMember', { taskData, currentMember });
+    }
+
+    const task = await taskWrite.completeTask(_id, taskData);
 
     return _.pick(task, taskFreeData);
   }
@@ -173,23 +215,8 @@ class TaskAction {
           const startDate = convertDataUtc(task.createdAt);
           const nextDate = moment(task.nextDate);
 
-          let diff;
-          let currentIndex;
+          const currentMember = calcUsers(task, startDate, nextDate);
 
-          if (task.repeat === 'Every 2 weeks') {
-            diff = nextDate.diff(startDate, 'week');
-
-            const twiceDiff = diff * 2;
-            currentIndex = (twiceDiff + task.startIndex) % task.assignee.length;
-          } else {
-            diff = nextDate.diff(startDate, timeDiff(task.repeat));
-
-            currentIndex = (diff + task.startIndex) % task.assignee.length;
-          }
-
-          const currentMember = task.assignee.filter(
-            (member, index) => index === currentIndex,
-          );
           task.currentMember = currentMember;
 
           if (currentMember[0]._id.toString() !== userData._id.toString()) {
@@ -215,8 +242,16 @@ class TaskAction {
         currentTask.endDate = task.nextDate;
         currentTask.isDeleted = true;
       } else {
-        while (nextDate < today) {
+        while (nextDate.isBefore(today)) {
           nextDate = countNextDate(nextDate, task.repeat);
+
+          if (task.rotate) {
+            const startDate = convertDataUtc(task.createdAt);
+
+            const currentMember = calcUsers(task, startDate, moment(task.nextDate));
+
+            eventBus.emit('taskToNextMember', { task, currentMember });
+          }
 
           if (nextDate.isAfter(task.dueDate)) {
             currentTask.endDate = task.dueDate;
@@ -234,14 +269,18 @@ class TaskAction {
     const tasks = await taskWrite.getLowerTasks(today);
 
     tasks.forEach((task) => {
-      const dueDate = convertDataUtc(task.dueDate);
+      if (task.rotate) {
+        const startDate = convertDataUtc(task.createdAt);
+        const nextDate = moment(task.nextDate);
 
-      const diff = dueDate.diff(today, 'days');
+        const currentMember = calcUsers(task, startDate, nextDate);
 
-      if (task.reminder && diff === 1) {
-        eventBus.emit('soonEndTask', task);
+        const lastDay = nextDate.diff(today, 'days');
+
+        if (task.reminder && lastDay === 1) {
+          eventBus.emit('soonEndTask', { task, currentMember });
+        }
       }
-
     });
   }
 }

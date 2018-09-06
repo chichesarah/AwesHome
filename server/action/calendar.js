@@ -1,9 +1,8 @@
 import _ from 'lodash';
-import moment from 'moment';
 
 import taskWrite from '../model/write/task';
 import eventWrite from '../model/write/event';
-import { convertDataUtc, countNextDate, timeDiff } from './task';
+import { convertDataUtc, countNextDate, calcUsers } from './task';
 
 class CalendarAction {
   async getTasks(data, fullResponse = false) {
@@ -46,25 +45,9 @@ class CalendarAction {
 
           if (taskObj.rotate) {
             const startIndexDate = convertDataUtc(taskObj.createdAt);
-            let diff;
-            let currentIndex;
 
-            if (taskObj.repeat === 'Every 2 weeks') {
-              diff = nextDate.diff(startIndexDate, 'week');
+            const currentMember = calcUsers(taskObj, startIndexDate, nextDate);
 
-              const twiceDiff = diff * 2;
-              currentIndex =
-                (twiceDiff + taskObj.startIndex) % taskObj.assignee.length;
-            } else {
-              diff = nextDate.diff(startIndexDate, timeDiff(taskObj.repeat));
-
-              currentIndex =
-                (diff + taskObj.startIndex) % taskObj.assignee.length;
-            }
-
-            const currentMember = taskObj.assignee.filter(
-              (member, index) => index === currentIndex,
-            );
             taskObj.currentMember = currentMember;
           }
 
