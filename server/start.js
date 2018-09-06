@@ -7,6 +7,7 @@ const taskSchedule = () => {
   schedule.scheduleJob('0 0 6 * *', () => taskAction.autocompleteTask());
   schedule.scheduleJob('0 0 12 * *', () => taskAction.autocompleteTask());
   schedule.scheduleJob('0 0 18 * *', () => taskAction.autocompleteTask());
+  schedule.scheduleJob('0 */24 * * *', () => taskAction.myTaskIsMine());
 };
 
 export default async () => {

@@ -34,6 +34,11 @@ eventBus.onSeries('addTask', async (data, next) => {
   await next();
 });
 
+eventBus.onSeries('soonEndTask', async (data, next) => {
+  await notificationAction.pushNotificationEndTask(data);
+  await next();
+});
+
 eventBus.onSeries('completeTask', async (data, next) => {
   await feedAction.completeTaskEvent(data);
   await next();

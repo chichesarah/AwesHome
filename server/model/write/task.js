@@ -200,6 +200,17 @@ taskWrite.getOverdueTasks = today =>
     },
   });
 
+taskWrite.getLowerTasks = today =>
+  taskWrite.findRows({
+    query: {
+      isDeleted: false,
+      nextDate: {
+        $gt: today,
+      },
+      $or: notEndedTasks(),
+    },
+  });
+
 taskWrite.getTasksByDuration = ({ householdId, startDate, endDate }) => {
   const start = startDate.toDate();
   const end = endDate.toDate();

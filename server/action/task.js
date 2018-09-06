@@ -233,7 +233,18 @@ class TaskAction {
   }
 
   async myTaskIsMine() {
-    console.log('here');
+    const today = moment().startOf('day');
+    const tasks = await taskWrite.getLowerTasks(today);
+
+    tasks.forEach((task) => {
+      const dueDate = convertDataUtc(task.dueDate);
+
+      const diff = dueDate.diff(today, 'days');
+
+      if (diff === 1) {
+        eventBus.emit('soonEndTask', task);
+      }
+    });
   }
 }
 
