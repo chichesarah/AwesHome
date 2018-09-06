@@ -107,22 +107,11 @@ class TaskAction {
   }
 
   async update(data) {
-    const today = moment().startOf('day');
     const taskData = _.assignIn(data.taskObj, data.body);
     delete taskData.taskId;
 
-    taskData.dueDate = convertDataUtc(taskData.dueDate);
-
-    if (taskData.dueDate >= moment().startOf('day')) {
-      taskData.nextDate = taskData.dueDate;
-    } else {
-      let nextDate = countNextDate(taskData.dueDate, taskData.repeat);
-
-      while (nextDate < today && taskData.repeat !== 'Does not repeat') {
-        nextDate = countNextDate(nextDate, taskData.repeat);
-      }
-
-      taskData.nextDate = nextDate;
+    if (taskData.nextDate.isAfter(taskData.dueDate)) {
+      taskData.nextDate = convertDataUtc(taskData.dueDate);
     }
 
     const task = await taskWrite.updateTask(taskData);
@@ -149,6 +138,8 @@ class TaskAction {
       taskData.isDeleted = true;
     } else {
       taskData.nextDate = countNextDate(taskData.nextDate, taskData.repeat);
+
+      eventBus.emit('addTask', taskData);
 
       if (taskData.nextDate.isAfter(taskData.dueDate)) {
         taskData.endDate = taskData.dueDate;

@@ -108,6 +108,7 @@ router.post('/create', async (req, next) => {
 
   * @apiParam  {String}   taskId       Task id
   * @apiParam  {String}   [dueDate]    Due date
+  * @apiParam  {String}   [rotate]     rotate
   * @apiParam  {String}   [repeat]     How often this task will repeat
   * @apiParam  {Boolean}  [reminder]   Need reminders
   * @apiParam  {String[]} [assignee]   Array of assigned users id

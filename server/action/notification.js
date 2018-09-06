@@ -8,14 +8,16 @@ const fcm = new FCM(config.notification.serverKey);
 
 class notificationAction {
   async addPushTaskEvent(data) {
-    const udid = (await udidWrite.findTokenById(data.assignee)).map(item => item.token);
-    const user = await userWrite.findById(data.ownerId);
+    const udid = (await udidWrite.findTokenById(data.assignee)).map(
+      item => item.token,
+    );
 
     const message = {
       registration_ids: udid,
-      collapse_key: 'your_collapse_key',
       notification: {
-        title: `- ${user.firstName} ${user.lastName} added ${data.taskName} to the task organizer.`,
+        title: `Hey! You’ve been assigned to the task ${
+          data.taskName
+        } 🙂. Don’t forget to complete it before dueDate.`,
       },
       data: {
         id: data._id,
@@ -30,14 +32,18 @@ class notificationAction {
   }
 
   async createPushListEvent(data) {
-    const udid = (await udidWrite.findTokenById(data.member)).map(item => item.token);
+    const udid = (await udidWrite.findTokenById(data.member)).map(
+      item => item.token,
+    );
     const user = await userWrite.findById(data.ownerId);
 
     const message = {
       registration_ids: udid,
       collapse_key: 'your_collapse_key',
       notification: {
-        title: `- ${user.firstName} ${user.lastName} created the list ${data.name}.`,
+        title: `- ${user.firstName} ${user.lastName} created the list ${
+          data.name
+        }.`,
       },
       data: {
         id: data._id,
@@ -52,7 +58,9 @@ class notificationAction {
   }
 
   async createPushEventObj(data) {
-    const udid = (await udidWrite.findTokenById(data.member)).map(item => item.token);
+    const udid = (await udidWrite.findTokenById(data.member)).map(
+      item => item.token,
+    );
     const user = await userWrite.findById(data.ownerId);
 
     const message = {
@@ -76,7 +84,9 @@ class notificationAction {
   }
 
   async addNewGuestPushEventObj(data) {
-    const udid = (await udidWrite.findTokenById(data.newMember)).map(item => item.token);
+    const udid = (await udidWrite.findTokenById(data.newMember)).map(
+      item => item.token,
+    );
 
     const message = {
       registration_ids: udid,
