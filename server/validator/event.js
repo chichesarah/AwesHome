@@ -214,10 +214,12 @@ class EventValidate {
 
     const userObj = await userValidate.checkForHousehold(userId);
 
-    const members = await userWrite.checkMembers(body.member, userObj.householdId);
+    if (body.member) {
+      const members = await userWrite.checkMembers(body.member, userObj.householdId);
 
-    if (members.length !== body.member.length) {
-      throw ([{ param: 'member', message: 'Not all members from the same household' }]);
+      if (members.length !== body.member.length) {
+        throw ([{ param: 'member', message: 'Not all members from the same household' }]);
+      }
     }
 
     return _.pick(body, eventFreeData);

@@ -24,11 +24,9 @@ class notificationAction {
       },
     };
 
-    fcm.send(message, (success,err) => {
+    fcm.send(message, (err) => {
       if (err) {
         console.log('Something has gone wrong!', err);
-      } else {
-        console.log(success)
       }
     });
   }
@@ -91,7 +89,9 @@ class notificationAction {
     const message = {
       registration_ids: udid,
       notification: {
-        title: `- ${user.firstName} ${user.lastName} added ${data.taskName} to the task organizer.`,
+        title: `- ${user.firstName} ${user.lastName} added ${
+          data.taskName
+        } to the task organizer.`,
       },
       data: {
         id: data._id,
