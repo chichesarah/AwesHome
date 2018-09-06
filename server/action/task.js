@@ -110,7 +110,7 @@ class TaskAction {
     const taskData = _.assignIn(data.taskObj, data.body);
     delete taskData.taskId;
 
-    if (taskData.nextDate.isAfter(taskData.dueDate)) {
+    if (convertDataUtc(taskData.nextDate).isAfter(taskData.dueDate)) {
       taskData.nextDate = convertDataUtc(taskData.dueDate);
     }
 
