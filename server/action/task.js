@@ -102,6 +102,7 @@ class TaskAction {
     const task = await taskWrite.newTask(taskData);
 
     eventBus.emit('addTask', task);
+    eventBus.emit('assigneeToTask', task);
 
     return _.pick(task, taskFreeData);
   }
@@ -109,10 +110,6 @@ class TaskAction {
   async update(data) {
     const taskData = _.assignIn(data.taskObj, data.body);
     delete taskData.taskId;
-
-    if (convertDataUtc(taskData.nextDate).isAfter(taskData.dueDate)) {
-      taskData.nextDate = convertDataUtc(taskData.dueDate);
-    }
 
     const task = await taskWrite.updateTask(taskData);
 
@@ -139,7 +136,7 @@ class TaskAction {
     } else {
       taskData.nextDate = countNextDate(taskData.nextDate, taskData.repeat);
 
-      eventBus.emit('addTask', taskData);
+      // eventBus.emit('addTask', taskData);
 
       if (taskData.nextDate.isAfter(taskData.dueDate)) {
         taskData.endDate = taskData.dueDate;
@@ -241,9 +238,10 @@ class TaskAction {
 
       const diff = dueDate.diff(today, 'days');
 
-      if (diff === 1) {
+      if (task.reminder && diff === 1) {
         eventBus.emit('soonEndTask', task);
       }
+
     });
   }
 }

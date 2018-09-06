@@ -31,7 +31,7 @@ class notificationAction {
     });
   }
 
-  async addPushTaskEvent(data) {
+  async assigneePushTaskEvent(data) {
     const udid = (await udidWrite.findTokenById(data.assignee)).map(
       item => item.token,
     );
@@ -42,6 +42,30 @@ class notificationAction {
         title: `Hey! You’ve been assigned to the task ${
           data.taskName
         } 🙂. Don’t forget to complete it before dueDate.`,
+      },
+      data: {
+        id: data._id,
+      },
+    };
+
+    fcm.send(message, (err) => {
+      if (err) {
+        console.log('Something has gone wrong!', err);
+      }
+    });
+  }
+
+  async addPushTaskEvent(data) {
+    const udid = (await udidWrite.findTokenById(data.assignee)).map(
+      item => item.token,
+    );
+
+    const user = await userWrite.findById(data.ownerId);
+
+    const message = {
+      registration_ids: udid,
+      notification: {
+        title: `- ${user.firstName} ${user.lastName} added ${data.taskName} to the task organizer.`,
       },
       data: {
         id: data._id,
