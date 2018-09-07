@@ -14,6 +14,7 @@ class notificationAction {
 
     const message = {
       to: udid[0],
+      collapse_key: 'your_collapse_key',
       notification: {
         title: `Hey! Just wanted to remind you that your task ${
           data.taskData.taskName
@@ -24,9 +25,11 @@ class notificationAction {
       },
     };
 
-    fcm.send(message, (err) => {
+    fcm.send(message, (err, response) => {
       if (err) {
-        console.log('Something has gone wrong!', err);
+        console.log("Something has gone wrong!");
+      } else {
+        console.log("Successfully sent with response: ", response);
       }
     });
   }
@@ -38,6 +41,7 @@ class notificationAction {
 
     const message = {
       to: udid[0],
+      collapse_key: 'your_collapse_key',
       notification: {
         title: `Hey! Just wanted to remind you that your task ${
           data.task.taskName
@@ -62,6 +66,7 @@ class notificationAction {
 
     const message = {
       registration_ids: udid,
+      collapse_key: 'your_collapse_key',
       notification: {
         title: `Hey! You’ve been assigned to the task ${
           data.taskName
@@ -72,9 +77,11 @@ class notificationAction {
       },
     };
 
-    fcm.send(message, (err) => {
+    fcm.send(message, (err, response) => {
       if (err) {
-        console.log('Something has gone wrong!', err);
+        console.log("Something has gone wrong!");
+      } else {
+        console.log("Successfully sent with response: ", response);
       }
     });
   }
@@ -88,6 +95,7 @@ class notificationAction {
 
     const message = {
       registration_ids: udid,
+      collapse_key: 'your_collapse_key',
       notification: {
         title: `- ${user.firstName} ${user.lastName} added ${
           data.taskName
@@ -98,9 +106,11 @@ class notificationAction {
       },
     };
 
-    fcm.send(message, (err) => {
+    fcm.send(message, (err, response) => {
       if (err) {
-        console.log('Something has gone wrong!', err);
+        console.log("Something has gone wrong!");
+      } else {
+        console.log("Successfully sent with response: ", response);
       }
     });
   }
