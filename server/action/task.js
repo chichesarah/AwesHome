@@ -199,25 +199,29 @@ class TaskAction {
 
     const tasks = await taskWrite.getTasksByHousehold(userData.householdId);
 
-    return tasks
-      .map((task) => {
-        if (task.rotate) {
-          const startDate = convertDataUtc(task.dueDate);
-          const nextDate = countNextDate(task.nextDate, task.repeat);
+    if (tasks && tasks.length) {
+      return tasks
+        .map((task) => {
+          if (task.rotate) {
+            const startDate = convertDataUtc(task.dueDate);
+            const nextDate = countNextDate(task.nextDate, task.repeat);
 
-          const currentMember = calcUsers(task, startDate, nextDate);
+            const currentMember = calcUsers(task, startDate, nextDate);
 
-          task.currentMember = currentMember;
+            task.currentMember = currentMember;
 
-          if (currentMember[0]._id.toString() !== userData._id.toString()) {
-            return {};
+            if (currentMember[0]._id.toString() !== userData._id.toString()) {
+              return {};
+            }
+            return task;
           }
-          return task;
-        }
 
-        return task;
-      })
-      .filter(task => Object.keys(task).length);
+          return task;
+        })
+        .filter(task => Object.keys(task).length);
+    }
+
+    return tasks;
   }
 
   async getByAssignedUser(user) {
