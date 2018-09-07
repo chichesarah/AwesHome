@@ -14,10 +14,6 @@ module.exports = (options) => {
 
   const deepLink = (req, res, next) => {
     const opts = {};
-    console.log('params', JSON.stringify(req.params));
-    console.log('body', JSON.stringify(req.body));
-    console.log('query', JSON.stringify(req.query));
-    console.log('originalUrl', JSON.stringify(req.originalUrl));
 
     Object.keys(options).forEach((k) => {
       opts[k] = options[k];
@@ -32,7 +28,6 @@ module.exports = (options) => {
     if (req.query.fallback) {
       opts.fallback = req.query.fallback;
     }
-    console.log('URL', opts.url);
     // read template file
     const file = fs.createReadStream(path.join(__dirname, '/template/index.html'));
 

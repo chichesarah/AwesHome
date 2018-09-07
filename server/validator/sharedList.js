@@ -43,13 +43,15 @@ class SharedListValidate {
       throw ([{ param: 'member', message: 'Not all users have been found in your household' }]);
     }
 
+    if (!_.includes(body.member, userObj._id.toString())) {
+      body.member.push(userId);
+    }
+
     // const sharedListName = await sharedListWrite.findByName(body.name);
 
     // if (sharedListName) {
     //   throw ([{ param: 'name', message: 'This name is already exists' }]);
     // }
-
-    body.member.push(userId);
 
     return body;
   }
