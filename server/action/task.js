@@ -124,6 +124,7 @@ class TaskAction {
     return _.pick(
       _.assignIn(task, {
         dueDate: convertDateToResponse(task.dueDate),
+        nextDate: convertDateToResponse(task.nextDate),
       }),
       taskFreeData,
     );
@@ -152,7 +153,8 @@ class TaskAction {
 
     return _.pick(
       _.assignIn(task, {
-        dueDate: `${moment(task.dueDate).format('YYYY-MM-DDTHH:mm:ss.SSS')}Z`,
+        dueDate: convertDateToResponse(task.dueDate),
+        nextDate: convertDateToResponse(task.nextDate),
       }),
       taskFreeData,
     );
@@ -191,7 +193,13 @@ class TaskAction {
 
     const task = await taskWrite.completeTask(_id, taskData);
 
-    return _.pick(task, taskFreeData);
+    return _.pick(
+      _.assignIn(task, {
+        dueDate: convertDateToResponse(task.dueDate),
+        nextDate: convertDateToResponse(task.nextDate),
+      }),
+      taskFreeData,
+    );
   }
 
   async getByHousehold(user) {
@@ -268,6 +276,9 @@ class TaskAction {
     tasks.forEach((task) => {
       const currentTask = _.cloneDeep(task);
       let nextDate = countNextDate(task.nextDate, task.repeat);
+
+      currentTask.nextDate = convertDateToResponse(currentTask.nextDate);
+      currentTask.dueDate = convertDateToResponse(currentTask.dueDate);
 
       if (task.repeat === 'Does not repeat') {
         currentTask.endDate = task.nextDate;
