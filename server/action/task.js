@@ -209,13 +209,14 @@ class TaskAction {
             const currentMember = calcUsers(task, startDate, nextDate);
 
             task.currentMember = currentMember;
-            task.nextDate = convertDateToResponse(nextDate);
+            task.nextDate = convertDateToResponse(task.nextDate);
             task.dueDate = convertDateToResponse(task.dueDate);
 
             if (currentMember && currentMember.length) {
               if (currentMember[0]._id.toString() !== userData._id.toString()) {
                 return {};
               }
+              return task;
             }
 
             return task;
