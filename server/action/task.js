@@ -95,6 +95,7 @@ export const calcUsers = (task, startDate, nextDate) => {
     diff = nextDate.diff(startDate, timeDiff(task.repeat));
 
     currentIndex = (diff + task.startIndex) % task.assignee.length;
+
   }
 
   const currentMember = task.assignee.filter(
@@ -190,6 +191,7 @@ class TaskAction {
 
       eventBus.emit('taskToNextMember', { taskData, currentMember });
     }
+    //5b92aed4a796430004dfa355
 
     const task = await taskWrite.completeTask(_id, taskData);
 
@@ -207,33 +209,33 @@ class TaskAction {
 
     const tasks = await taskWrite.getTasksByHousehold(userData.householdId);
 
-    if (tasks && tasks.length) {
-      return tasks
-        .map((task) => {
-          if (task.rotate) {
-            const startDate = convertDataUtc(task.dueDate);
-            const nextDate = countNextDate(task.nextDate, task.repeat);
+    // if (tasks && tasks.length) {
+      // return tasks
+      //   .map((task) => {
+      //     if (task.rotate) {
+      //       const startDate = convertDataUtc(task.dueDate);
+      //       const nextDate = countNextDate(task.nextDate, task.repeat);
 
-            const currentMember = calcUsers(task, startDate, nextDate);
+      //       const currentMember = calcUsers(task, startDate, nextDate);
 
-            task.currentMember = currentMember;
-            task.nextDate = convertDateToResponse(task.nextDate);
-            task.dueDate = convertDateToResponse(task.dueDate);
+      //       task.currentMember = currentMember;
+      //       task.nextDate = convertDateToResponse(task.nextDate);
+      //       task.dueDate = convertDateToResponse(task.dueDate);
 
-            if (currentMember && currentMember.length) {
-              if (currentMember[0]._id.toString() !== userData._id.toString()) {
-                return {};
-              }
-              return task;
-            }
+      //       // if (currentMember && currentMember.length) {
+      //       //   if (currentMember[0]._id.toString() !== userData._id.toString()) {
+      //       //     return {};
+      //       //   }
+      //       //   return task;
+      //       // }
 
-            return task;
-          }
+      //       return task;
+      //     }
 
-          return task;
-        })
-        .filter(task => Object.keys(task).length);
-    }
+      //     return task;
+      //   })
+        // .filter(task => Object.keys(task).length);
+    // }
 
     return tasks;
   }
