@@ -16,9 +16,9 @@ class notificationAction {
       to: udid[0],
       collapse_key: 'your_collapse_key',
       notification: {
-        title: `Hey! Just wanted to remind you that your task ${
+        title: `Hey! You’ve been assigned to the task ${
           data.taskData.taskName
-        } is due by dueDate`,
+        } 🙂. Don’t forget to complete it before dueDate.`,
       },
       data: {
         id: data.taskData._id,
@@ -27,9 +27,9 @@ class notificationAction {
 
     fcm.send(message, (err, response) => {
       if (err) {
-        console.log("Something has gone wrong!");
+        console.log('Something has gone wrong!');
       } else {
-        console.log("Successfully sent with response: ", response);
+        console.log('Successfully send with response: ', response);
       }
     });
   }
@@ -79,9 +79,9 @@ class notificationAction {
 
     fcm.send(message, (err, response) => {
       if (err) {
-        console.log("Something has gone wrong!");
+        console.log('Something has gone wrong!', err);
       } else {
-        console.log("Successfully sent with response: ", response);
+        console.log('Successfully send with response: ', response);
       }
     });
   }
@@ -108,9 +108,9 @@ class notificationAction {
 
     fcm.send(message, (err, response) => {
       if (err) {
-        console.log("Something has gone wrong!");
+        console.log('Something has gone wrong!', err);
       } else {
-        console.log("Successfully sent with response: ", response);
+        console.log('Successfully send with response: ', response);
       }
     });
   }

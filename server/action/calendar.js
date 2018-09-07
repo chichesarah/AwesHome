@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 import taskWrite from '../model/write/task';
 import eventWrite from '../model/write/event';
@@ -20,20 +21,18 @@ class CalendarAction {
     const calendar = {};
 
     tasks.forEach((task) => {
-      let nextDate = convertDataUtc(task.createdAt);
+      let nextDate = convertDataUtc(task.dueDate);
 
-      let taskEndDate = convertDataUtc(task.dueDate);
+      let taskEndDate = task.endDate ? convertDataUtc(task.endDate) : endDate;
       taskEndDate = taskEndDate.isBefore(endDate) ? taskEndDate : endDate;
 
-      while (
-        nextDate.isBefore(startDate) &&
-        task.repeat !== 'Does not repeat'
-      ) {
+      while (nextDate.isBefore(startDate) && task.repeat !== 'Does not repeat') {
         nextDate = countNextDate(nextDate, task.repeat);
       }
 
       while (nextDate.isBefore(taskEndDate) || nextDate.isSame(taskEndDate)) {
         const date = nextDate.format('YYYY-MM-DD');
+
 
         const taskObject = {
           _id: task._id,
@@ -44,14 +43,16 @@ class CalendarAction {
           const taskObj = _.cloneDeep(task);
 
           if (taskObj.rotate) {
-            const startIndexDate = convertDataUtc(taskObj.createdAt);
+            const startIndexDate = convertDataUtc(taskObj.dueDate);
 
             const currentMember = calcUsers(taskObj, startIndexDate, nextDate);
 
             taskObj.currentMember = currentMember;
           }
 
-          taskObj.nextDate = nextDate;
+          taskObj.dueDate = `${moment(task.dueDate).format('YYYY-MM-DDTHH:mm:ss.SSS')}Z`;
+          taskObj.nextDate = `${moment(nextDate).format('YYYY-MM-DDTHH:mm:ss.SSS')}Z`;
+
           taskObject.object = taskObj;
         }
 
