@@ -209,7 +209,7 @@ class EventValidate {
     }
 
     if (event.ownerId.toString() !== userId.toString()) {
-      throw ([{ param: 'userId', message: 'User can not delete this event, don\'t have permission' }]);
+      throw ([{ param: 'userId', message: 'User can not update this event, don\'t have permission' }]);
     }
 
     const userObj = await userValidate.checkForHousehold(userId);
