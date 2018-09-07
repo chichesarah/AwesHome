@@ -199,8 +199,6 @@ class TaskAction {
 
     const tasks = await taskWrite.getTasksByHousehold(userData.householdId);
 
-    console.log(tasks)
-
     if (tasks && tasks.length) {
       return tasks
         .map((task) => {
@@ -211,6 +209,8 @@ class TaskAction {
             const currentMember = calcUsers(task, startDate, nextDate);
 
             task.currentMember = currentMember;
+            task.nextDate = convertDateToResponse(nextDate);
+            task.dueDate = convertDateToResponse(task.dueDate);
 
             if (currentMember && currentMember.length) {
               if (currentMember[0]._id.toString() !== userData._id.toString()) {
