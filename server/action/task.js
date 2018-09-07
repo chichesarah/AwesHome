@@ -258,7 +258,7 @@ class TaskAction {
 
           task.currentMember = currentMember;
           task.dueDate = convertDateToResponse(task.dueDate);
-          task.nextDate = convertDateToResponse(nextDate);
+          task.nextDate = convertDateToResponse(task.nextDate);
 
           if (currentMember[0]._id.toString() !== userData._id.toString()) {
             return {};
