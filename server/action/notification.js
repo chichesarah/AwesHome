@@ -2,7 +2,8 @@ import config from '../config';
 import udidWrite from '../model/write/udid';
 import userWrite from '../model/write/user';
 
-const FCM = require('fcm-node');
+// const FCM = require('fcm-node');
+const FCM = require('fcm-push');
 
 const fcm = new FCM(config.notification.serverKey);
 
@@ -12,29 +13,36 @@ class notificationAction {
       item => item.token,
     );
 
-    console.log('add new task udid', udid);
+    console.log('udid', udid)
 
     const user = await userWrite.findById(data.ownerId);
 
     const message = {
-      registration_ids: udid,
+      to: udid[0],
+      collapse_key: 'your_collapse_key',
+      priority: 'high',
       notification: {
         title: `- ${user.firstName} ${user.lastName} added ${
           data.taskName
         } to the task organizer.`,
+        body: 'MESSAGE FOR IOS 1 1 1 1',
       },
       data: {
         id: data._id,
+        firstDate: 'firstDAte',
+        secondDate: 'secondDate',
       },
     };
 
-    fcm.send(message, (err, response) => {
-      if (err) {
-        console.log('Something has gone wrong!', err);
-      } else {
-        console.log('Successfully send with response: ', response);
-      }
-    });
+    fcm
+      .send(message)
+      .then((response) => {
+        console.log('Successfully sent with response: ', response);
+      })
+      .catch((err) => {
+        console.log('Something has gone wrong!');
+        console.error(err);
+      });
   }
 
   async pushToNextMember(data) {
