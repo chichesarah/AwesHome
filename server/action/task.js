@@ -20,7 +20,7 @@ const taskFreeData = [
   'nextDate',
   'endDate',
   'rotate',
-  'startIndex'
+  'startIndex',
 ];
 
 export const convertDataUtc = data =>
@@ -66,7 +66,7 @@ export const countEndDate = (dueDate, repeat) => {
   }
 };
 
-export const timeDiff = type => {
+export const timeDiff = (type) => {
   switch (type) {
     case 'Every day':
       return 'days';
@@ -86,9 +86,9 @@ export const calcUsers = (task, startDate, nextDate) => {
   let currentIndex;
 
   if (task.repeat === 'Every 2 weeks') {
-    diff = nextDate.diff(startDate, 'week');
+    diff = nextDate.diff(startDate, 'weeks');
 
-    const twiceDiff = diff * 2;
+    const twiceDiff = diff / 2;
     currentIndex = (twiceDiff + task.startIndex) % task.assignee.length;
   } else {
     diff = nextDate.diff(startDate, timeDiff(task.repeat));
@@ -121,9 +121,9 @@ class TaskAction {
     return _.pick(
       _.assignIn(task, {
         dueDate: convertDateToResponse(task.dueDate),
-        nextDate: convertDateToResponse(task.nextDate)
+        nextDate: convertDateToResponse(task.nextDate),
       }),
-      taskFreeData
+      taskFreeData,
     );
   }
 
@@ -151,9 +151,9 @@ class TaskAction {
     return _.pick(
       _.assignIn(task, {
         dueDate: convertDateToResponse(task.dueDate),
-        nextDate: convertDateToResponse(task.nextDate)
+        nextDate: convertDateToResponse(task.nextDate),
       }),
-      taskFreeData
+      taskFreeData,
     );
   }
 
@@ -187,16 +187,15 @@ class TaskAction {
 
       eventBus.emit('taskToNextMember', { taskData, currentMember });
     }
-    //5b92aed4a796430004dfa355
 
     const task = await taskWrite.completeTask(_id, taskData);
 
     return _.pick(
       _.assignIn(task, {
         dueDate: convertDateToResponse(task.dueDate),
-        nextDate: convertDateToResponse(task.nextDate)
+        nextDate: convertDateToResponse(task.nextDate),
       }),
-      taskFreeData
+      taskFreeData,
     );
   }
 
@@ -234,7 +233,7 @@ class TaskAction {
     const tasks = await taskWrite.getByAssignedUser(user._id, userData.householdId);
 
     return tasks
-      .map(task => {
+      .map((task) => {
         if (task.rotate) {
           const startDate = convertDataUtc(task.dueDate);
           const nextDate = countNextDate(task.nextDate, task.repeat);
@@ -260,7 +259,7 @@ class TaskAction {
     const today = moment().startOf('day');
     const tasks = await taskWrite.getOverdueTasks(today);
 
-    tasks.forEach(task => {
+    tasks.forEach((task) => {
       const currentTask = _.cloneDeep(task);
       let nextDate = countNextDate(task.nextDate, task.repeat);
 
@@ -292,7 +291,7 @@ class TaskAction {
     const today = moment().startOf('day');
     const tasks = await taskWrite.getLowerTasks(today);
 
-    tasks.forEach(task => {
+    tasks.forEach((task) => {
       if (task.rotate) {
         const startDate = convertDataUtc(task.dueDate);
         const nextDate = moment(task.nextDate);
