@@ -6,6 +6,7 @@
   "dependencies": {
     "aes256": "^1.0.2",
     "apidoc": "^0.17.6",
+    "apns": "^0.1.0",
     "async": "^2.5.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",

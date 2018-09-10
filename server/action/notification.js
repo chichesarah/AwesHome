@@ -3,10 +3,59 @@ import udidWrite from '../model/write/udid';
 import userWrite from '../model/write/user';
 
 const FCM = require('fcm-node');
+const apns = require('apns');
 
 const fcm = new FCM(config.notification.serverKey);
 
+const options = {
+  certFile: 'apns-cert-dev.pem',
+  debug: true,
+  errorCallback(num, err) {
+    console.log(err);
+  },
+};
+
 class notificationAction {
+  async addPushTaskEvent(data) {
+    // const udid = (await udidWrite.findTokenById(data.assignee)).map(
+    //   item => item.token,
+    // );
+
+    // const user = await userWrite.findById(data.ownerId);
+
+    // const message = {
+    //   registration_ids: udid,
+    //   collapse_key: 'your_collapse_key',
+    //   content_available: true,
+    //   notification: {
+    //     title: `- ${user.firstName} ${user.lastName} added ${
+    //       data.taskName
+    //     } to the task organizer.`,
+    //   },
+    //   data: {
+    //     id: data._id,
+    //   },
+    // };
+
+    // fcm.send(message, (err, response) => {
+    //   if (err) {
+    //     console.log('Something has gone wrong!', err);
+    //   } else {
+    //     console.log('Successfully send with response: ', response);
+    //   }
+    // });
+    function sendIos(deviceId) {
+      const connection = new apns.Connection(options);
+
+      const notification = new apns.Notification();
+      notification.device = new apns.Device(deviceId);
+      notification.alert = 'Hello World !';
+
+      connection.sendNotification(notification);
+    }
+    await sendIos('5971c673a5e6bfc8f63958fabfb4f3ae87d54ebf');
+  }
+
   async pushToNextMember(data) {
     const udid = (await udidWrite.findTokenById(data.currentMember)).map(
       item => item.token,
@@ -67,39 +116,11 @@ class notificationAction {
     const message = {
       registration_ids: udid,
       collapse_key: 'your_collapse_key',
+      content_available: true,
       notification: {
         title: `Hey! You’ve been assigned to the task ${
           data.taskName
         } 🙂. Don’t forget to complete it before dueDate.`,
-      },
-      data: {
-        id: data._id,
-      },
-    };
-
-    fcm.send(message, (err, response) => {
-      if (err) {
-        console.log('Something has gone wrong!', err);
-      } else {
-        console.log('Successfully send with response: ', response);
-      }
-    });
-  }
-
-  async addPushTaskEvent(data) {
-    const udid = (await udidWrite.findTokenById(data.assignee)).map(
-      item => item.token,
-    );
-
-    const user = await userWrite.findById(data.ownerId);
-
-    const message = {
-      registration_ids: udid,
-      collapse_key: 'your_collapse_key',
-      notification: {
-        title: `- ${user.firstName} ${user.lastName} added ${
-          data.taskName
-        } to the task organizer.`,
       },
       data: {
         id: data._id,
