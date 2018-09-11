@@ -107,7 +107,9 @@ class notificationAction {
     const udids = await udidWrite.findTokenById(data.member);
     const user = await userWrite.findById(data.ownerId);
 
-    const message = `- ${user.firstName} ${user.lastName} added ${data.title}.`;
+    const message = `- ${user.firstName} ${user.lastName} added ${
+      data.title
+    } to the calendar.`;
 
     if (data.notify) {
       handlePush(udids, message);
@@ -116,8 +118,11 @@ class notificationAction {
 
   async addNewGuestPushEventObj(data) {
     const udids = await udidWrite.findTokenById(data.newMember);
+    const user = await userWrite.findById(data.ownerId);
 
-    const message = `Create a event ${data.event.title}`;
+    const message = `- ${user.firstName} ${
+      user.lastName
+    } added you as a guest to the ${data.event.title}`;
 
     if (data.event.notify) {
       handlePush(udids, message);
