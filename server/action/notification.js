@@ -25,7 +25,7 @@ const handlePush = (array, text) => {
         expiry: Math.floor(Date.now() / 1000) + 3600, // Expires 1 hour from now.
         badge: 3,
         alert: text,
-        topic: 'com.aweshomeapp.aweshom',
+        topic: config.notification.topic,
       });
 
       apnProvider.send(note, item.token).then((result) => {
