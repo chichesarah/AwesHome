@@ -3,15 +3,18 @@ import mongoose from 'mongoose';
 
 import eventWrite from '../model/write/event';
 import eventBus from '../component/eventBus';
-import { convertDataUtc } from './task';
+import { convertDataUtc, convertDateToResponse } from './task';
 
 class EventAction {
   async create(data) {
     const eventData = _.cloneDeep(data);
 
     if (data.allDay) {
-      eventData.startDate = convertDataUtc(eventData.startDate);
-      eventData.endDate = convertDataUtc(eventData.startDate).add(1, 'd').add(-1, 's');
+      const startDate = convertDataUtc(eventData.startDate);
+      const endDate = convertDataUtc(eventData.endDate);
+
+      eventData.startDate = convertDateToResponse(startDate);
+      eventData.endDate = convertDateToResponse(endDate.add(1, 'd').add(-1, 's'));
     }
 
     const event = await eventWrite.create(eventData);
@@ -31,8 +34,11 @@ class EventAction {
     const eventData = _.cloneDeep(data);
 
     if (data.allDay) {
-      eventData.startDate = convertDataUtc(eventData.startDate);
-      eventData.endDate = convertDataUtc(eventData.startDate).add(1, 'd').add(-1, 's');
+      const startDate = convertDataUtc(eventData.startDate);
+      const endDate = convertDataUtc(eventData.endDate);
+
+      eventData.startDate = convertDateToResponse(startDate);
+      eventData.endDate = convertDateToResponse(endDate.add(1, 'd').add(-1, 's'));
     }
 
     return eventWrite.update(eventData);

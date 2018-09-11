@@ -1,28 +1,7 @@
-import Mailgun from 'mailgun-js';
 import config from '../config';
 
+const sgMail = require('@sendgrid/mail');
 
-let mailgun;
+sgMail.setApiKey(config.sendgrid.api_key);
 
-class mailgunBung {
-  messages() {
-    return this;
-  }
-
-  send(obj, callback) {
-    callback && callback(null, obj);
-    return this;
-  }
-}
-
-
-if (config.LAUNCH_TYPE === 'test') {
-  mailgun = new mailgunBung();
-} else {
-  mailgun = new Mailgun({
-    apiKey: config.mailgun.api_key,
-    domain: config.mailgun.domain,
-  });
-}
-
-export default mailgun;
+export default sgMail;

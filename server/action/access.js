@@ -36,13 +36,13 @@ class AccessAction {
     const userData = await userWrite.changePassword(user._id, pass);
     const deferred = q.defer();
 
-    mailer.messages().send({
-      from: config.mailgun.mailFrom,
+    mailer.send({
       to: userData.email,
+      from: config.mailgun.mailFrom,
       subject: 'Pasword reset',
       html: `<h4>This letter was sent to your e-mail to verify the identity when changing the password.</h4>
         <p>New password: ${pass}</p>`,
-    }, (err, body) => {
+    }, false, (err, body) => {
       if (err) {
         // console.log(err);
         deferred.reject(err);

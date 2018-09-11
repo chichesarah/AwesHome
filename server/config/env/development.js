@@ -11,10 +11,9 @@ module.exports = {
     callbackURL: `${hostUrl}auth/facebookWeb/callback`,
     callbackUserURL: `${hostUrl}auth/facebookUserWeb/callback`,
   },
-  mailgun: {
-    api_key: '6dc05648a3a9593f6e2b773ea4489ad7-8889127d-4b714983',
-    domain: 'sandbox8214f17b1502422e9937ff0dabd9bad6.mailgun.org',
-    mailFrom: 'opengeeklabvk@gmail.com',
+  sendgrid: {
+    api_key: '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',
+    mailFrom: 'info@aweshomeapp.com',
   },
   cloudinary: {
     cloud_name: 'opengeeksvkcloudy',

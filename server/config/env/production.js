@@ -12,10 +12,9 @@ module.exports = {
     callbackUserURL: `${hostUrl}auth/facebookUserWeb/callback`,
     callbackProfessionalURL: `${hostUrl}auth/facebookProfessionalWeb/callback`,
   },
-  mailgun: {
-    api_key: 'key-9815e55d5cc3e713ec6bf8777601cb0c',
-    domain: 'sandboxf78e170a7ea143d387548f435166a7d3.mailgun.org',
-    mailFrom: 'shcbrdaiz@gmail.com',
+  sendgrid: {
+    api_key: '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',
+    mailFrom: 'info@aweshomeapp.com',
   },
   cloudinary: {
     cloud_name: 'diu5kwhe7',
