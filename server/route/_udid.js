@@ -16,6 +16,7 @@ router.all('/*', bearerMiddleware);
    * @apiSuccess  {Boolean} isDeleted false
    * @apiSuccess  {String} _id id
    * @apiSuccess  {String} token udid/token
+   * @apiSuccess  {String} type type of device
    * @apiSuccess  {String} userId user id
    * @apiSuccess  {String} createdAt Date
    * @apiSuccess  {String} updatedAt Date
@@ -39,13 +40,15 @@ router.all('/*', bearerMiddleware);
    *  -H 'Authorization: Bearer VvMjAY0EHT+v+a8WcnTESayg8PugwwEOEjo1T4p4WHocGJBgwIfze6hv2LKQJK582XByD3iCjoorAe9HpTmJy/T9c6YYuCDPvD0E6Zu+fAtJwa/tR33S8pq9FJpboQ=='
    *  -H 'Content-Type: application/json'
    *  -d '{
-   *  "token": "EOEjo1T4p4WHocGJBgwIfze6hv2LKQJK582XByD3iCjoorAe9HpTmJy/T"
+   *  "token": "EOEjo1T4p4WHocGJBgwIfze6hv2LKQJK582XByD3iCjoorAe9HpTmJy/T",
+   *  "type": "ios",
    * }'
 
    * @apiSuccessExample {json} Success-Response:
       {
         "isDeleted": false,
         "_id": "5b48da7f40ac0627cc84304a",
+        "type": "ios",
         "token": "EOEjo1T4p4WHocGJBgwIfze6hv2LKQJK582XByD3iCjoorAe9HpTmJy/T",
         "userId": "5b44d732a454cd6329f784dc",
         "createdAt": "2018-07-13T16:59:43.205Z",

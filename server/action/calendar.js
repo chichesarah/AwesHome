@@ -1,9 +1,8 @@
 import _ from 'lodash';
-import moment from 'moment';
 
 import taskWrite from '../model/write/task';
 import eventWrite from '../model/write/event';
-import { convertDataUtc, countNextDate, calcUsers } from './task';
+import { convertDataUtc, countNextDate, calcUsers, convertDateToResponse } from './task';
 
 class CalendarAction {
   async getTasks(data, fullResponse = false) {
@@ -44,14 +43,15 @@ class CalendarAction {
 
           if (taskObj.rotate) {
             const startIndexDate = convertDataUtc(taskObj.dueDate);
+            const nextIndexDate = countNextDate(taskObj.nextDate, taskObj.repeat);
 
-            const currentMember = calcUsers(taskObj, startIndexDate, nextDate);
+            const currentMember = calcUsers(taskObj, startIndexDate, nextIndexDate);
 
             taskObj.currentMember = currentMember;
           }
 
-          taskObj.dueDate = `${moment(task.dueDate).format('YYYY-MM-DDTHH:mm:ss.SSS')}Z`;
-          taskObj.nextDate = `${moment(nextDate).format('YYYY-MM-DDTHH:mm:ss.SSS')}Z`;
+          taskObj.dueDate = convertDateToResponse(taskObj.dueDate);
+          taskObj.nextDate = convertDateToResponse(nextDate);
 
           taskObject.object = taskObj;
         }

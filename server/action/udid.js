@@ -1,8 +1,8 @@
 import udidWrite from '../model/write/udid';
 
 class UdidAction {
-  async create(token, userId) {
-    const udidToken = await udidWrite.deleteOldToken(token);
+  async create(data, userId) {
+    const udidToken = await udidWrite.deleteOldToken(data);
 
     return udidWrite.create(udidToken, userId);
   }

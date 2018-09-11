@@ -116,7 +116,7 @@ class FeedAction {
 
   completeTaskEvent(data) {
     return feedWrite.create({
-      userId: data.ownerId,
+      userId: data.currentUserId,
       householdId: data.householdId,
       type: 'complete task',
       operation: [
@@ -131,7 +131,7 @@ class FeedAction {
 
   deleteTaskEvent(data) {
     return feedWrite.create({
-      userId: data.ownerId,
+      userId: data.currentUserId,
       householdId: data.householdId,
       type: 'delete task',
       operation: [

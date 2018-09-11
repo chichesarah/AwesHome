@@ -3,10 +3,11 @@ import dbList from './../../db';
 const udidWrite = dbList.write('udid');
 
 class UdidModel {
-  create(token, userId) {
+  create(data, userId) {
     return udidWrite.insertRow({
       data: {
-        token,
+        token: data.token,
+        type: data.type,
         userId,
       },
     });
@@ -57,24 +58,24 @@ class UdidModel {
     });
   }
 
-  async deleteOldToken(token) {
+  async deleteOldToken(data) {
     const udidToken = await udidWrite.findRow({
       query: {
-        token,
+        token: data.token,
       },
     });
 
     if (udidToken) {
       await udidWrite.deleteRow({
         query: {
-          token,
+          token: data.token,
         },
       });
 
-      return udidToken.token;
+      return udidToken;
     }
 
-    return token;
+    return data;
   }
 }
 

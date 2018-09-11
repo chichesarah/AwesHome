@@ -2,202 +2,125 @@ import config from '../config';
 import udidWrite from '../model/write/udid';
 import userWrite from '../model/write/user';
 
-// const FCM = require('fcm-node');
 const FCM = require('fcm-push');
+const apn = require('apn');
 
 const fcm = new FCM(config.notification.serverKey);
 
+const options = {
+  token: {
+    key: config.notification.key,
+    keyId: config.notification.keyId,
+    teamId: config.notification.teamId,
+  },
+  production: config.notification.production,
+};
+
+const apnProvider = new apn.Provider(options);
+
+const handlePush = (array, text) => {
+  array.map((item) => {
+    if (item.type === 'ios') {
+      const note = new apn.Notification({
+        expiry: Math.floor(Date.now() / 1000) + 3600, // Expires 1 hour from now.
+        badge: 3,
+        alert: text,
+        topic: 'com.aweshomeapp.aweshom',
+      });
+
+      apnProvider.send(note, item.token).then((result) => {
+        console.log('result ', JSON.stringify(result, undefined, 2));
+      });
+    } else {
+      const message = {
+        to: item.token,
+        notification: { title: text },
+      };
+
+      fcm
+        .send(message)
+        .then((response) => {
+          console.log('Successfully sent with response: ', response);
+        })
+        .catch((err) => {
+          console.log('Something has gone wrong!');
+          console.error(err);
+        });
+    }
+  });
+};
+
 class notificationAction {
   async addPushTaskEvent(data) {
-    const udid = (await udidWrite.findTokenById(data.assignee)).map(
-      item => item.token,
-    );
-
-    console.log('udid', udid)
-
+    const udids = await udidWrite.findTokenById(data.assignee);
     const user = await userWrite.findById(data.ownerId);
 
-    const message = {
-      to: udid[0],
-      collapse_key: 'your_collapse_key',
-      priority: 'high',
-      notification: {
-        title: `- ${user.firstName} ${user.lastName} added ${
-          data.taskName
-        } to the task organizer.`,
-        body: 'MESSAGE FOR IOS 1 1 1 1',
-      },
-      data: {
-        id: data._id,
-        firstDate: 'firstDAte',
-        secondDate: 'secondDate',
-      },
-    };
+    const message = `- ${user.firstName} ${user.lastName} added ${
+      data.taskName
+    } to the task organizer.`;
 
-    fcm
-      .send(message)
-      .then((response) => {
-        console.log('Successfully sent with response: ', response);
-      })
-      .catch((err) => {
-        console.log('Something has gone wrong!');
-        console.error(err);
-      });
+    handlePush(udids, message);
   }
 
   async pushToNextMember(data) {
-    const udid = (await udidWrite.findTokenById(data.currentMember)).map(
-      item => item.token,
-    );
+    const udids = await udidWrite.findTokenById(data.assignee);
 
-    const message = {
-      to: udid[0],
-      collapse_key: 'your_collapse_key',
-      notification: {
-        title: `Hey! You’ve been assigned to the task ${
-          data.taskData.taskName
-        } 🙂. Don’t forget to complete it before dueDate.`,
-      },
-      data: {
-        id: data.taskData._id,
-      },
-    };
+    const message = `Hey! You’ve been assigned to the task ${
+      data.taskData.taskName
+    } 🙂. Don’t forget to complete it before dueDate.`;
 
-    fcm.send(message, (err, response) => {
-      if (err) {
-        console.log('Something has gone wrong!');
-      } else {
-        console.log('Successfully send with response: ', response);
-      }
-    });
+    handlePush(udids, message);
   }
 
   async pushNotificationEndTask(data) {
-    const udid = (await udidWrite.findTokenById(data.currentMember)).map(
-      item => item.token,
-    );
+    const udids = await udidWrite.findTokenById(data.assignee);
 
-    const message = {
-      to: udid[0],
-      notification: {
-        title: `Hey! Just wanted to remind you that your task ${
-          data.task.taskName
-        } is due by dueDate`,
-      },
-      data: {
-        id: data.task._id,
-      },
-    };
+    const message = `Hey! Just wanted to remind you that your task ${
+      data.task.taskName
+    } is due by dueDate`;
 
-    fcm.send(message, (err) => {
-      if (err) {
-        console.log('Something has gone wrong!', err);
-      }
-    });
+    handlePush(udids, message);
   }
 
   async assigneePushTaskEvent(data) {
-    const udid = (await udidWrite.findTokenById(data.assignee)).map(
-      item => item.token,
-    );
+    const udids = await udidWrite.findTokenById(data.assignee);
 
-    const message = {
-      registration_ids: udid,
-      collapse_key: 'your_collapse_key',
-      content_available: true,
-      notification: {
-        title: `Hey! You’ve been assigned to the task ${
-          data.taskName
-        } 🙂. Don’t forget to complete it before dueDate.`,
-      },
-      data: {
-        id: data._id,
-      },
-    };
+    const message = `Hey! You’ve been assigned to the task ${
+      data.taskName
+    } 🙂. Don’t forget to complete it before dueDate.`;
 
-    fcm.send(message, (err, response) => {
-      if (err) {
-        console.log('Something has gone wrong!', err);
-      } else {
-        console.log('Successfully send with response: ', response);
-      }
-    });
+    handlePush(udids, message);
   }
 
   async createPushListEvent(data) {
-    const udid = (await udidWrite.findTokenById(data.member)).map(
-      item => item.token,
-    );
+    const udids = await udidWrite.findTokenById(data.member);
     const user = await userWrite.findById(data.ownerId);
 
-    const message = {
-      registration_ids: udid,
-      collapse_key: 'your_collapse_key',
-      notification: {
-        title: `- ${user.firstName} ${user.lastName} created the list ${
-          data.name
-        }.`,
-      },
-      data: {
-        id: data._id,
-      },
-    };
+    const message = `- ${user.firstName} ${user.lastName} created the list ${
+      data.name
+    }.`;
 
-    fcm.send(message, (err) => {
-      if (err) {
-        console.log('Something has gone wrong!', err);
-      }
-    });
+    handlePush(udids, message);
   }
 
   async createPushEventObj(data) {
-    const udid = (await udidWrite.findTokenById(data.member)).map(
-      item => item.token,
-    );
+    const udids = await udidWrite.findTokenById(data.member);
     const user = await userWrite.findById(data.ownerId);
 
-    const message = {
-      registration_ids: udid,
-      collapse_key: 'your_collapse_key',
-      notification: {
-        title: `- ${user.firstName} ${user.lastName} added ${data.title}.`,
-      },
-      data: {
-        id: data._id,
-      },
-    };
+    const message = `- ${user.firstName} ${user.lastName} added ${data.title}.`;
 
     if (data.notify) {
-      fcm.send(message, (err) => {
-        if (err) {
-          console.log('Something has gone wrong!', err);
-        }
-      });
+      handlePush(udids, message);
     }
   }
 
   async addNewGuestPushEventObj(data) {
-    const udid = (await udidWrite.findTokenById(data.newMember)).map(
-      item => item.token,
-    );
+    const udids = await udidWrite.findTokenById(data.newMember);
 
-    const message = {
-      registration_ids: udid,
-      collapse_key: 'your_collapse_key',
-      notification: {
-        title: `Create a event ${data.event.title}`,
-      },
-      data: {
-        id: data.event._id,
-      },
-    };
+    const message = `Create a event ${data.event.title}`;
 
     if (data.event.notify) {
-      fcm.send(message, (err) => {
-        if (err) {
-          console.log('Something has gone wrong!', err);
-        }
-      });
+      handlePush(udids, message);
     }
   }
 }

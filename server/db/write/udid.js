@@ -8,4 +8,5 @@ export default new mongoose.Schema(
     {
       userId: { type: 'ObjectId', required: true },
       token: { type: String, required: true },
+      type: { type: String, required: true, enum: ['ios', 'android'] },
     }));

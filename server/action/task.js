@@ -157,19 +157,19 @@ class TaskAction {
     );
   }
 
-  async delete(_id) {
-    const taskData = await taskWrite.findById(_id);
+  async delete(data) {
+    const taskData = await taskWrite.findById(data._id);
     const endDate = countEndDate(taskData.nextDate, taskData.repeat);
 
-    const task = await taskWrite.deleteTask(_id, endDate);
+    const task = await taskWrite.deleteTask(data._id, endDate);
 
-    eventBus.emit('deleteTask', task);
+    eventBus.emit('deleteTask', _.assignIn(task, { currentUserId: data.userId }));
 
     return _.pick(task, taskFreeData);
   }
 
-  async complete(_id) {
-    const taskData = await taskWrite.findById(_id);
+  async complete(data) {
+    const taskData = await taskWrite.findById(data._id);
 
     if (taskData.repeat === 'Does not repeat') {
       taskData.endDate = taskData.nextDate;
@@ -178,7 +178,7 @@ class TaskAction {
       taskData.nextDate = countNextDate(taskData.nextDate, taskData.repeat);
     }
 
-    eventBus.emit('completeTask', taskData);
+    eventBus.emit('completeTask', _.assignIn(taskData, { currentUserId: data.userId }));
 
     if (taskData.rotate) {
       const startDate = convertDataUtc(taskData.dueDate);
@@ -188,7 +188,7 @@ class TaskAction {
       eventBus.emit('taskToNextMember', { taskData, currentMember });
     }
 
-    const task = await taskWrite.completeTask(_id, taskData);
+    const task = await taskWrite.completeTask(data._id, taskData);
 
     return _.pick(
       _.assignIn(task, {

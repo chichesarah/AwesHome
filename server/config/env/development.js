@@ -29,6 +29,11 @@ module.exports = {
   },
   notification: {
     serverKey: 'AAAADLVmsEM:APA91bGBIayuVpjJEv3OaaWJV8yUn9AtFToTdLmtb2qz02EKXoIqizMpzaUgDGGR-CkSr9SrwYjal1dffY5lpyVoFobayl72cKh0M_JudxkJ8tJY9c9ngONpmXHRm13sHg_m-mR0Z-XpQ8NQRw1a3Tdx_zo46BKkLw',
+    key: './AuthKey_NJT42RC3U4.p8',
+    keyId: 'NJT42RC3U4',
+    teamId: '37MJCDC27Q',
+    topic: 'com.aweshomeapp.aweshom',
+    production: false,
   },
   links: {
     facebook: 'https://graph.facebook.com/v3.0/me?fields=email,birthday,name,first_name,last_name,id,picture&access_token=',

@@ -189,7 +189,7 @@ class TaskValidate {
       throw ([{ param: 'taskId', message: 'Task not found or user permission denied' }]);
     }
 
-    return body._id;
+    return { _id: body._id, userId: user._id };
   }
 
   async complete(body, user) {
@@ -213,7 +213,7 @@ class TaskValidate {
       throw ([{ param: 'taskId', message: 'Task not found or user permission denied' }]);
     }
 
-    return body._id;
+    return { _id: body._id, userId: user._id };
   }
 }
 

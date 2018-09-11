@@ -9,13 +9,19 @@ class UdidValidate {
           message: 'Token should not be empty.',
         },
       },
+      type: {
+        isIn: {
+          values: ['ios', 'android'],
+          message: 'Valid type is required',
+        },
+      },
     });
 
     if (errorList.length) {
       throw errorList;
     }
 
-    return body.token;
+    return body;
   }
 
   async update(body, userId) {
@@ -28,6 +34,12 @@ class UdidValidate {
       newToken: {
         notEmpty: {
           message: 'New token is required.',
+        },
+      },
+      type: {
+        isIn: {
+          values: ['ios', 'android'],
+          message: 'Valid type is required',
         },
       },
     });
