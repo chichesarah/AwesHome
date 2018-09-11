@@ -38,7 +38,7 @@ class AccessAction {
 
     mailer.send({
       to: userData.email,
-      from: config.mailgun.mailFrom,
+      from: config.sendgrid.mailFrom,
       subject: 'Pasword reset',
       html: `<h4>This letter was sent to your e-mail to verify the identity when changing the password.</h4>
         <p>New password: ${pass}</p>`,
