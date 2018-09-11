@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import mongoose from 'mongoose';
 
 import eventWrite from '../model/write/event';
 import eventBus from '../component/eventBus';
@@ -41,11 +42,10 @@ class EventAction {
     const current = await eventWrite.getMemberByEventId(data.eventId);
 
     const oldMember = current.map(i => i.toString());
-    const newMember = _.difference(data.member, oldMember);
+    const newMember = _.difference(data.member, oldMember).map(i => mongoose.Types.ObjectId(i));
 
     const event = await eventWrite.addGuest(data);
-
-    eventBus.emit('addGuestPushEventObj', { event, newMember });
+    eventBus.emit('addGuestPushEventObj', _.assignIn(event, { newMember }));
     return event;
   }
 

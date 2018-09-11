@@ -28,9 +28,13 @@ const handlePush = (array, text) => {
         topic: config.notification.topic,
       });
 
-      apnProvider.send(note, item.token).then((result) => {
-        console.log('result ', JSON.stringify(result, undefined, 2));
-      });
+      apnProvider.send(note, item.token)
+        .then((result) => {
+          console.log('result ', JSON.stringify(result, undefined, 2));
+        })
+        .catch((err) => {
+          console.log('error ', err);
+        });
     } else {
       const message = {
         to: item.token,
@@ -120,11 +124,12 @@ class notificationAction {
     const udids = await udidWrite.findTokenById(data.newMember);
     const user = await userWrite.findById(data.ownerId);
 
+
     const message = `- ${user.firstName} ${
       user.lastName
-    } added you as a guest to the ${data.event.title}`;
+    } added you as a guest to the ${data.title}`;
 
-    if (data.event.notify) {
+    if (data.notify) {
       handlePush(udids, message);
     }
   }
