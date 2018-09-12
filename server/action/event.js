@@ -33,7 +33,16 @@ class EventAction {
   async update(data) {
     const eventData = _.cloneDeep(data);
 
-    if (data.allDay) {
+    if (eventData.member && eventData.member.length) {
+      const current = await eventWrite.getMemberByEventId(eventData._id);
+      const oldMember = current.map(i => i.toString());
+      const newMember = _.difference(eventData.member, oldMember).map(i => mongoose.Types.ObjectId(i));
+      const event = await eventWrite.update(eventData);
+
+      eventBus.emit('addGuestPushEventObj', _.assignIn(event, { newMember }));
+    }
+
+    if (eventData.allDay) {
       const startDate = convertDataUtc(eventData.startDate);
       const endDate = convertDataUtc(eventData.endDate);
 

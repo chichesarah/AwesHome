@@ -28,29 +28,30 @@ const handlePush = (array, text) => {
         topic: config.notification.topic,
       });
 
-      apnProvider.send(note, item.token)
+      apnProvider
+        .send(note, item.token)
         .then((result) => {
           console.log('result ', JSON.stringify(result, undefined, 2));
         })
         .catch((err) => {
           console.log('error ', err);
         });
-    } else {
-      const message = {
-        to: item.token,
-        notification: { title: text },
-      };
-
-      fcm
-        .send(message)
-        .then((response) => {
-          console.log('Successfully sent with response: ', response);
-        })
-        .catch((err) => {
-          console.log('Something has gone wrong!');
-          console.error(err);
-        });
     }
+
+    const message = {
+      to: item.token,
+      notification: { title: text },
+    };
+
+    fcm
+      .send(message)
+      .then((response) => {
+        console.log('Successfully sent with response: ', response);
+      })
+      .catch((err) => {
+        console.log('Something has gone wrong!');
+        console.error(err);
+      });
   });
 };
 
@@ -123,7 +124,6 @@ class notificationAction {
   async addNewGuestPushEventObj(data) {
     const udids = await udidWrite.findTokenById(data.newMember);
     const user = await userWrite.findById(data.ownerId);
-
 
     const message = `- ${user.firstName} ${
       user.lastName
