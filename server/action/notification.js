@@ -78,12 +78,16 @@ class notificationAction {
   }
 
   async pushNotificationEndTask(data) {
-    const udids = await udidWrite.findTokenById(data.assignee);
-
     const message = `Hey! Just wanted to remind you that your task ${
-      data.task.taskName
+      data.taskName
     } is due by dueDate`;
 
+    if (data.rotate) {
+      const udids = await udidWrite.findTokenById(data.currentMember);
+      handlePush(udids, message);
+    }
+
+    const udids = await udidWrite.findTokenById(data.assignee);
     handlePush(udids, message);
   }
 

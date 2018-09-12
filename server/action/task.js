@@ -292,17 +292,19 @@ class TaskAction {
     const tasks = await taskWrite.getLowerTasks(today);
 
     tasks.forEach((task) => {
+      const startDate = convertDataUtc(task.dueDate);
+      const nextDate = moment(task.nextDate);
+      const lastDay = nextDate.diff(today, 'days');
+      const currentMember = calcUsers(task, startDate, nextDate);
+
       if (task.rotate) {
-        const startDate = convertDataUtc(task.dueDate);
-        const nextDate = moment(task.nextDate);
-
-        const currentMember = calcUsers(task, startDate, nextDate);
-
-        const lastDay = nextDate.diff(today, 'days');
-
         if (task.reminder && lastDay === 1) {
-          eventBus.emit('soonEndTask', { task, currentMember });
+          eventBus.emit('soonEndTask', _.assignIn(task, { currentMember }));
         }
+      }
+
+      if (task.reminder && lastDay === 1) {
+        eventBus.emit('soonEndTask', task);
       }
     });
   }

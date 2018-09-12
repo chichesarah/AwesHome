@@ -72,7 +72,7 @@ class TaskValidate {
       throw ([{ param: 'taskNameId', message: 'Task name not found' }]);
     }
 
-    if (moment(body.dueDate) < moment().startOf('day')) {
+    if (moment(body.dueDate).isSameOrBefore(moment())) {
       throw ([{ param: 'dueDate', message: 'Invalid due date' }]);
     }
 
