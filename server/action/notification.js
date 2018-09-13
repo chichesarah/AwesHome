@@ -117,23 +117,31 @@ class notificationAction {
     const udids = await udidWrite.findTokenById(data.member);
     const user = await userWrite.findById(data.ownerId);
 
+    const udidsWithoutMe = udids.filter(
+      item => item.userId.toString() !== data.ownerId.toString(),
+    );
+
     const message = `Hey! ${user.firstName} ${user.lastName} created the list ${
       data.name
     } and shared it with you.`;
 
-    handlePush(udids, message);
+    handlePush(udidsWithoutMe, message);
   }
 
   async createPushEventObj(data) {
     const udids = await udidWrite.findTokenById(data.member);
     const user = await userWrite.findById(data.ownerId);
 
+    const udidsWithoutMe = udids.filter(
+      item => item.userId.toString() !== data.ownerId.toString(),
+    );
+
     const message = `- ${user.firstName} ${user.lastName} added ${
       data.title
     } to the calendar.`;
 
     if (data.notify) {
-      handlePush(udids, message);
+      handlePush(udidsWithoutMe, message);
     }
   }
 
