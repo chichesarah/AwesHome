@@ -12,7 +12,6 @@ module.exports = {
     callbackUserURL: `${hostUrl}auth/facebookUserWeb/callback`,
   },
   sendgrid: {
-    api_key: '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',
     mailFrom: 'info@aweshomeapp.com',
   },
   cloudinary: {
