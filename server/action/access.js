@@ -36,23 +36,29 @@ class AccessAction {
     const userData = await userWrite.changePassword(user._id, pass);
     const deferred = q.defer();
 
-    mailer.send({
-      to: userData.email,
-      from: config.sendgrid.mailFrom,
-      subject: 'Pasword reset',
-      html: `<h4>This letter was sent to your e-mail to verify the identity when changing the password.</h4>
-        <p>New password: ${pass}</p>`,
-    }, false, (err, body) => {
-      if (err) {
-        // console.log(err);
-        deferred.reject(err);
-        return;
-      }
-      deferred.resolve(body);
-    });
+    mailer.send(
+      {
+        to: userData.email,
+        from: config.sendgrid.mailFrom,
+        subject: 'Your temporary password is here!',
+        html: `Hey there!
+          <br>
+          <p>You can use this temporary password to log into your AwesHome account: <strong>${pass}</strong></p>.
+          <br>
+          <p>You can always change this password later on from your Profile page.</p>`,
+      },
+      false,
+      (err, body) => {
+        if (err) {
+          // console.log(err);
+          deferred.reject(err);
+          return;
+        }
+        deferred.resolve(body);
+      },
+    );
 
     await deferred.promise;
-
 
     return {
       result: 'success',
@@ -68,14 +74,15 @@ class AccessAction {
   async socReg(profile) {
     let user = await userWrite.findByEmail(profile.email);
     if (user) {
-      profile.identities.facebookId = profile.identities.facebookId ? profile.identities.facebookId : user.identities.facebookId;
+      profile.identities.facebookId = profile.identities.facebookId
+        ? profile.identities.facebookId
+        : user.identities.facebookId;
       user = await userWrite.update({
         query: {
           _id: user._id,
         },
         data: profile,
       });
-
     } else {
       user = await userWrite.insertRow({
         data: profile,
@@ -89,16 +96,17 @@ class AccessAction {
   async socAuth(profile) {
     let user = await userWrite.findByEmail(profile.email);
     if (user) {
-      profile.identities.facebookId = profile.identities.facebookId ? profile.identities.facebookId : user.identities.facebookId;
+      profile.identities.facebookId = profile.identities.facebookId
+        ? profile.identities.facebookId
+        : user.identities.facebookId;
       user = await userWrite.update({
         query: {
           _id: user._id,
         },
         data: profile,
       });
-
     } else {
-      throw ([{ param: 'email', message: 'User not found' }]);
+      throw [{ param: 'email', message: 'User not found' }];
     }
 
     user = _.assignIn(user, await token.genRefresh(user));
@@ -117,7 +125,10 @@ class AccessAction {
 
   async refreshToken(userToken) {
     const user = await userWrite.findById({ id: userToken.userId });
-    return _.pick(_.assignIn(user, await token.genNewAccess(user)), userFreeData);
+    return _.pick(
+      _.assignIn(user, await token.genNewAccess(user)),
+      userFreeData,
+    );
   }
 
   async changePassword(password, user) {
@@ -130,13 +141,16 @@ class AccessAction {
   async facebook(data) {
     const deferred = q.defer();
 
-    request(`${config.links.facebook}${data.token}`, (error, response, body) => {
-      if (error) {
-        deferred.reject([{ param: 'token', message: 'Invalid token' }]);
-      }
+    request(
+      `${config.links.facebook}${data.token}`,
+      (error, response, body) => {
+        if (error) {
+          deferred.reject([{ param: 'token', message: 'Invalid token' }]);
+        }
 
-      deferred.resolve(JSON.parse(body));
-    });
+        deferred.resolve(JSON.parse(body));
+      },
+    );
 
     const userFacebookData = await deferred.promise;
 
@@ -157,10 +171,15 @@ class AccessAction {
         userData.avatar = userFacebookData.picture.data.url || null;
       }
 
-      facebookUser = await userWrite.newFacebookUser(_.assignIn(userData, { roles: ['user'] }));
+      facebookUser = await userWrite.newFacebookUser(
+        _.assignIn(userData, { roles: ['user'] }),
+      );
     }
 
-    return _.pick(_.assignIn(facebookUser, await token.genRefresh(facebookUser)), userFreeData);
+    return _.pick(
+      _.assignIn(facebookUser, await token.genRefresh(facebookUser)),
+      userFreeData,
+    );
   }
 }
 

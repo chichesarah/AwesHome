@@ -208,9 +208,9 @@ class EventValidate {
       throw ([{ param: 'id', message: 'Event not found' }]);
     }
 
-    if (event.ownerId.toString() !== userId.toString()) {
-      throw ([{ param: 'userId', message: 'User can not update this event, don\'t have permission' }]);
-    }
+    // if (event.ownerId.toString() !== userId.toString()) {
+    //   throw ([{ param: 'userId', message: 'User can not update this event, don\'t have permission' }]);
+    // }
 
     const userObj = await userValidate.checkForHousehold(userId);
 
