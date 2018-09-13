@@ -43,7 +43,7 @@ class CalendarAction {
 
           if (taskObj.rotate) {
             const startIndexDate = convertDataUtc(taskObj.dueDate);
-            const nextIndexDate = countNextDate(taskObj.nextDate, taskObj.repeat);
+            const nextIndexDate = countNextDate(nextDate, taskObj.repeat);
 
             const currentMember = calcUsers(taskObj, startIndexDate, nextIndexDate);
 
