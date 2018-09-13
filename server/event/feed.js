@@ -30,7 +30,7 @@ eventBus.onSeries('deleteList', async (data, next) => {
 
 eventBus.onSeries('addTask', async (data, next) => {
   await feedAction.addTaskEvent(data);
-  await notificationAction.addPushTaskEvent(data);
+  // await notificationAction.addPushTaskEvent(data);
   await next();
 });
 

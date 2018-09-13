@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import config from '../config';
 import udidWrite from '../model/write/udid';
 import userWrite from '../model/write/user';
@@ -19,60 +21,64 @@ const options = {
 const apnProvider = new apn.Provider(options);
 
 const handlePush = (array, text) => {
-  array.map((item) => {
-    if (item.type === 'ios') {
-      const note = new apn.Notification({
-        expiry: Math.floor(Date.now() / 1000) + 3600, // Expires 1 hour from now.
-        badge: 3,
-        alert: text,
-        topic: config.notification.topic,
-      });
+  if (array && array.length) {
+    array.map((item) => {
+      if (item.type === 'ios') {
+        const note = new apn.Notification({
+          expiry: Math.floor(Date.now() / 1000) + 3600, // Expires 1 hour from now.
+          badge: 3,
+          alert: text,
+          topic: config.notification.topic,
+        });
 
-      apnProvider
-        .send(note, item.token)
-        .then((result) => {
-          console.log('result ', JSON.stringify(result, undefined, 2));
+        apnProvider
+          .send(note, item.token)
+          .then((result) => {
+            console.log('result ', JSON.stringify(result, undefined, 2));
+          })
+          .catch((err) => {
+            console.log('error ', err);
+          });
+      }
+
+      const message = {
+        to: item.token,
+        notification: { title: text },
+      };
+
+      fcm
+        .send(message)
+        .then((response) => {
+          console.log('Successfully sent with response: ', response);
         })
         .catch((err) => {
-          console.log('error ', err);
+          console.log('Something has gone wrong!');
+          console.error(err);
         });
-    }
-
-    const message = {
-      to: item.token,
-      notification: { title: text },
-    };
-
-    fcm
-      .send(message)
-      .then((response) => {
-        console.log('Successfully sent with response: ', response);
-      })
-      .catch((err) => {
-        console.log('Something has gone wrong!');
-        console.error(err);
-      });
-  });
+    });
+  }
 };
 
 class notificationAction {
-  async addPushTaskEvent(data) {
-    const udids = await udidWrite.findTokenById(data.assignee);
-    const user = await userWrite.findById(data.ownerId);
+  // async addPushTaskEvent(data) {
+  //   const udids = await udidWrite.findTokenById(data.assignee);
+  //   const user = await userWrite.findById(data.ownerId);
 
-    const message = `- ${user.firstName} ${user.lastName} added ${
-      data.taskName
-    } to the task organizer.`;
+  //   const message = `- ${user.firstName} ${user.lastName} added ${
+  //     data.taskName
+  //   } to the task organizer.`;
 
-    handlePush(udids, message);
-  }
+  //   handlePush(udids, message);
+  // }
 
   async pushToNextMember(data) {
     const udids = await udidWrite.findTokenById(data.assignee);
 
     const message = `Hey! You’ve been assigned to the task ${
       data.taskData.taskName
-    } 🙂. Don’t forget to complete it before dueDate.`;
+    } 🙂. Don’t forget to complete it before ${moment(data.dueDate).format(
+      'YYYY-MM-DD',
+    )}.`;
 
     handlePush(udids, message);
   }
@@ -80,7 +86,7 @@ class notificationAction {
   async pushNotificationEndTask(data) {
     const message = `Hey! Just wanted to remind you that your task ${
       data.taskName
-    } is due by dueDate`;
+    } is due by ${moment(data.dueDate).format('YYYY-MM-DD')}`;
 
     if (data.rotate) {
       const udids = await udidWrite.findTokenById(data.currentMember);
@@ -94,20 +100,26 @@ class notificationAction {
   async assigneePushTaskEvent(data) {
     const udids = await udidWrite.findTokenById(data.assignee);
 
+    const udidsWithoutMe = udids.filter(
+      item => item.userId.toString() !== data.ownerId.toString(),
+    );
+
     const message = `Hey! You’ve been assigned to the task ${
       data.taskName
-    } 🙂. Don’t forget to complete it before dueDate.`;
+    } 🙂. Don’t forget to complete it before ${moment(data.dueDate).format(
+      'YYYY-MM-DD',
+    )}..`;
 
-    handlePush(udids, message);
+    handlePush(udidsWithoutMe, message);
   }
 
   async createPushListEvent(data) {
     const udids = await udidWrite.findTokenById(data.member);
     const user = await userWrite.findById(data.ownerId);
 
-    const message = `- ${user.firstName} ${user.lastName} created the list ${
+    const message = `Hey! ${user.firstName} ${user.lastName} created the list ${
       data.name
-    }.`;
+    } and shared it with you.`;
 
     handlePush(udids, message);
   }
@@ -129,9 +141,11 @@ class notificationAction {
     const udids = await udidWrite.findTokenById(data.newMember);
     const user = await userWrite.findById(data.ownerId);
 
-    const message = `- ${user.firstName} ${
-      user.lastName
-    } added you as a guest to the ${data.title}`;
+    const message = `Hey! You’ve been invited to the event ${data.title} by ${
+      user.firstName
+    } ${user.lastName}. It will start on ${moment(data.createdAt).format(
+      'YYYY-MM-DD',
+    )}.`;
 
     if (data.notify) {
       handlePush(udids, message);

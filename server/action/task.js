@@ -116,7 +116,7 @@ class TaskAction {
     const task = await taskWrite.newTask(taskData);
 
     eventBus.emit('addTask', task);
-    eventBus.emit('assigneeToTask', task);
+    eventBus.emit('assigneeToTask', _.assignIn(task, { ownerId: data.ownerObj._id }));
 
     return _.pick(
       _.assignIn(task, {
