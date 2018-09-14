@@ -39,8 +39,10 @@ class AccessAction {
     mailer.send(
       {
         to: userData.email,
-        from: config.sendgrid.mailFrom,
-        fromname: 'AwesHome Team',
+        from: {
+          email: config.sendgrid.mailFrom,
+          name: 'AwesHome Team',
+        },
         subject: 'Your temporary password is here!',
         html: `Hey there!
           <br>
