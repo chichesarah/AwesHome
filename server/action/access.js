@@ -40,10 +40,11 @@ class AccessAction {
       {
         to: userData.email,
         from: config.sendgrid.mailFrom,
+        fromname: 'AwesHome Team',
         subject: 'Your temporary password is here!',
         html: `Hey there!
           <br>
-          <p>You can use this temporary password to log into your AwesHome account: <strong>${pass}</strong></p>.
+          <p>You can use this temporary password to log into your AwesHome account: <strong>${pass}</strong></p>
           <br>
           <p>You can always change this password later on from your Profile page.</p>`,
       },
