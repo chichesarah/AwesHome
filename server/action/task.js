@@ -26,7 +26,8 @@ const taskFreeData = [
 export const convertDataUtc = data =>
   moment(`${moment(data).format('YYYY-MM-DD')} utc`, 'YYYY-MM-DD Z');
 
-export const convertDateToResponse = date => `${moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS')}Z`;
+export const convertDateToResponse = date =>
+  `${moment(date).format('YYYY-MM-DDTHH:mm:ss.SSS')}Z`;
 
 export const countNextDate = (dueDate, repeat) => {
   switch (repeat) {
@@ -40,6 +41,26 @@ export const countNextDate = (dueDate, repeat) => {
       return moment(dueDate).add(1, 'M');
     case 'Every year':
       return moment(dueDate).add(1, 'y');
+    case 'Does not repeat':
+      return moment(dueDate);
+    default:
+      return null;
+  }
+};
+
+
+export const countExectDate = (dueDate, repeat, count = 1) => {
+  switch (repeat) {
+    case 'Every day':
+      return moment(dueDate).add(1 * count, 'd');
+    case 'Every week':
+      return moment(dueDate).add(1 * count, 'w');
+    case 'Every 2 weeks':
+      return moment(dueDate).add(2 * count, 'w');
+    case 'Every month':
+      return moment(dueDate).add(1 * count, 'M');
+    case 'Every year':
+      return moment(dueDate).add(1 * count, 'y');
     case 'Does not repeat':
       return moment(dueDate);
     default:
@@ -90,13 +111,17 @@ export const calcUsers = (task, startDate, nextDate) => {
 
     const twiceDiff = diff / 2;
     currentIndex = (twiceDiff + task.startIndex) % task.assignee.length;
+  } else if (task.repeat === 'Every month') {
+    diff = nextDate.diff(startDate, 'month', true);
+    diff = Math.round(diff);
   } else {
     diff = nextDate.diff(startDate, timeDiff(task.repeat));
 
     currentIndex = (diff + task.startIndex) % task.assignee.length;
   }
-
-  const currentMember = task.assignee.filter((member, index) => index === currentIndex);
+  const currentMember = task.assignee.filter(
+    (member, index) => index === currentIndex,
+  );
   return currentMember;
 };
 
@@ -116,7 +141,10 @@ class TaskAction {
     const task = await taskWrite.newTask(taskData);
 
     eventBus.emit('addTask', task);
-    eventBus.emit('assigneeToTask', _.assignIn(task, { ownerId: data.ownerObj._id }));
+    eventBus.emit(
+      'assigneeToTask',
+      _.assignIn(task, { ownerId: data.ownerObj._id }),
+    );
 
     return _.pick(
       _.assignIn(task, {
@@ -163,7 +191,10 @@ class TaskAction {
 
     const task = await taskWrite.deleteTask(data._id, endDate);
 
-    eventBus.emit('deleteTask', _.assignIn(task, { currentUserId: data.userId }));
+    eventBus.emit(
+      'deleteTask',
+      _.assignIn(task, { currentUserId: data.userId }),
+    );
 
     return _.pick(task, taskFreeData);
   }
@@ -178,7 +209,10 @@ class TaskAction {
       taskData.nextDate = countNextDate(taskData.nextDate, taskData.repeat);
     }
 
-    eventBus.emit('completeTask', _.assignIn(taskData, { currentUserId: data.userId }));
+    eventBus.emit(
+      'completeTask',
+      _.assignIn(taskData, { currentUserId: data.userId }),
+    );
 
     if (taskData.rotate) {
       const startDate = convertDataUtc(taskData.dueDate);
@@ -230,7 +264,10 @@ class TaskAction {
   async getByAssignedUser(user) {
     const userData = await userWrite.findById({ id: user._id });
 
-    const tasks = await taskWrite.getByAssignedUser(user._id, userData.householdId);
+    const tasks = await taskWrite.getByAssignedUser(
+      user._id,
+      userData.householdId,
+    );
 
     return tasks
       .map((task) => {
@@ -276,7 +313,11 @@ class TaskAction {
           if (task.rotate) {
             const startDate = convertDataUtc(task.dueDate);
 
-            const currentMember = calcUsers(task, startDate, moment(task.nextDate));
+            const currentMember = calcUsers(
+              task,
+              startDate,
+              moment(task.nextDate),
+            );
 
             eventBus.emit('taskToNextMember', { task, currentMember });
           }

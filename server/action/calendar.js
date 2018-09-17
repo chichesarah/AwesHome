@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import taskWrite from '../model/write/task';
 import eventWrite from '../model/write/event';
-import { convertDataUtc, countNextDate, calcUsers, convertDateToResponse } from './task';
+import { convertDataUtc, calcUsers, convertDateToResponse, countExectDate } from './task';
 
 class CalendarAction {
   async getTasks(data, fullResponse = false) {
@@ -25,11 +25,14 @@ class CalendarAction {
       let taskEndDate = task.endDate ? convertDataUtc(task.endDate) : endDate;
       taskEndDate = taskEndDate.isBefore(endDate) ? taskEndDate : endDate;
 
+      let count = 0;
       while (nextDate.isBefore(startDate) && task.repeat !== 'Does not repeat') {
-        nextDate = countNextDate(nextDate, task.repeat);
+        count++;
+        nextDate = countExectDate(task.dueDate, task.repeat, count);
       }
 
       while (nextDate.isBefore(taskEndDate) || nextDate.isSame(taskEndDate)) {
+        count++;
         const date = nextDate.format('YYYY-MM-DD');
 
 
@@ -43,7 +46,7 @@ class CalendarAction {
 
           if (taskObj.rotate) {
             const startIndexDate = convertDataUtc(taskObj.dueDate);
-            const nextIndexDate = countNextDate(nextDate, taskObj.repeat);
+            const nextIndexDate = countExectDate(task.dueDate, task.repeat, count);
 
             const currentMember = calcUsers(taskObj, startIndexDate, nextIndexDate);
 
@@ -66,7 +69,7 @@ class CalendarAction {
           break;
         }
 
-        nextDate = countNextDate(nextDate, task.repeat);
+        nextDate = countExectDate(task.dueDate, task.repeat, count);
       }
     });
 
