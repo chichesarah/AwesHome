@@ -108,7 +108,7 @@ class notificationAction {
       data.taskName
     } 🙂. Don’t forget to complete it before ${moment(data.dueDate).format(
       'YYYY-MM-DD',
-    )}..`;
+    )}.`;
 
     handlePush(udidsWithoutMe, message);
   }
@@ -136,9 +136,11 @@ class notificationAction {
       item => item.userId.toString() !== data.ownerId.toString(),
     );
 
-    const message = `- ${user.firstName} ${user.lastName} added ${
-      data.title
-    } to the calendar.`;
+    const message = `Hey! You’ve been invited to the event ${data.title} by ${
+      user.firstName
+    } ${user.lastName}. It will start on ${moment(data.createdAt).format(
+      'YYYY-MM-DD',
+    )}.`;
 
     if (data.notify) {
       handlePush(udidsWithoutMe, message);
