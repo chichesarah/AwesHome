@@ -114,6 +114,8 @@ export const calcUsers = (task, startDate, nextDate) => {
   } else if (task.repeat === 'Every month') {
     diff = nextDate.diff(startDate, 'month', true);
     diff = Math.round(diff);
+
+    currentIndex = (diff + task.startIndex) % task.assignee.length;
   } else {
     diff = nextDate.diff(startDate, timeDiff(task.repeat));
 
