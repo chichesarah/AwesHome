@@ -138,7 +138,7 @@ class notificationAction {
 
     const message = `Hey! You’ve been invited to the event ${data.title} by ${
       user.firstName
-    } ${user.lastName}. It will start on ${moment(data.createdAt).format(
+    } ${user.lastName}. It will start on ${moment(data.startDate).format(
       'YYYY-MM-DD',
     )}.`;
 
@@ -153,7 +153,7 @@ class notificationAction {
 
     const message = `Hey! You’ve been invited to the event ${data.title} by ${
       user.firstName
-    } ${user.lastName}. It will start on ${moment(data.createdAt).format(
+    } ${user.lastName}. It will start on ${moment(data.startDate).format(
       'YYYY-MM-DD',
     )}.`;
 
