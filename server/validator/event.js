@@ -136,9 +136,9 @@ class EventValidate {
       throw ([{ param: 'id', message: 'Event not found' }]);
     }
 
-    if (event.ownerId.toString() !== userId.toString()) {
-      throw ([{ param: 'userId', message: 'User can not delete this event, don\'t have permission' }]);
-    }
+    // if (event.ownerId.toString() !== userId.toString()) {
+    //   throw ([{ param: 'userId', message: 'User can not delete this event, don\'t have permission' }]);
+    // }
 
     return event;
   }
