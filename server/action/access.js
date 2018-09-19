@@ -31,7 +31,14 @@ const userFreeData = [
 
 class AccessAction {
   async forgot(user) {
-    const pass = keygen.url(config.passwordLength);
+    const genPass = () => {
+      const str = keygen.url(config.passwordLength);
+      const randomInteger = (min, max) =>
+        (Math.floor(Math.random() * (max - min + 1)) + min).toString();
+      return str + randomInteger(1, 9);
+    };
+
+    const pass = genPass();
 
     const userData = await userWrite.changePassword(user._id, pass);
     const deferred = q.defer();
