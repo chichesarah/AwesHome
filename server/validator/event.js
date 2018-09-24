@@ -117,7 +117,7 @@ class EventValidate {
     return _.pick(body, eventFreeData);
   }
 
-  async delete(param, userId) {
+  async delete(param) {
     const errorList = validator.check(param, {
       id: {
         isMongoId: {

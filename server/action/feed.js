@@ -161,7 +161,7 @@ class FeedAction {
 
   deleteEventObj(data) {
     return feedWrite.create({
-      userId: data.ownerId,
+      userId: data.userId,
       householdId: data.householdId,
       type: 'delete event',
       operation: [

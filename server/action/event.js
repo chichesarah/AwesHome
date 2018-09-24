@@ -23,8 +23,8 @@ class EventAction {
     return event;
   }
 
-  async delete(data) {
-    eventBus.emit('deleteEventObj', data);
+  async delete(data, userId) {
+    eventBus.emit('deleteEventObj', _.assignIn(data, { userId }));
 
     const event = await eventWrite.delete(data._id);
     return event;

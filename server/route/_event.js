@@ -283,9 +283,9 @@ router.put('/update/:id', async (req, next) => {
 
 router.delete('/delete/:id', async (req, next) => {
   await middlewareWrapper.wrape(req, next, async () => {
-    const event = await eventValidate.delete(req.params, req.request.user._id);
+    const event = await eventValidate.delete(req.params);
 
-    return eventAction.delete(event);
+    return eventAction.delete(event, req.request.user._id);
   });
 });
 
