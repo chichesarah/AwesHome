@@ -26,7 +26,7 @@ const handlePush = (array, text) => {
       if (item.type === 'ios') {
         const note = new apn.Notification({
           expiry: Math.floor(Date.now() / 1000) + 3600, // Expires 1 hour from now.
-          badge: 3,
+          // badge: 3,
           alert: text,
           topic: config.notification.topic,
         });
