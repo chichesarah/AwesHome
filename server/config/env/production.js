@@ -1,13 +1,13 @@
-const hostUrl = process.env.KOA_BASE_HOST_URL || 'https://spravno.herokuapp.com/';
+const hostUrl = process.env.KOA_BASE_HOST_URL || 'https://aweshome.herokuapp.com/';
 
 module.exports = {
   hostUrl,
   mongoConnectionStrings: {
-    write: 'mongodb://heroku_b7dbwjw7:b100nln16srjnc59kqolt80jq@ds259410.mlab.com:59410/heroku_b7dbwjw7',
+    write: 'mongodb://heroku_nrc6gn46:2o56ff8djvar6b118bn6697k8e@ds245901.mlab.com:45901/heroku_nrc6gn46',
   },
   facebook: {
-    clientID: '1679771432332193',
-    clientSecret: 'ac577f059f1569bd436fa3de00a52404',
+    clientID: '204949240140758',
+    clientSecret: 'e93d1bfb49b478b7cafe8796a650bcf6',
     callbackURL: `${hostUrl}auth/facebookWeb/callback`,
     callbackUserURL: `${hostUrl}auth/facebookUserWeb/callback`,
     callbackProfessionalURL: `${hostUrl}auth/facebookProfessionalWeb/callback`,
@@ -16,9 +16,9 @@ module.exports = {
     mailFrom: 'info@aweshomeapp.com',
   },
   cloudinary: {
-    cloud_name: 'diu5kwhe7',
-    api_key: '964722286552611',
-    api_secret: '83jSdsPpnDwe4qlf13TlHYDP7Pg',
+    cloud_name: 'dfg2nreqs',
+    api_key: '266377671439361',
+    api_secret: 'pVR2NMN8ywOPwJJKBV55GLsc10o',
   },
   clientMainFile: '/apidoc/index.html',
   serverMainFile: '/dist/Tasks.jsx',
