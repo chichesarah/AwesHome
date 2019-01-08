@@ -3,7 +3,7 @@ const hostUrl = process.env.KOA_BASE_HOST_URL || 'https://aweshome.herokuapp.com
 module.exports = {
   hostUrl,
   mongoConnectionStrings: {
-    write: 'mongodb://heroku_nrc6gn46:2o56ff8djvar6b118bn6697k8e@ds245901.mlab.com:45901/heroku_nrc6gn46',
+    write: 'mongodb://heroku_xdxqdgjg:tt9tr8p0h7qp4pptd5c3rs64vr@ds135003.mlab.com:35003/heroku_xdxqdgjg',
   },
   facebook: {
     clientID: '204949240140758',
